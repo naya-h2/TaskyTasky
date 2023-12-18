@@ -95,7 +95,6 @@ function Input({
 export default Input;
 
 const Container = styled.form`
-  margin: 30px;
   width: 520px;
   height: 50px;
   position: relative;
