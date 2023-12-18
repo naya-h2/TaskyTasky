@@ -6,6 +6,7 @@ export const BLACK = {
 
 export const GRAY = {
   10: '#FAFAFA',
+  15: '#F5F5F5',
   20: '#EEEEEE',
   30: '#D9D9D9',
   40: '#9FA6B2',
@@ -14,6 +15,7 @@ export const GRAY = {
 
 export const VIOLET = {
   1: '#5534DA',
+  2: '#4826CF',
   8: '#F1EFFD',
 };
 
