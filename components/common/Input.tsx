@@ -11,6 +11,7 @@ interface InputProps {
   isPassword?: boolean;
   placeholder: string;
   passwordCheck?: string;
+  setPassword?: (value: string) => void;
 }
 
 function Input({
@@ -18,15 +19,16 @@ function Input({
   isPassword, // isPassword가 true라면 눈모양 아이콘이 보이도록
   placeholder, 
   passwordCheck, // password와 passwordConfirm이 같은지 확인하는 것
+  setPassword, // 비밀번호가 무엇인지 props로 받아온 것
 }: InputProps) {
-  const [password, setPassword] = useState(true);
+  const [passwordVisible, setPasswordVisible] = useState(true);
   const [value, setValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  function togglePasswordIcon() {
-    setPassword((prev) => !prev);
-  }
-
+  const togglePasswordIcon = () => {
+    setPasswordVisible((prev) => !prev);
+  };
+  
   const validateInput = () => {
     if (type === 'email') {
       const emailReg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
@@ -38,16 +40,19 @@ function Input({
       if (!passwordReg.test(value)) {
         setErrorMessage('비밀번호는 8자 이상 입력해주세요.');
       }
-    } else if (type === 'passwordConfirm') {
+    } else if (type === 'passwordConfirm' && passwordCheck) {
       if (value !== passwordCheck) {
         setErrorMessage('비밀번호가 일치하지 않습니다.');
       }
     }
   };
-
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     setErrorMessage('');
+    if (setPassword && type === 'password') {
+      setPassword(e.target.value);
+    }
   };
 
   return (
@@ -55,14 +60,14 @@ function Input({
       <Container>
         <InputInnerBox
           placeholder={placeholder}
-          type={type === 'email' ? 'text' : (password ? 'password' : 'text')}
+          type={type === 'email' ? 'text' : (passwordVisible ? 'password' : 'text')}
           className={`${errorMessage ? 'error' : ''}`}
           value={value}
           onChange={handleChange}
           onBlur={validateInput}
         />
         {isPassword &&
-          (password ? (
+          (passwordVisible ? (
             <EyeIcon
               alt='비밀번호 보이기 아이콘'
               src={eyeOffIcon}
@@ -90,6 +95,7 @@ function Input({
 export default Input;
 
 const Container = styled.form`
+  margin: 30px;
   width: 520px;
   height: 50px;
   position: relative;
@@ -105,7 +111,6 @@ const InputInnerBox = styled.input`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-
   &:focus {
     border: 1px solid ${VIOLET[1]};
   }
@@ -121,7 +126,6 @@ const EyeIcon = styled(Image)`
   position: absolute;
   top: 10px;
   right: 15px;
-
   &:hover {
     cursor: pointer;
   }
@@ -131,8 +135,5 @@ const ErrorMessage = styled.p`
   ${FONT_14};
   color: ${RED};
 `;
-
-
-
 
 
