@@ -1,9 +1,9 @@
-import { MouseEvent, RefObject, SetStateAction } from 'react';
+import { RefObject, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { GRAY } from '@/styles/ColorStyles';
 import CheckIcon from '@/public/icon/dropdown_check.svg';
 import ModalPortal from '../Modal/ModalPortal';
-import { statusCollection } from '@/lib/constants/statusCollection';
+import { statusCollection, userCollection } from '@/lib/constants/statusCollection';
 import ToDoLargeIcon from '@/public/icon/todo_large.svg';
 import OnProgressLargeIcon from '@/public/icon/onProgress_large.svg';
 import DoneLargeIcon from '@/public/icon/done_large.svg';
@@ -22,17 +22,27 @@ interface Props {
 }
 
 function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }: Props) {
-  const handleClickOption = (type: string) => {
-    setValue((prev) => ({
-      ...prev,
-      status: type,
-    }));
+  const filteredUser = userCollection.filter((item) => item.name.includes(value.person));
+
+  const handleClickOption = (value: string) => {
+    if (type === 'status') {
+      setValue((prev) => ({
+        ...prev,
+        status: value,
+      }));
+    }
+    if (type === 'person') {
+      setValue((prev) => ({
+        ...prev,
+        person: value,
+      }));
+    }
     handleDropDownClose();
   };
 
   return (
     <ModalPortal container={anchorRef.current}>
-      <WrapperUl>
+      <WrapperUl $isUser={filteredUser.length}>
         {type === 'status' &&
           statusCollection.map((item) => {
             return (
@@ -44,6 +54,16 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }:
               </WrapperLi>
             );
           })}
+        {type === 'person' &&
+          value.person &&
+          filteredUser.map((item) => {
+            return (
+              <WrapperLi key={item.id} onClick={() => handleClickOption(item.name)}>
+                {value.person === item.name ? <CheckIcon /> : <TransparentBox />}
+                {item.name}
+              </WrapperLi>
+            );
+          })}
       </WrapperUl>
     </ModalPortal>
   );
@@ -51,7 +71,7 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }:
 
 export default DropDownList;
 
-const WrapperUl = styled.ul`
+const WrapperUl = styled.ul<{ $isUser: number }>`
   width: 217px;
   position: absolute;
   top: 55px;
@@ -59,6 +79,8 @@ const WrapperUl = styled.ul`
   border: 1px solid ${GRAY[30]};
   border-radius: 6px;
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+
+  ${({ $isUser }) => $isUser || `display: none`};
 `;
 
 const WrapperLi = styled.li`

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
 import ArrowDropDownIcon from '@/public/icon/arrow_drop_down.svg';
@@ -34,6 +34,7 @@ function DropDown({ type }: Props) {
   useOnClickOutside(containerRef, handleDropDownClose);
 
   const handleMainBoxClick = () => {
+    if (type === 'person') return;
     if (isDropDownOpen) {
       handleDropDownClose();
     } else {
@@ -41,14 +42,39 @@ function DropDown({ type }: Props) {
     }
   };
 
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue((prev) => ({
+      ...prev,
+      person: e.target.value,
+    }));
+  };
+
+  const handleArrowIconClick = () => {
+    if (type === 'status') return;
+    if (isDropDownOpen) {
+      handleDropDownClose();
+    } else {
+      handleDropDownOpen();
+    }
+  };
+
+  useEffect(() => {
+    if (!value.person) {
+      handleDropDownClose();
+    } else if (value.person) {
+      handleDropDownOpen();
+    }
+  }, [value.person]);
+
   return (
     <Wrapper ref={containerRef}>
       {(type === 'status' || type === 'person') && (
-        <MainBox $isOpen={isDropDownOpen} onClick={handleMainBoxClick}>
+        <MainBox $isOpen={isDropDownOpen} $type={type} onClick={handleMainBoxClick}>
           {type === 'status' && value.status === 'ToDo' && <ToDoLargeIcon />}
           {type === 'status' && value.status === 'OnProgress' && <OnProgressLargeIcon />}
           {type === 'status' && value.status === 'Done' && <DoneLargeIcon />}
-          <ArrowIcon />
+          {type === 'person' && <Input value={value.person} onChange={handleInputChange} />}
+          {type === 'person' && !value.person ? null : <ArrowIcon $type={type} onClick={handleArrowIconClick} />}
         </MainBox>
       )}
       {isDropDownOpen && (
@@ -73,7 +99,7 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-const MainBox = styled.div<{ $isOpen: boolean }>`
+const MainBox = styled.div<{ $isOpen: boolean; $type: string }>`
   width: 217px;
   height: 48px;
   padding: 10px 15px;
@@ -83,10 +109,15 @@ const MainBox = styled.div<{ $isOpen: boolean }>`
   border-radius: 6px;
   border: 1px solid ${({ $isOpen }) => ($isOpen ? `${VIOLET[1]}` : `${GRAY[30]}`)};
   background-color: ${WHITE};
-  cursor: pointer;
+  ${({ $type }) => $type === 'status' && `cursor: pointer`};
 `;
 
-const ArrowIcon = styled(ArrowDropDownIcon)`
-  position: absolute;
+const Input = styled.input`
+  width: 100%;
+`;
+
+const ArrowIcon = styled(ArrowDropDownIcon)<{ $type: string }>`
+  position: ${({ $type }) => ($type === 'status' ? 'absolute' : 'static')};
   right: 10px;
+  cursor: pointer;
 `;
