@@ -13,8 +13,16 @@ interface Props {
   type: 'status' | 'person' | 'kebab';
 }
 
+interface Value {
+  status: string;
+  person: string;
+}
+
 function DropDown({ type }: Props) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<Value>({
+    status: '',
+    person: '',
+  });
 
   const containerRef = useRef<HTMLDivElement>(null);
   const {
@@ -37,9 +45,9 @@ function DropDown({ type }: Props) {
     <Wrapper ref={containerRef}>
       {(type === 'status' || type === 'person') && (
         <MainBox $isOpen={isDropDownOpen} onClick={handleMainBoxClick}>
-          {type === 'status' && value === 'ToDo' && <ToDoLargeIcon />}
-          {type === 'status' && value === 'OnProgress' && <OnProgressLargeIcon />}
-          {type === 'status' && value === 'Done' && <DoneLargeIcon />}
+          {type === 'status' && value.status === 'ToDo' && <ToDoLargeIcon />}
+          {type === 'status' && value.status === 'OnProgress' && <OnProgressLargeIcon />}
+          {type === 'status' && value.status === 'Done' && <DoneLargeIcon />}
           <ArrowIcon />
         </MainBox>
       )}

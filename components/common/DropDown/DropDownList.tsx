@@ -8,17 +8,25 @@ import ToDoLargeIcon from '@/public/icon/todo_large.svg';
 import OnProgressLargeIcon from '@/public/icon/onProgress_large.svg';
 import DoneLargeIcon from '@/public/icon/done_large.svg';
 
+interface Value {
+  status: string;
+  person: string;
+}
+
 interface Props {
   anchorRef: RefObject<HTMLElement>;
-  setValue: (value: SetStateAction<string>) => void;
-  value: string;
+  setValue: (value: SetStateAction<Value>) => void;
+  value: Value;
   type: 'status' | 'person' | 'kebab';
   handleDropDownClose: () => void;
 }
 
 function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }: Props) {
   const handleClickOption = (type: string) => {
-    setValue(type);
+    setValue((prev) => ({
+      ...prev,
+      status: type,
+    }));
     handleDropDownClose();
   };
 
@@ -29,7 +37,7 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }:
           statusCollection.map((item) => {
             return (
               <WrapperLi key={item.id} onClick={() => handleClickOption(item.type)}>
-                {value === item.type ? <CheckIcon /> : <TransparentBox />}
+                {value.status === item.type ? <CheckIcon /> : <TransparentBox />}
                 {item.type === 'ToDo' && <ToDoLargeIcon />}
                 {item.type === 'OnProgress' && <OnProgressLargeIcon />}
                 {item.type === 'Done' && <DoneLargeIcon />}
