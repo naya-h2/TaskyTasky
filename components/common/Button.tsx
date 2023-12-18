@@ -148,7 +148,7 @@ const Default = styled.button<{
 }>`
   width: ${({ $width }) => $width};
   height: ${({ $height }) => $height};
-  padding: 0 20px 0;
+  /* padding: 0 20px 0; */
 
   display: flex;
   justify-content: ${({ $type }) => ($type === 'dashboard' ? 'flex-start' : 'center')};

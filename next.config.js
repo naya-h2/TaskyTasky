@@ -10,6 +10,23 @@ const nextConfig = {
     });
     return config;
   },
+  images: {
+    domains: ['*'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '*.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.kr',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;
