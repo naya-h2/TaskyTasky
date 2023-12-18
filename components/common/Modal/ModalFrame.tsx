@@ -2,7 +2,11 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import useNotScroll from '@/hooks/useNotScroll';
+import useModal from '@/hooks/useModal';
 import ModalPortal from './ModalPortal';
+import CloseIcon from "@/public/icon/crown.svg"
+
+const { modalFrame_Mask, modalFrame_Body } = Z_INDEX;
 
 interface Props {
   children: ReactNode;
@@ -10,15 +14,21 @@ interface Props {
 }
 
 function ModalFrame({ children, onClickClose }: Props) {
+  const { isOpen } = useModal();
+
   useNotScroll();
+
+  if(!isOpen) {
+    return null;
+  }
 
   return (
     <>
       <ModalPortal>
         <Mask onClick={onClickClose} />
         <Body>
-          {/* <CloseIcon src={closeBtn} alt="모달 닫기 버튼" onClick={onClickClose} />
-          <Container>{children}</Container> */}
+          <CloseBtn alt="모달 닫기 버튼" onClick={onClickClose} />
+          <Container>{children}</Container>
         </Body>
       </ModalPortal>
     </>
@@ -26,8 +36,6 @@ function ModalFrame({ children, onClickClose }: Props) {
 }
 
 export default ModalFrame;
-
-const { modalFrame_Mask, modalFrame_Body } = Z_INDEX;
 
 const Mask = styled.div`
   width: 100%;
@@ -54,3 +62,20 @@ const Body = styled.div`
   border-radius: 8px;
   background: white;
 `;
+
+const CloseBtn = styled(CloseIcon)`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+const Container = styled.div`
+  padding: 32px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+`
