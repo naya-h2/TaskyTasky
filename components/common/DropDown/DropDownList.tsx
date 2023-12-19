@@ -1,6 +1,6 @@
 import { RefObject, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { GRAY } from '@/styles/ColorStyles';
+import { GRAY, VIOLET } from '@/styles/ColorStyles';
 import CheckIcon from '@/public/icon/dropdown_check.svg';
 import ModalPortal from '../Modal/ModalPortal';
 import { statusCollection, userCollection } from '@/lib/constants/statusCollection';
@@ -42,7 +42,7 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }:
 
   return (
     <ModalPortal container={anchorRef.current}>
-      <WrapperUl $isUser={filteredUser.length}>
+      <WrapperUl $isUser={filteredUser.length} $type={type}>
         {type === 'status' &&
           statusCollection.map((item) => {
             return (
@@ -64,6 +64,12 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }:
               </WrapperLi>
             );
           })}
+        {type === 'kebab' && (
+          <>
+            <ModalPopLi>수정하기</ModalPopLi>
+            <ModalPopLi>삭제하기</ModalPopLi>
+          </>
+        )}
       </WrapperUl>
     </ModalPortal>
   );
@@ -71,10 +77,12 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }:
 
 export default DropDownList;
 
-const WrapperUl = styled.ul<{ $isUser: number }>`
-  width: 217px;
+const WrapperUl = styled.ul<{ $isUser: number; $type: string }>`
+  width: ${({ $type }) => ($type === 'kebab' ? '93px' : '217px')};
+  padding: ${({ $type }) => ($type === 'kebab' ? '6px' : null)};
   position: absolute;
-  top: 55px;
+  top: ${({ $type }) => ($type === 'kebab' ? '30px' : '55px')};
+  right: ${({ $type }) => ($type === 'kebab' ? '10px' : null)};
   background-color: white;
   border: 1px solid ${GRAY[30]};
   border-radius: 6px;
@@ -102,4 +110,19 @@ const WrapperLi = styled.li`
 const TransparentBox = styled.div`
   width: 22px;
   height: 22px;
+`;
+
+const ModalPopLi = styled.div`
+  width: 100%;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    color: ${VIOLET[1]};
+    background-color: ${VIOLET[8]};
+  }
 `;

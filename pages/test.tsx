@@ -5,15 +5,18 @@ export default function Test() {
   return (
     <>
       <Div>
-        <DropDown type="status" />
+        <DropDown type="status" initialStatus={'Done'} />
       </Div>
       <Div>
-        <DropDown type="person" />
+        <DropDown type="person" initialPerson="이규호" />
+      </Div>
+      <Div>
+        <DropDown type="kebab" />
       </Div>
     </>
   );
 }
 
 const Div = styled.div`
-  padding: 100px;
+  padding: 60px 100px 60px 200px;
 `;

@@ -8,9 +8,12 @@ import DropDownList from './DropDownList';
 import ToDoLargeIcon from '@/public/icon/todo_large.svg';
 import OnProgressLargeIcon from '@/public/icon/onProgress_large.svg';
 import DoneLargeIcon from '@/public/icon/done_large.svg';
+import MoreIcon from '@/public/icon/more.svg';
 
 interface Props {
   type: 'status' | 'person' | 'kebab';
+  initialStatus?: 'ToDo' | 'OnProgress' | 'Done';
+  initialPerson?: string;
 }
 
 interface Value {
@@ -18,10 +21,10 @@ interface Value {
   person: string;
 }
 
-function DropDown({ type }: Props) {
+function DropDown({ type, initialStatus, initialPerson }: Props) {
   const [value, setValue] = useState<Value>({
-    status: '',
-    person: '',
+    status: initialStatus ? initialStatus : '',
+    person: initialPerson ? initialPerson : '',
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,7 +36,7 @@ function DropDown({ type }: Props) {
 
   useOnClickOutside(containerRef, handleDropDownClose);
 
-  const handleMainBoxClick = () => {
+  const handleAnchorRefClick = () => {
     if (type === 'person') return;
     if (isDropDownOpen) {
       handleDropDownClose();
@@ -67,16 +70,21 @@ function DropDown({ type }: Props) {
   }, [value.person]);
 
   return (
-    <Wrapper ref={containerRef}>
-      {(type === 'status' || type === 'person') && (
-        <MainBox $isOpen={isDropDownOpen} $type={type} onClick={handleMainBoxClick}>
-          {type === 'status' && value.status === 'ToDo' && <ToDoLargeIcon />}
-          {type === 'status' && value.status === 'OnProgress' && <OnProgressLargeIcon />}
-          {type === 'status' && value.status === 'Done' && <DoneLargeIcon />}
-          {type === 'person' && <Input value={value.person} onChange={handleInputChange} />}
-          {type === 'person' && !value.person ? null : <ArrowIcon $type={type} onClick={handleArrowIconClick} />}
-        </MainBox>
-      )}
+    <>
+      <Wrapper ref={containerRef} $type={type}>
+        {(type === 'status' || type === 'person') && (
+          <MainBox $isOpen={isDropDownOpen} $type={type} onClick={handleAnchorRefClick}>
+            {type === 'status' && value.status === 'ToDo' && <ToDoLargeIcon />}
+            {type === 'status' && value.status === 'OnProgress' && <OnProgressLargeIcon />}
+            {type === 'status' && value.status === 'Done' && <DoneLargeIcon />}
+            {type === 'person' && (
+              <Input value={value.person} onChange={handleInputChange} placeholder="이름을 입력해 주세요" />
+            )}
+            {type === 'person' && !value.person ? null : <ArrowIcon $type={type} onClick={handleArrowIconClick} />}
+          </MainBox>
+        )}
+        {type === 'kebab' && <KebabIcon onClick={handleAnchorRefClick} />}
+      </Wrapper>
       {isDropDownOpen && (
         <DropDownList
           anchorRef={containerRef}
@@ -86,14 +94,14 @@ function DropDown({ type }: Props) {
           handleDropDownClose={handleDropDownClose}
         />
       )}
-    </Wrapper>
+    </>
   );
 }
 
 export default DropDown;
 
-const Wrapper = styled.div`
-  width: 217px;
+const Wrapper = styled.div<{ $type: string }>`
+  width: ${({ $type }) => ($type === 'kebab' ? '28px' : '217px')};
   display: flex;
   flex-direction: column;
   position: relative;
@@ -114,10 +122,18 @@ const MainBox = styled.div<{ $isOpen: boolean; $type: string }>`
 
 const Input = styled.input`
   width: 100%;
+
+  &::placeholder {
+    color: ${GRAY[40]};
+  }
 `;
 
 const ArrowIcon = styled(ArrowDropDownIcon)<{ $type: string }>`
   position: ${({ $type }) => ($type === 'status' ? 'absolute' : 'static')};
   right: 10px;
+  cursor: pointer;
+`;
+
+const KebabIcon = styled(MoreIcon)`
   cursor: pointer;
 `;
