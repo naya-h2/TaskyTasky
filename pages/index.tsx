@@ -19,5 +19,5 @@ export default function Home() {
 
 const Div = styled.div`
   color: ${VIOLET[1]};
-  ${FONT_20_B}
+  ${FONT_20_B};
 `;
