@@ -4,14 +4,16 @@ import { useMediaQuery } from 'react-responsive';
 import { GRAY, VIOLET } from '@/styles/ColorStyles';
 import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import Link from 'next/link';
 
 const SNS_LIST = [
-  { src: '/icon/envelope_email_icon.svg', alt: '개발팀에게 메일 보내기' },
+  { src: '/icon/envelope_email_icon.svg', alt: '개발팀에게 메일 보내기', url: '/' },
   {
     src: '/icon/social media_facebook_icon.svg',
     alt: '페이스북 페이지 바로가기',
+    url: '/',
   },
-  { src: '/icon/instagram_logo_media_social_icon.svg', alt: '인스타그램 페이지 바로가기' },
+  { src: '/icon/instagram_logo_media_social_icon.svg', alt: '인스타그램 페이지 바로가기', url: '/' },
 ];
 
 function Footer() {
@@ -26,10 +28,12 @@ function Footer() {
           <Text>FAQ</Text>
         </Center>
         <IconBox>
-          {SNS_LIST.map(({ alt, src }) => (
-            <Wrapper key={alt}>
-              <Image src={src} alt={alt} fill />
-            </Wrapper>
+          {SNS_LIST.map(({ alt, src, url }) => (
+            <Link key={alt} href={url} target="_blank">
+              <Wrapper>
+                <Image src={src} alt={alt} fill />
+              </Wrapper>
+            </Link>
           ))}
         </IconBox>
       </Container>
@@ -39,7 +43,7 @@ function Footer() {
 
 export default Footer;
 
-const Body = styled.div`
+const Body = styled.footer`
   width: 100%;
   height: 100px;
   padding: 0 40px;
@@ -87,6 +91,10 @@ const Wrapper = styled.div`
   height: 22px;
 
   position: relative;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 18px;
