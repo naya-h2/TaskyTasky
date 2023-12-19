@@ -70,3 +70,8 @@ export const FONT_12 = css`
   font-weight: 500;
   line-height: 150%;
 `;
+export const FONT_10 = css`
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 150%;
+`;
