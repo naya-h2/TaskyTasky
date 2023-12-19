@@ -34,7 +34,7 @@ function Header({ page, children, crown }: Props) {
               <DividingLine />
             </>
           )}
-          <Profile type="header" name={USER1.nickname} profileImg={USER1.profileImageUrl} />
+          <Profile type="header" name={USER1.nickname} profileImg={USER1.profileImageUrl} id={USER1.id} />
         </Right>
       </Container>
     </Body>

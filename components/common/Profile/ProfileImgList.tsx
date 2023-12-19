@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import { FONT_14, FONT_16 } from '@/styles/FontStyles';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { PINK, WHITE } from '@/styles/ColorStyles';
-import { DEVICE_SIZE, DEVICE_SIZE_NUM } from '@/styles/DeviceSize';
-import { useEffect } from 'react';
-import useGetWindowWidth from '@/hooks/useGetWindowWidth';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useMediaQuery } from 'react-responsive';
+import ProfileImg from './ProfileImg';
 
 interface Props {
   memberCount: number;
@@ -22,22 +21,28 @@ function ProfileImgList({ memberCount, data }: Props) {
 
   if (isTablet) rest += 2;
 
-  console.log(isTablet);
-
   return (
     <Container>
       {data[0] && (
-        <Img alt="대시보드 멤버1 이미지" $order={Z_INDEX.profileImgList_Img[0]} src={data[0].profileImageUrl} />
+        <ProfileWrapper $order={Z_INDEX.profileImgList_Img[0]}>
+          <ProfileImg url={data[0].profileImageUrl} size={38} name={data[0].nickname} id={data[0].userId} />
+        </ProfileWrapper>
       )}
       {data[1] && (
-        <Img alt="대시보드 멤버2 이미지" $order={Z_INDEX.profileImgList_Img[1]} src={data[1].profileImageUrl} />
+        <ProfileWrapper $order={Z_INDEX.profileImgList_Img[1]}>
+          <ProfileImg url={data[1].profileImageUrl} size={38} name={data[1].nickname} id={data[1].userId} />
+        </ProfileWrapper>
       )}
       <Wrapper>
         {data[2] && (
-          <Img alt="대시보드 멤버3 이미지" $order={Z_INDEX.profileImgList_Img[2]} src={data[2].profileImageUrl} />
+          <ProfileWrapper $order={Z_INDEX.profileImgList_Img[2]}>
+            <ProfileImg url={data[2].profileImageUrl} size={38} name={data[2].nickname} id={data[2].userId} />
+          </ProfileWrapper>
         )}
         {data[3] && (
-          <Img alt="대시보드 멤버4 이미지" $order={Z_INDEX.profileImgList_Img[3]} src={data[3].profileImageUrl} />
+          <ProfileWrapper $order={Z_INDEX.profileImgList_Img[3]}>
+            <ProfileImg url={data[3].profileImageUrl} size={38} name={data[3].nickname} id={data[3].userId} />
+          </ProfileWrapper>
         )}
       </Wrapper>
       {rest > 0 && <Rest $order={isTablet ? 3 : 5}>+{rest <= 999 ? rest : '999'}</Rest>}
@@ -65,25 +70,13 @@ const Container = styled.div`
   }
 `;
 
-const Img = styled.img<{ $order: number }>`
-  width: 38px;
-  height: 38px;
-
+const ProfileWrapper = styled.div<{ $order: number }>`
   position: absolute;
   left: ${({ $order }) => `${29 * $order - 29}px`};
 
   z-index: ${({ $order }) => $order};
 
-  border-radius: 100%;
-  border: 2px solid ${WHITE};
-
-  background-size: cover;
-  background-position: center;
-
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 34px;
-    height: 34px;
-
     left: ${({ $order }) => `${25 * $order - 25}px`};
   }
 `;

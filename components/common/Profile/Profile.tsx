@@ -5,14 +5,15 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   type: 'header';
+  id: number;
   name: string;
   profileImg: string;
 }
 
-function Profile({ type, name, profileImg }: Props) {
+function Profile({ type, id, name, profileImg }: Props) {
   return (
     <Container>
-      <ProfileImg url={profileImg} size={38} />
+      <ProfileImg url={profileImg} size={38} name={name} id={id} />
       <Name $type={type}>{name}</Name>
     </Container>
   );

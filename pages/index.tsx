@@ -7,9 +7,9 @@ export default function Home() {
   return (
     <>
       {/* <Div>폰트, 색상변수 사용방법</Div> */}
-      <Header page="myboard" crown={true}>
+      {/* <Header page="myboard" crown={true}>
         내 대시보드
-      </Header>
+      </Header> */}
       <Header page="others" crown={true}>
         내 대시보드
       </Header>
