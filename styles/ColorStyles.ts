@@ -19,10 +19,15 @@ export const VIOLET = {
   8: '#F1EFFD',
 };
 
+export const PINK = {
+  1: '#E876EA',
+  2: '#F4D7DA',
+  3: '#D25B68',
+};
+
 export const WHITE = '#FFFFFF';
 export const RED = '#D6173A';
 export const GREEN = '#7AC555';
 export const PURPLE = '#760DDE';
 export const ORANGE = '#FFA500';
 export const BLUE = '#76A5EA';
-export const PINK = '#E876EA';
