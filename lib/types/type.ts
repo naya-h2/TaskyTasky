@@ -21,3 +21,25 @@ export interface Cards {
   totalCount: number;
   cards: Card[];
 }
+
+export interface Invite {
+  id: number;
+  inviterUserId: number;
+  teamId: string;
+  dashboard: {
+    title: string;
+    id: number;
+  };
+  invitee: {
+    nickname: string;
+    id: number;
+  };
+  inviteAccepted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Invites {
+  cursorId: number;
+  invitations: Invite[];
+}

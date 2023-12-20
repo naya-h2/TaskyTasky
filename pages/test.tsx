@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import DropDown from '@/components/common/DropDown/DropDown';
+import InviteDash from '@/components/common/Table/InviteDash';
+import items from '@/components/common/Table/mock.json';
 
 export default function Test() {
   return (
@@ -12,6 +14,9 @@ export default function Test() {
       </Div>
       <Div>
         <DropDown type="kebab" />
+      </Div>
+      <Div>
+        <InviteDash inviteList={items} />
       </Div>
     </>
   );
