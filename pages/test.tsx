@@ -10,28 +10,21 @@ export default function Test() {
   const [password, setPassword] = useState('');
 
   return (
-    <>
-      <Div>
-        <DropDown type="status" initialStatus={'Done'} />
-      </Div>
-      <Div>
-        <DropDown type="person" initialPerson="이규호" />
-      </Div>
-      <Div>
-        <DropDown type="kebab" />
-      </Div>
-      <Input type="email" placeholder="이메일을 입력하세요" />
-      <Input type="password" isPassword={true} placeholder="비밀번호를 입력하세요" setPassword={setPassword} />
-      <Input
-        type="passwordConfirm"
-        isPassword={true}
-        placeholder="비밀번호를 다시 입력하세요"
-        passwordCheck={password}
-      />
-    </>
+    <Div>
+      <Input type="email" />
+      <Input type="password" isPassword={true} setPassword={setPassword} />
+      <Input type="passwordConfirm" isPassword={true} passwordCheck={password} />
+      <Input type="title" />
+      <Input type="dueDate" />
+      <Input type="tag" />
+    </Div>
   );
 }
 
 const Div = styled.div`
-  padding: 60px 100px 60px 200px;
+  margin-bottom: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
 `;

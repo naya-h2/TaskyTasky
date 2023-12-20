@@ -5,6 +5,8 @@ import {
   voidPassword,
   incorrectPassword,
   doubleCheckPassword,
+  voidTitle,
+  voidDueDate,
 } from '../constants/inputErrorMsg';
 
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -57,6 +59,18 @@ export const validatePasswordConfirmInput = (passwordCheck: string, passwordConf
   return errMsg;
 };
 
+export const validateEtc = (type: string, value: string) => {
+  let errMsg = '';
+  if (type === 'title' && value === '') {
+    errMsg = voidTitle;
+    return errMsg;
+  } else if (type === 'dueDate' && value === '') {
+    errMsg = voidDueDate;
+    return errMsg;
+  }
+  return errMsg;
+};
+
 export const validateSignInput = (
   type: string,
   value: string,
@@ -75,6 +89,11 @@ export const validateSignInput = (
     }
   } else if (type === 'passwordConfirm' && passwordCheck) {
     const errorMsg = validatePasswordConfirmInput(passwordCheck, value);
+    if (errorMsg) {
+      setErrorMessage(errorMsg);
+    }
+  } else {
+    const errorMsg = validateEtc(type, value);
     if (errorMsg) {
       setErrorMessage(errorMsg);
     }
