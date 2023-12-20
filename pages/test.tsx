@@ -1,27 +1,29 @@
+import { useState } from 'react';
 import styled from 'styled-components';
-import DropDown from '@/components/common/DropDown/DropDown';
-import InviteDash from '@/components/common/Table/InviteDash';
-import items from '@/components/common/Table/mock.json';
+import Input from '@/components/common/Input/Input';
 
+/**
+ * 컴포넌트 실험용 페이지입니다. (컴포넌트 구현 완료 후 삭제 예정)
+ */
 export default function Test() {
+  const [password, setPassword] = useState('');
+
   return (
-    <>
-      <Div>
-        <DropDown type="status" initialStatus={'Done'} />
-      </Div>
-      <Div>
-        <DropDown type="person" initialPerson="이규호" />
-      </Div>
-      <Div>
-        <DropDown type="kebab" />
-      </Div>
-      <Div>
-        <InviteDash inviteList={items} />
-      </Div>
-    </>
+    <Div>
+      <Input type="email" />
+      <Input type="password" isPassword={true} setPassword={setPassword} />
+      <Input type="passwordConfirm" isPassword={true} passwordCheck={password} />
+      <Input type="title" />
+      <Input type="dueDate" />
+      <Input type="tag" />
+    </Div>
   );
 }
 
 const Div = styled.div`
-  padding: 60px 100px 60px 200px;
+  margin-bottom: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
 `;
