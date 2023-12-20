@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import UserForm from '@/hooks/useForm';
 
-function SignUp() {
-  return <div>회원가입 페이지입니다.</div>;
+function Signup() {
+  return <UserForm type="signup" />;
 }
 
-export default SignUp;
+export default Signup;

@@ -8,9 +8,10 @@ import { getPlaceholder } from '@/lib/utils/getPlaceholder';
 import { getInputLabel } from '@/lib/utils/getInputLabel';
 import EyeOff from '@/public/icon/visibility_off.svg';
 import EyeOn from '@/public/icon/visibility.svg';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface InputProps {
-  type: 'email' | 'password' | 'passwordConfirm' | 'title' | 'dueDate' | 'tag';
+  type: 'email' | 'password' | 'passwordConfirm' | 'title' | 'dueDate' | 'tag' | 'nickname';
   isPassword?: boolean;
   passwordCheck?: string;
   setPassword?: (value: string) => void;
@@ -51,7 +52,7 @@ function Input({
   return (
     <>
       <Container $type={type === 'title' || type === 'tag' ? true : false}>
-        <Label $bold={type === 'dueDate' || type === 'title' || type === 'tag' ? true : false} htmlFor={type}>
+        <Label $bold={type === 'dueDate' || type === 'title' || type === 'tag' || type === 'nickname' ? true : false} htmlFor={type}>
           {label} {type === 'title' && <Span> *</Span>}
         </Label>
         {type === 'dueDate' ? (
@@ -86,7 +87,7 @@ export default Input;
 const Icon = css`
   position: absolute;
   top: 42px;
-  right: 5px;
+  right: 13px;
   &:hover {
     cursor: pointer;
   }
@@ -94,11 +95,17 @@ const Icon = css`
 
 const Container = styled.div<{ $type: boolean }>`
   width: ${({ $type }) => ($type ? '450px' : '520px')};
-  height: 50px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 16px;
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    width: 100%;
+  }
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 100%;
+  }
 `;
 
 const Label = styled.label<{ $bold: boolean }>`
@@ -114,6 +121,7 @@ const Span = styled.span`
 `;
 
 const InputBox = styled.input<{ $error: string }>`
+  box-sizing: border-box;
   width: 100%;
   padding: 15px 16px;
   border: 1px solid ${(props) => (props.$error ? `${RED}` : `${GRAY[30]}`)};
