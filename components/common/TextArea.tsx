@@ -1,10 +1,12 @@
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 import Button from './Button';
 import { FONT_16 } from '@/styles/FontStyles';
 import 'react-quill/dist/quill.snow.css';
 import { VIOLET } from '@/styles/ColorStyles';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 function TextArea() {
   const [value, setValue] = useState('');
