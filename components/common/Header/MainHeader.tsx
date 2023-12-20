@@ -2,11 +2,11 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import Logo from '@/public/images/logo_small.svg';
 import Taskify from '@/public/images/Taskify_small.svg';
-import { FONT_16 } from '@/styles/FontStyles';
+import { FONT_14, FONT_16 } from '@/styles/FontStyles';
 import { WHITE, BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
-function Header() {
+function MainHeader() {
   return (
     <Wrapper>
       <Left href="/">
@@ -21,7 +21,7 @@ function Header() {
   );
 }
 
-export default Header;
+export default MainHeader;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -35,6 +35,10 @@ const Wrapper = styled.div`
   column-gap: 3.6rem;
 
   background-color: ${WHITE};
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    padding: 20px 24px;
+  }
 `;
 
 const Left = styled(Link)`
@@ -45,14 +49,22 @@ const Right = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 36px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    column-gap: 20px;
+  }
 `;
 
 const StyledLink = styled(Link)`
   color: ${BLACK[2]};
-  ${FONT_16}
+  ${FONT_16};
 
   text-decoration: none;
   cursor: pointer;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${FONT_14};
+  }
 `;
 
 const StyledTaskify = styled(Taskify)`
