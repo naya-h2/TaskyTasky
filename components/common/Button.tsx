@@ -33,6 +33,9 @@ interface Props {
   chip?: boolean;
   chipColor?: 'green' | 'purple' | 'orange' | 'blue' | 'pink';
   crown?: boolean;
+  position?: string;
+  right?: string;
+  bottom?: string;
   children?: ReactNode;
 }
 
@@ -57,6 +60,9 @@ function Button({
   roundSize = 'L',
   active = true,
   chip = false,
+  position,
+  right,
+  bottom,
   chipColor = 'green',
   crown,
   children,
@@ -76,6 +82,9 @@ function Button({
       $fontSize={fontSize}
       $fontBold={fontBold}
       $roundSize={roundSize}
+      $position={position}
+      $right={right}
+      $bottom={bottom}
     >
       {type === 'dashboard' && <GreenChip />}
       {children}
@@ -145,6 +154,9 @@ const Default = styled.button<{
   $fontBold: boolean;
   $active: boolean;
   $roundSize: 'L' | 'M' | 'S';
+  $position: string | undefined;
+  $right: string | undefined;
+  $bottom: string | undefined;
 }>`
   width: ${({ $width }) => $width};
   height: ${({ $height }) => $height};
@@ -155,7 +167,9 @@ const Default = styled.button<{
   align-items: center;
   gap: 12px;
 
-  position: relative;
+  position: ${(props) => (props.$position ? props.$position : 'relative')};
+  ${(props) => props.$right && `right: ${props.$right}`};
+  ${(props) => props.$bottom && `bottom: ${props.$bottom}`};
 
   border-radius: ${(props) => ROUND_SIZE[`${props.$roundSize}`]};
 
