@@ -64,9 +64,6 @@ export const validateEtc = (type: string, value: string) => {
   if (type === 'title' && value === '') {
     errMsg = voidTitle;
     return errMsg;
-  } else if (type === 'dueDate' && value === '') {
-    errMsg = voidDueDate;
-    return errMsg;
   }
   return errMsg;
 };

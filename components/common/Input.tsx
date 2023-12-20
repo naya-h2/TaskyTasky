@@ -2,12 +2,12 @@ import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { GRAY, VIOLET, RED, BLACK } from '@/styles/ColorStyles';
 import { FONT_16, FONT_14 } from '@/styles/FontStyles';
+import Calendar from './Calendar';
 import { validateSignInput } from '@/lib/utils/checkSign';
 import { getPlaceholder } from '@/lib/utils/getPlaceholder';
 import { getInputLabel } from '@/lib/utils/getInputLabel';
 import EyeOff from '@/public/icon/visibility_off.svg';
 import EyeOn from '@/public/icon/visibility.svg';
-import Calendar from '@/public/icon/calendar.svg';
 
 interface InputProps {
   type: 'email' | 'password' | 'passwordConfirm' | 'title' | 'dueDate' | 'tag';
@@ -50,27 +50,31 @@ function Input({
 
   return (
     <>
-      <Container>
+      <Container $type={type === 'title' || type === 'tag' ? true : false}>
         <Label $bold={type === 'dueDate' || type === 'title' || type === 'tag' ? true : false} htmlFor={type}>
           {label} {type === 'title' && <Span> *</Span>}
         </Label>
-        <InputBox
-          id={type}
-          placeholder={placeholder}
-          type={type === 'email' ? 'text' : passwordInvisible ? 'password' : 'text'}
-          value={value}
-          onChange={handleInputChange}
-          onBlur={handleInputFocusOut}
-          $error={errorMessage}
-          $calendar={type === 'dueDate'}
-        />
+        {type === 'dueDate' ? (
+          <Calendar placeholder={placeholder} />
+        ) : (
+          <InputBox
+            id={type}
+            placeholder={placeholder}
+            type={
+              type === 'email' || type === 'title' || type === 'tag' ? 'text' : passwordInvisible ? 'password' : 'text'
+            }
+            value={value}
+            onChange={handleInputChange}
+            onBlur={handleInputFocusOut}
+            $error={errorMessage}
+          />
+        )}
         {isPassword &&
           (passwordInvisible ? (
             <EyeOffIcon alt="비밀번호 가리기 아이콘" onClick={togglePasswordIcon} />
           ) : (
             <EyeOnIcon alt="비밀번호 보이기 아이콘" onClick={togglePasswordIcon} />
           ))}
-        {type === 'dueDate' && <CalendarIcon />}
         {errorMessage && <ErrorMessage className="errorMessage">{errorMessage}</ErrorMessage>}
       </Container>
     </>
@@ -82,13 +86,14 @@ export default Input;
 const Icon = css`
   position: absolute;
   top: 42px;
+  right: 5px;
   &:hover {
     cursor: pointer;
   }
 `;
 
-const Container = styled.div`
-  width: 520px;
+const Container = styled.div<{ $type: boolean }>`
+  width: ${({ $type }) => ($type ? '450px' : '520px')};
   height: 50px;
   position: relative;
   display: flex;
@@ -108,14 +113,13 @@ const Span = styled.span`
   font-weight: 500;
 `;
 
-const InputBox = styled.input<{ $error: string; $calendar: boolean }>`
+const InputBox = styled.input<{ $error: string }>`
   width: 100%;
-  padding: ${(props) => (props.$calendar ? '15px 16px 15px 36px' : '15px 16px')};
+  padding: 15px 16px;
   border: 1px solid ${(props) => (props.$error ? `${RED}` : `${GRAY[30]}`)};
   outline: none;
   border-radius: 8px;
   ${FONT_16};
-  background-image: url(@/public/icon/calendar-png.png);
 
   &:focus {
     border: 1px solid ${VIOLET[1]};
@@ -124,18 +128,10 @@ const InputBox = styled.input<{ $error: string; $calendar: boolean }>`
 
 const EyeOffIcon = styled(EyeOff)`
   ${Icon}
-  right: 15px;
 `;
 
 const EyeOnIcon = styled(EyeOn)`
   ${Icon}
-  right: 15px;
-`;
-
-const CalendarIcon = styled(Calendar)`
-  ${Icon}
-  top: 46px;
-  left: 13px;
 `;
 
 const ErrorMessage = styled.p`

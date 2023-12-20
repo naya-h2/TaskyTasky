@@ -14,7 +14,7 @@ export const getPlaceholder = (type: string) => {
       placeholder = '제목을 입력해 주세요';
       break;
     case 'dueDate':
-      placeholder = '날짜를 입력해 주세요';
+      placeholder = '날짜를 선택해 주세요';
       break;
     case 'tag':
       placeholder = '입력 후 Enter';
