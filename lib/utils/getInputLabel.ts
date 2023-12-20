@@ -19,6 +19,9 @@ export const getInputLabel = (type: string) => {
     case 'tag':
       label = '태그';
       break;
+    case 'nickname':
+      label = '닉네임';
+      break;
     default:
       label = '';
       break;
