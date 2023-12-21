@@ -7,24 +7,24 @@ function AddChip() {
     <Container>
       <StyledAddFilloIcon />
     </Container>
-  )
+  );
 }
 
 export default AddChip;
 
 const Container = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 22px;
+  height: 22px;
   padding: 3px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: #F1EFFD;
+  background-color: #f1effd;
   border-radius: 4px;
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
 `;
 

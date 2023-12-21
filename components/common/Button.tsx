@@ -1,12 +1,11 @@
-import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { BLACK, GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
+import { ReactNode } from 'react';
+import AddChip from '@/components/common/Chip/AddChip';
+import { BLACK, BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, VIOLET, WHITE } from '@/styles/ColorStyles';
 import { FONT_12, FONT_14, FONT_16, FONT_18 } from '@/styles/FontStyles';
-import PlusChip from '@/public/images/chip_add.svg';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import ForwordIcon from '@/public/icon/arrow_forward.svg';
 import BackwordIcon from '@/public/icon/arrow_backward.svg';
-import GreenChip from '@/public/images/chip_green.svg';
 import Crown from '@/public/icon/crown.svg';
 
 const FONT_SIZE = {
@@ -22,95 +21,101 @@ const ROUND_SIZE = {
   S: '4px',
 };
 
-interface Props {
-  type: 'primary' | 'secondary' | 'plain' | 'arrow-b' | 'arrow-f' | 'dashboard';
-  width?: string;
-  height?: string;
+const CHIP_COLOR = {
+  green: GREEN,
+  purple: PURPLE,
+  orange: ORANGE,
+  blue: BLUE,
+  pink: PINK[1],
+};
+
+interface AddProps {
+  roundSize: 'L' | 'M' | 'S';
   fontSize?: 'XL' | 'L' | 'M' | 'S';
-  fontBold?: boolean;
-  roundSize?: 'L' | 'M' | 'S';
-  active?: boolean;
-  chip?: boolean;
-  chipColor?: 'green' | 'purple' | 'orange' | 'blue' | 'pink';
-  crown?: boolean;
-  position?: string;
-  right?: string;
-  bottom?: string;
+  isBoldFont?: boolean;
   children?: ReactNode;
 }
 
-/**
- * @param type primary: 보라배경 | secondary: 흰배경 & 보라글씨 | plain: 흰배경 & 검정글씨
- * @param width default: 100%
- * @param height default: 50px
- * @param fontSize XL: 18px | L: 16px | M: 14px | S: 12px
- * @param roundSize L: 8px | M: 6px | S: 4px
- * @param active 버튼 활성화 유무
- * @param chip '+' chip 유무
- * @param chipColor dashboard 타입 버튼에서 chip color
- * @param crown dashboard 타입 버튼에서 왕관 아이콘 유무
- * @param children 버튼에 들어갈 문구
- */
-function Button({
-  type,
-  width = '100%',
-  height = '50px',
-  fontSize = 'XL',
-  fontBold = false,
-  roundSize = 'L',
-  active = true,
-  chip = false,
-  position,
-  right,
-  bottom,
-  chipColor = 'green',
-  crown,
+interface DashBoardProps extends AddProps {
+  isOwner?: boolean;
+  chipColor: 'green' | 'purple' | 'orange' | 'blue' | 'pink';
+}
+
+interface BodyProps extends AddProps {
+  style: 'primary' | 'secondary' | 'outline';
+  isNotActive?: boolean;
+}
+
+function ButtonBody({
+  style,
+  isNotActive = false,
+  roundSize,
+  fontSize = 'L',
+  isBoldFont = false,
   children,
-}: Props) {
-  if (type === 'arrow-b' || type === 'arrow-f')
-    return (
-      <Arrow $type={type} $active={active}>
-        {type === 'arrow-b' ? <BackwordIcon /> : <ForwordIcon />}
-      </Arrow>
-    );
+}: BodyProps) {
   return (
     <Default
-      $type={type}
-      $width={width}
-      $height={height}
-      $active={active}
-      $fontSize={fontSize}
-      $fontBold={fontBold}
+      $style={style}
+      $isNotActive={isNotActive}
       $roundSize={roundSize}
-      $position={position}
-      $right={right}
-      $bottom={bottom}
+      $fontSize={fontSize}
+      $isBoldFont={isBoldFont}
     >
-      {type === 'dashboard' && <GreenChip />}
       {children}
-      {crown && <Crown />}
-      {type === 'dashboard' && <LinkIcon />}
-      {chip && <PlusChip />}
     </Default>
   );
 }
 
-export default Button;
+function AddButton({ roundSize, fontSize, isBoldFont, children }: AddProps) {
+  return (
+    <ButtonBody style="outline" roundSize={roundSize} fontSize={fontSize} isBoldFont={isBoldFont}>
+      <AddWrapper>
+        {children}
+        <AddChip />
+      </AddWrapper>
+    </ButtonBody>
+  );
+}
+
+function DashBoardButton({ isOwner = false, chipColor, roundSize, fontSize, isBoldFont, children }: DashBoardProps) {
+  return (
+    <ButtonBody style="outline" roundSize={roundSize} fontSize={fontSize} isBoldFont={isBoldFont}>
+      <DashBoardWrapper>
+        <Chip $color={chipColor} />
+        {children}
+        {isOwner && <CrownIcon />}
+        <LinkIcon />
+      </DashBoardWrapper>
+    </ButtonBody>
+  );
+}
+
+interface ArrowProps {
+  type: 'left' | 'right';
+  isNotActive?: boolean;
+}
+
+function ArrowButton({ type, isNotActive = false }: ArrowProps) {
+  return (
+    <Arrow $type={type} $isNotActive={isNotActive}>
+      {type === 'left' ? <BackwordIcon /> : <ForwordIcon />}
+    </Arrow>
+  );
+}
+
+export const Button = Object.assign({
+  Plain: ButtonBody,
+  Add: AddButton,
+  DashBoard: DashBoardButton,
+  Arrow: ArrowButton,
+});
 
 const inactive = css`
   background-color: ${GRAY[40]};
 
   &:hover {
     background-color: ${GRAY[40]};
-    cursor: not-allowed;
-  }
-`;
-
-const arrowInactive = css`
-  opacity: 55%;
-
-  &:hover {
-    background-color: ${WHITE};
     cursor: not-allowed;
   }
 `;
@@ -136,7 +141,7 @@ const secondary = css`
   }
 `;
 
-const plain = css`
+const outline = css`
   ${secondary};
 
   color: ${BLACK[2]};
@@ -147,44 +152,85 @@ const plain = css`
 `;
 
 const Default = styled.button<{
-  $type: string;
-  $width: string;
-  $height: string;
-  $fontSize: 'XL' | 'L' | 'M' | 'S';
-  $fontBold: boolean;
-  $active: boolean;
+  $style: 'primary' | 'secondary' | 'outline';
+  $isNotActive: boolean;
   $roundSize: 'L' | 'M' | 'S';
-  $position: string | undefined;
-  $right: string | undefined;
-  $bottom: string | undefined;
+  $fontSize: 'XL' | 'L' | 'M' | 'S';
+  $isBoldFont: boolean;
 }>`
-  width: ${({ $width }) => $width};
-  height: ${({ $height }) => $height};
-  /* padding: 0 20px 0; */
-
-  display: flex;
-  justify-content: ${({ $type }) => ($type === 'dashboard' ? 'flex-start' : 'center')};
-  align-items: center;
-  gap: 12px;
-
-  position: ${(props) => (props.$position ? props.$position : 'relative')};
-  ${(props) => props.$right && `right: ${props.$right}`};
-  ${(props) => props.$bottom && `bottom: ${props.$bottom}`};
+  width: 100%;
+  height: 100%;
 
   border-radius: ${(props) => ROUND_SIZE[`${props.$roundSize}`]};
 
   ${(props) => FONT_SIZE[`${props.$fontSize}`]};
-  font-weight: ${({ $fontBold }) => ($fontBold ? '700' : null)};
+  font-weight: ${(props) => (props.$isBoldFont ? '700' : null)};
 
-  ${({ $type }) => {
-    if ($type === 'primary') return primary;
-    if ($type === 'secondary') return secondary;
-    if ($type === 'plain' || 'dashboard') return plain;
-  }};
-  ${({ $active }) => ($active ? null : inactive)}
+  ${(props) => {
+    if (props.$isNotActive) return inactive;
+    if (props.$style === 'primary') return primary;
+    if (props.$style === 'secondary') return secondary;
+    if (props.$style === 'outline') return outline;
+  }}
 `;
 
-const Arrow = styled.button<{ $type: string; $active: boolean }>`
+const AddWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+`;
+
+const DashBoardWrapper = styled.div`
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+`;
+
+const Chip = styled.div<{ $color: 'green' | 'purple' | 'orange' | 'blue' | 'pink' }>`
+  margin-right: 16px;
+
+  width: 8px;
+  height: 8px;
+
+  background-color: ${(props) => `${CHIP_COLOR[props.$color]}`};
+  border-radius: 100%;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    margin-right: 12px;
+  }
+`;
+
+const LinkIcon = styled(ForwordIcon)`
+  position: absolute;
+  right: 20px;
+`;
+
+const CrownIcon = styled(Crown)`
+  margin-left: 8px;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    margin-left: 6px;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    margin-left: 4px;
+  }
+`;
+
+const arrowInactive = css`
+  opacity: 55%;
+
+  &:hover {
+    background-color: ${WHITE};
+    cursor: not-allowed;
+  }
+`;
+
+const Arrow = styled.button<{ $type: string; $isNotActive: boolean }>`
   width: 40px;
   height: 40px;
 
@@ -192,17 +238,12 @@ const Arrow = styled.button<{ $type: string; $active: boolean }>`
   align-items: center;
   justify-content: center;
 
-  ${plain};
-  border-radius: ${(props) => (props.$type === 'arrow-f' ? ' 0 4px 4px 0' : '4px 0 0 4px')};
-  ${(props) => (props.$active ? null : arrowInactive)};
+  ${outline};
+  border-radius: ${(props) => (props.$type === 'right' ? ' 0 4px 4px 0' : '4px 0 0 4px')};
+  ${(props) => (props.$isNotActive ? arrowInactive : null)};
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 36px;
     height: 36px;
   }
-`;
-
-const LinkIcon = styled(ForwordIcon)`
-  position: absolute;
-  right: 20px;
 `;

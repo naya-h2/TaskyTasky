@@ -43,7 +43,7 @@ const inviteData = {
       updatedAt: '2023-12-20T04:38:51.003Z',
     },
     {
-      id: 2,
+      id: 3,
       inviterUserId: 3,
       teamId: 'team-8',
       dashboard: {
@@ -74,7 +74,7 @@ function Myboard() {
             <DashBoardList>
               {data &&
                 data.map((dashboard) => (
-                  <ButtonWrapper>
+                  <ButtonWrapper key={dashboard.id}>
                     <Button type="dashboard" height="100%" fontSize="L" fontBold crown={dashboard.createdByMe}>
                       {dashboard.title}
                     </Button>
@@ -103,7 +103,7 @@ function Myboard() {
 
 export default Myboard;
 
-const Body = styled.body`
+const Body = styled.div`
   padding-top: 70px;
   padding-left: 300px;
 
