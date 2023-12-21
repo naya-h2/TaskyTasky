@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ReactNode } from 'react';
-import { BLACK, GRAY } from '@/styles/ColorStyles';
+import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
 import Button from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
@@ -71,8 +71,13 @@ const Body = styled.div`
   height: 70px;
   padding-left: 300px;
 
+  position: fixed;
+  top: 0;
+
   display: flex;
   align-items: center;
+
+  background-color: ${WHITE};
 
   border-bottom: 1px solid ${GRAY[30]};
 
@@ -81,7 +86,7 @@ const Body = styled.div`
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding-left: 67px;
+    padding-left: 79px;
   }
 `;
 
