@@ -8,10 +8,10 @@ import ProfileImgList from '@/components/common/Profile/ProfileImgList';
 import { USER1 } from '@/lib/constants/mockup';
 import { MEMBERS1 } from '@/lib/constants/mockup';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { Z_INDEX } from '@/styles/ZIndexStyles';
 import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
-import { Z_INDEX } from '@/styles/ZIndexStyles';
 
 interface Props {
   page: 'myboard' | 'others';
@@ -74,16 +74,12 @@ const Body = styled.div`
 
   position: fixed;
   top: 0;
-  
   z-index: ${Z_INDEX.secondHeader_Body};
 
   display: flex;
   align-items: center;
 
-  background-color: ${WHITE};
-
   border-bottom: 1px solid ${GRAY[30]};
-
   background-color: ${WHITE};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
