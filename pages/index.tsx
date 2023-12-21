@@ -8,7 +8,7 @@ import landing2 from '@/public/images/resource/desktop/landging2.png';
 import landing3 from '@/public/images/resource/desktop/landging3.png';
 import landing4 from '@/public/images/resource/desktop/landging4.png';
 import landing5 from '@/public/images/resource/desktop/landging5.png';
-import { VIOLET } from '@/styles/ColorStyles';
+import { BLACK, WHITE, GRAY, VIOLET } from '@/styles/ColorStyles';
 import { FONT_16, FONT_18, FONT_18_B, FONT_22, FONT_28_B } from '@/styles/FontStyles';
 
 
@@ -85,8 +85,8 @@ export default Home;
 const Container = styled.div`
   margin-top: 94px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 `;
 
@@ -97,45 +97,45 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  color: black;
+  margin: 48px 20px 24px 0;
   font-size: 76px;
   font-weight: 700;
-  margin: 48px 20px 24px 0;
+  color: ${BLACK[1]};
 `;
 
 const TaskifyTitle = styled(Title)`
-  color: ${VIOLET[1]};
-  font-size: 90px;
   font-family: Montserrat;
+  font-size: 90px;
   line-height: 65px; /* 72.222% */
+  color: ${VIOLET[1]};
   letter-spacing: -1px;
 `;
 
 const Subtitle = styled.span`
-  color: black;
+  margin-bottom: 66px;
   ${FONT_18};
   font-weight: 400;
+  color: ${BLACK[1]};
   letter-spacing: -1px;
-  margin-bottom: 66px;
 `;
 
 const SectionContainer = styled.div`
+  width: 1200px;
+  margin: 184px 0 160px 0;
   display: flex;
   flex-direction: column;
-  width: 1200px;
   gap: 90px;
-  margin: 184px 0 160px 0;
 `;
 
 const FirstSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 103px 0 0 60px;
   width: 100%;
   height: 600px;
+  padding: 103px 0 0 60px;
   position: relative;
-  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
   background: #f7f0fa;
+  border-radius: 8px;
 `;
 
 const Text = styled.div`
@@ -145,50 +145,50 @@ const Text = styled.div`
 `;
 
 const Point = styled.p`
-  color: var(--gray-gray_9FA6B2, #9FA6B2);
-  font-feature-settings: 'clig' off, 'liga' off;
   ${FONT_22};
+  color: ${GRAY[40]};
+  font-feature-settings: 'clig' off, 'liga' off;
 `;
 
 const Content = styled.p`
-  color: black;
-  font-feature-settings: 'clig' off, 'liga' off;
   font-size: 48px;
   font-style: normal;
   font-weight: 700;
   line-height: 64px; /* 133.333% */
+  color: ${BLACK[1]};
+  font-feature-settings: 'clig' off, 'liga' off;
 `;
 
 const SPAN = styled.span`
-  color: var(--gray-gray_D9D9D9, #D9D9D9);
+  color: ${GRAY[30]};
 `;
 
 const SecondSection = styled.div`
-  display: flex;
-  gap: 100px;
-  padding: 98px 310px 0 108px;
   width: 100%;
   height: 600px;
+  padding: 98px 310px 0 108px;
   position: relative;
-  border-radius: 8px;
+  display: flex;
+  gap: 100px;
   background: #f7f0fa;
+  border-radius: 8px;
 `;
 
 const ThirdSection = styled.div`
   width: 100%;
   height: 600px;
   position: relative;
-  border-radius: 8px;
-  background: #fff;//배경 색이랑 똑같게
   display: flex;
-  gap: 36px;
   flex-direction: column;
+  gap: 36px;
+  background: ${WHITE};//배경 색이랑 똑같게
+  border-radius: 8px;
 `;
 
 const ThirdSectionTitle = styled.p`
-  color: black;
-  font-feature-settings: 'clig' off, 'liga' off;
   ${FONT_28_B};
+  color: ${BLACK[1]};
+  font-feature-settings: 'clig' off, 'liga' off;
 `;
 
 const ThirdContainer = styled.div`
@@ -223,11 +223,11 @@ const TextBox = styled.div`
 `;
 
 const Text1 = styled.p`
-  color: black;
+  color: ${BLACK[1]};
   ${FONT_18_B};
 `;
 
 const Text2 = styled.p`
-  color: black;
+  color: ${BLACK[1]};
   ${FONT_16};
 `;
