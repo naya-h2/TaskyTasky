@@ -11,10 +11,10 @@ const GlobalStyles = createGlobalStyle`
   
   *{
     box-sizing: border-box;
+    font-family: "Pretendard";
   }
 
   html {
-    font-family: "Pretendard";
     font-size: 62.5%;
   }
 
