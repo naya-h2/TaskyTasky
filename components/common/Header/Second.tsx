@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ReactNode } from 'react';
 import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
 import ProfileImgList from '@/components/common/Profile/ProfileImgList';
 import { USER1 } from '@/lib/constants/mockup';
@@ -48,20 +48,20 @@ function HeaderButtons() {
   return (
     <ButtonSection>
       <SettingWrapper>
-        <Button type="plain" width="100%" height="100%">
+        <Button.Plain style="outline" roundSize="L">
           <Wrapper>
             <SettingIcon />
             <Text>관리</Text>
           </Wrapper>
-        </Button>
+        </Button.Plain>
       </SettingWrapper>
       <InviteWrapper>
-        <Button type="plain" width="100%" height="100%">
+        <Button.Plain style="outline" roundSize="L">
           <Wrapper>
             <InviteIcon />
             <Text>초대하기</Text>
           </Wrapper>
-        </Button>
+        </Button.Plain>
       </InviteWrapper>
     </ButtonSection>
   );
@@ -192,6 +192,7 @@ const Title = styled.div`
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 `;
 
