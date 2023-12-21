@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ArrowIcon from '@/public/icon/arrow_backward.svg';
 import Second from '@/components/common/Header/Second';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
-import { FONT_14, FONT_16 } from '@/styles/FontStyles';
+import { FONT_14, FONT_15, FONT_16, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import EditMyDash from '@/components/common/Table/EditMyDash';
@@ -31,6 +31,7 @@ function Edit() {
           <EditMyDash />
           <DashMyMember />
           <DashInviteList />
+          <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
         </Wrapper>
       </Content>
     </Root>
@@ -101,5 +102,22 @@ const ButtonText = styled.div`
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     ${[FONT_14]}
+  }
+`;
+
+const DeleteDashButton = styled.button`
+  width: 320px;
+  height: 62px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid ${[GRAY[30]]};
+  ${[FONT_18]}
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 284px;
+    height: 52px;
+    ${[FONT_16]}
   }
 `;

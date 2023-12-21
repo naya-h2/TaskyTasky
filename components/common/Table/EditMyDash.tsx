@@ -9,6 +9,7 @@ import { useMediaQuery } from 'react-responsive';
 
 function EditMyDash() {
   const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
+
   const [selectedColor, setSelectedColor] = useState('');
   const [editName, setEditName] = useState('뉴프로젝트');
 
