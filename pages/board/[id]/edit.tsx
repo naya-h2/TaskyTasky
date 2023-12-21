@@ -1,7 +1,105 @@
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import styled from 'styled-components';
+import ArrowIcon from '@/public/icon/arrow_backward.svg';
+import Second from '@/components/common/Header/Second';
+import SideMenu from '@/components/common/SideMenu/SideMenu';
+import { FONT_14, FONT_16 } from '@/styles/FontStyles';
+import { BLACK, GRAY } from '@/styles/ColorStyles';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import EditMyDash from '@/components/common/Table/EditMyDash';
+import DashMyMember from '@/components/common/Table/DashMyMember';
+import DashInviteList from '@/components/common/Table/DashInviteList';
 
 function Edit() {
-  return <div>boardid/edit 페이지입니다.</div>;
+  const router = useRouter();
+  const { id } = router.query;
+  return (
+    <Root>
+      <Second page="others" children="제목" />
+      <SideMenu />
+      <Content>
+        <Wrapper>
+          <ButtonLink href={`/board/${id}`}>
+            <ReturnButton>
+              <ArrowPosition>
+                <ArrowBackward />
+              </ArrowPosition>
+              <ButtonText>돌아가기</ButtonText>
+            </ReturnButton>
+          </ButtonLink>
+          <EditMyDash />
+          <DashMyMember />
+          <DashInviteList />
+        </Wrapper>
+      </Content>
+    </Root>
+  );
 }
 
 export default Edit;
+
+const Root = styled.div``;
+
+const Content = styled.div`
+  width: 100%;
+  padding-top: 70px;
+  padding-left: 300px;
+  background-color: ${[GRAY[20]]};
+  display: flex;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    padding-top: 70px;
+    padding-left: 160px;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    padding-top: 70px;
+    padding-left: 67px;
+  }
+`;
+
+const Wrapper = styled.div`
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const ButtonLink = styled(Link)`
+  cursor: pointer;
+  text-decoration: none;
+
+  &: link, 
+  &: visited {
+    color: ${[BLACK[2]]};
+  }
+`;
+
+const ReturnButton = styled.div`
+  display: flex;
+  align-items: center;
+  height: 30px;
+  gap: 6px;
+`;
+
+const ArrowBackward = styled(ArrowIcon)``;
+const ArrowPosition = styled.div`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 20px;
+    height: 20px;
+  }
+`;
+const ButtonText = styled.div`
+  font-size: 16px;
+  ${[FONT_16]}
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${[FONT_14]}
+  }
+`;

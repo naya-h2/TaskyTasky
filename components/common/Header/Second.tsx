@@ -74,7 +74,7 @@ const Body = styled.div`
 
   position: fixed;
   top: 0;
-  
+
   z-index: ${Z_INDEX.secondHeader_Body};
 
   display: flex;
