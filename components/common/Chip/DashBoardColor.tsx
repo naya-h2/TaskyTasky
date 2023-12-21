@@ -14,7 +14,7 @@ interface Props {
  */
 
 function DashBoardColor({ selectedColor, setSelectedColor }: Props) {
-  const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK];
+  const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
 
   return (
     <Container>
