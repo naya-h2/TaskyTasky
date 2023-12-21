@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { GRAY } from './ColorStyles';
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -15,6 +16,10 @@ const GlobalStyles = createGlobalStyle`
   html {
     font-family: "Pretendard";
     font-size: 62.5%;
+  }
+
+  html{
+    background-color: ${GRAY[10]};
   }
 
   html, body, div, span, h1, h2, h3, h4, h5, h6, p, 

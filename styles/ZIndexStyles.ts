@@ -7,4 +7,6 @@ export const Z_INDEX = {
   modalFrame_Body: 900,
   profileImgList_Img: [1, 2, 3, 4],
   profileImgList_Rest: 5,
+  secondHeader_Body: 100,
+  SideMenu_Wrapper: 200,
 };
