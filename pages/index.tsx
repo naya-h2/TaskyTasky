@@ -1,4 +1,5 @@
-import styled from 'styled-components';import Link from 'next/link';
+import styled from 'styled-components';
+import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '@/components/pages/home/Layout';
 import Button from '@/components/common/Button';
