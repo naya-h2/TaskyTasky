@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ReactNode } from 'react';
-import { BLACK, GRAY } from '@/styles/ColorStyles';
+import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
 import Button from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
@@ -8,6 +8,7 @@ import ProfileImgList from '@/components/common/Profile/ProfileImgList';
 import { USER1 } from '@/lib/constants/mockup';
 import { MEMBERS1 } from '@/lib/constants/mockup';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { Z_INDEX } from '@/styles/ZIndexStyles';
 import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
@@ -71,17 +72,22 @@ const Body = styled.div`
   height: 70px;
   padding-left: 300px;
 
+  position: fixed;
+  top: 0;
+  z-index: ${Z_INDEX.secondHeader_Body};
+
   display: flex;
   align-items: center;
 
   border-bottom: 1px solid ${GRAY[30]};
+  background-color: ${WHITE};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     padding-left: 160px;
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding-left: 67px;
+    padding-left: 79px;
   }
 `;
 

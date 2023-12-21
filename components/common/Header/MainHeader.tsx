@@ -14,7 +14,7 @@ function MainHeader() {
         <StyledTaskify />
       </Left>
       <Right>
-        <StyledLink href="/signin">로그인</StyledLink>
+        <StyledLink href="/login">로그인</StyledLink>
         <StyledLink href="/signup">회원가입</StyledLink>
       </Right>
     </Wrapper>
@@ -25,6 +25,7 @@ export default MainHeader;
 
 const Wrapper = styled.div`
   width: 100%;
+  max-width: 100vw;
   height: 70px;
   padding: 20px 80px 20px 26px;
 

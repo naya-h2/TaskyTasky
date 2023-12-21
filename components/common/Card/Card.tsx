@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { Card as CardType } from '@/lib/types/type';
 import { WHITE, BLACK, GRAY } from '@/styles/ColorStyles';
-import { FONT_12, FONT_16_B } from '@/styles/FontStyles';
+import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
 
@@ -21,7 +21,7 @@ function Card({ card }: Props) {
         <Detail>
           <TagWrapper>
             {card.tags.map((t) => (
-              <TempTagChip content={t} />
+              <TempTagChip key={t} content={t} />
             ))}
           </TagWrapper>
           <DateWrapper>
@@ -84,7 +84,7 @@ const Content = styled.div`
 const Title = styled.div`
   margin-bottom: 10px;
 
-  ${FONT_16_B}
+  ${FONT_16}
 `;
 
 const Detail = styled.div`
