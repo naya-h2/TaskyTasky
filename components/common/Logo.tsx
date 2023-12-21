@@ -9,13 +9,11 @@ interface Props {
 
 function Logo({ type }: Props) {
   return (
-    <>
-      <Link href="/" target="_blank">
-        {type === 'main' && <MainLogo />}
-        {type === 'large' && <LargeLogo />}
-        {type === 'small' && <SmallLogo />}
-      </Link>
-    </>
+    <Link href="/" target="_blank">
+      {type === 'main' && <MainLogo />}
+      {type === 'large' && <LargeLogo />}
+      {type === 'small' && <SmallLogo />}
+    </Link>
   );
 }
 
