@@ -4,6 +4,7 @@ import AddDashBoard from './AddDashBoard';
 import DashBoard from './DashBoard';
 import LogoLink from './LogoLink';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { WHITE } from '@/styles/ColorStyles';
 
 function SideMenu() {
@@ -38,7 +39,13 @@ const Wrapper = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
+
+  position: fixed;
+  left: 0;
+  z-index: ${Z_INDEX.SideMenu_Wrapper};
+
   background-color: ${WHITE};
+
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 160px;
     height: 1666px;

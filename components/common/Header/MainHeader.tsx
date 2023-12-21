@@ -14,7 +14,7 @@ function MainHeader() {
         <StyledTaskify />
       </Left>
       <Right>
-        <StyledLink href="/signin">로그인</StyledLink>
+        <StyledLink href="/login">로그인</StyledLink>
         <StyledLink href="/signup">회원가입</StyledLink>
       </Right>
     </Wrapper>
