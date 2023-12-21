@@ -25,6 +25,7 @@ export default MainHeader;
 
 const Wrapper = styled.div`
   width: 100%;
+  max-width: 100vw;
   height: 70px;
   padding: 20px 80px 20px 26px;
 

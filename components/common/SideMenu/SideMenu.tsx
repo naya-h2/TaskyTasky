@@ -35,6 +35,8 @@ const Wrapper = styled.div`
   height: 1550px;
   padding: 20px 24px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 0 0 0;
+  position: fixed;
+  left: 0;
   display: flex;
   flex-direction: column;
 

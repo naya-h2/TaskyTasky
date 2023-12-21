@@ -74,10 +74,13 @@ const Body = styled.div`
 
   position: fixed;
   top: 0;
+  
   z-index: ${Z_INDEX.secondHeader_Body};
 
   display: flex;
   align-items: center;
+
+  background-color: ${WHITE};
 
   border-bottom: 1px solid ${GRAY[30]};
 
@@ -88,7 +91,7 @@ const Body = styled.div`
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding-left: 67px;
+    padding-left: 79px;
   }
 `;
 

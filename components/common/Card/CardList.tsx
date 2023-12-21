@@ -20,8 +20,8 @@ function CardList({ label, cardList }: Props) {
   const { totalCount, cards } = cardList;
 
   return (
-    <Wrapper>
-      <TopWrapper>
+    <Root>
+      <Top>
         <LabelWrapper>
           <Ellipse />
           <Label>{label}</Label>
@@ -30,21 +30,22 @@ function CardList({ label, cardList }: Props) {
         <SettingButton>
           <SettingIcon />
         </SettingButton>
-      </TopWrapper>
+      </Top>
       <AdderCard>
         <ChipAdd />
       </AdderCard>
       {cards.map((card) => (
         <Card key={card.id} card={card} />
       ))}
-    </Wrapper>
+    </Root>
   );
 }
 
 export default CardList;
 
-const Wrapper = styled.div`
+const Root = styled.div`
   width: 354px;
+  height: 100vh;
   padding: 22px 20px;
 
   background-color: ${GRAY[10]};
@@ -52,17 +53,17 @@ const Wrapper = styled.div`
   border-right: 1px solid ${GRAY[20]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    width: 584px;
+    width: 100%;
+    height: 100%;
     border-right: none;
     border-bottom: 1px solid ${GRAY[20]};
   }
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 308px;
     padding: 17px 12px;
   }
 `;
 
-const TopWrapper = styled.div`
+const Top = styled.div`
   margin-bottom: 25px;
 
   display: flex;
