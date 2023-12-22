@@ -17,22 +17,22 @@ function ProfileImg({ url, size, name, id }: Props) {
   const colorNum = id % 5;
 
   return (
-    <Wrapper>
+    <StyledWrapper>
       {url ? (
-        <Img alt="프로필 이미지" src={url} width={size} height={size} />
+        <StyledImg alt="프로필 이미지" src={url} width={size} height={size} />
       ) : (
-        <DefaultProfile $size={size} $color={colorNum}>
+        <StyledDefaultProfile $size={size} $color={colorNum}>
           {name.slice(0, 1)}
-        </DefaultProfile>
+        </StyledDefaultProfile>
       )}
-      <NickName>{name}</NickName>
-    </Wrapper>
+      <StyledNickName>{name}</StyledNickName>
+    </StyledWrapper>
   );
 }
 
 export default ProfileImg;
 
-const Img = styled(Image)`
+const StyledImg = styled(Image)`
   border-radius: 100%;
   border: 2px solid ${WHITE};
 
@@ -45,7 +45,7 @@ const Img = styled(Image)`
   }
 `;
 
-const DefaultProfile = styled.div<{ $size: number; $color: number }>`
+const StyledDefaultProfile = styled.div<{ $size: number; $color: number }>`
   width: ${(props) => `${props.$size}px`};
   height: ${(props) => `${props.$size}px`};
 
@@ -67,7 +67,7 @@ const DefaultProfile = styled.div<{ $size: number; $color: number }>`
   }
 `;
 
-const NickName = styled.div`
+const StyledNickName = styled.div`
   padding: 0 10px;
 
   display: none;
@@ -82,11 +82,11 @@ const NickName = styled.div`
   word-break: keep-all;
 `;
 
-const Wrapper = styled.div`
+const StyledWrapper = styled.div`
   position: relative;
 
   &:hover {
-    ${NickName} {
+    ${StyledNickName} {
       display: block;
     }
   }
