@@ -22,6 +22,12 @@ export const getPlaceholder = (type: string) => {
     case 'nickname':
       placeholder = '닉네임을 입력해 주세요';
       break;
+    case 'name':
+      placeholder = '이름을 입력해 주세요';
+      break;
+    case 'dashboard':
+      placeholder = '대시보드 이름을 입력해 주세요';
+      break;
     default:
       placeholder = '';
       break;

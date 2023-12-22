@@ -83,7 +83,7 @@ const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High'; $type: modalTyp
   width: 540px;
   padding: ${({ $type }) =>
     $type === 'incorrectPWAlert' || $type === 'deleteCardAlert' || $type === 'deleteColumnAlert'
-      ? '56px 28px 32px 28px'
+      ? '26px 28px 32px 28px'
       : '32px 28px'};
 
   position: fixed;
@@ -114,7 +114,7 @@ const StyledCloseBtn = styled(CloseIcon)`
 
 const StyledContainer = styled.div`
   width: 100%;
-  padding: 32px 0;
+  padding: 32px 0 0;
   position: relative;
   display: flex;
   flex-direction: column;

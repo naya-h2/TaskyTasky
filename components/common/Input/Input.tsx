@@ -51,7 +51,7 @@ function Input({
 
   return (
     <>
-      <StyledContainer $type={type === 'title' || type === 'tag' ? true : false}>
+      <StyledContainer $type={type === 'email' || type === 'password' || type === 'passwordConfirm' ? true : false}>
         <StyledLabel
           $bold={type === 'dueDate' || type === 'title' || type === 'tag' || type === 'nickname' ? true : false}
           htmlFor={type}
@@ -65,7 +65,12 @@ function Input({
             id={type}
             placeholder={placeholder}
             type={
-              type === 'email' || type === 'title' || type === 'tag' || type === 'nickname'
+              type === 'email' ||
+              type === 'title' ||
+              type === 'tag' ||
+              type === 'nickname' ||
+              type === 'name' ||
+              type === 'dashboard'
                 ? 'text'
                 : passwordInvisible
                   ? 'password'
@@ -101,12 +106,12 @@ const StyledIcon = css`
 `;
 
 const StyledContainer = styled.div<{ $type: boolean }>`
-  width: ${({ $type }) => ($type ? '450px' : '520px')};
+  width: ${({ $type }) => ($type ? '520px' : '100%')};
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 16px;
+  ${({ $type }) => $type && 'margin-bottom: 16px'};
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 100%;
   }
