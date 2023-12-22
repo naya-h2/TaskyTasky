@@ -6,16 +6,16 @@ import { GRAY } from '@/styles/ColorStyles';
 
 function AddDashBoard() {
   return (
-    <Container>
-      <Words>Dash Boards</Words>
+    <StyledContainer>
+      <StyledWords>Dash Boards</StyledWords>
       <AddBoxIcon />
-    </Container>
+    </StyledContainer>
   );
 }
 
 export default AddDashBoard;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   width: 100%;
   margin-top: 60px;
   display: flex;
@@ -23,7 +23,7 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const Words = styled.span`
+const StyledWords = styled.span`
   color: ${GRAY[50]};
   ${FONT_12B};
 

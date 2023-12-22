@@ -8,22 +8,22 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 function LogoLink() {
   return (
     <Link href="/">
-      <LogoWrapper>
-        <LargeLogoImg />
-        <SmallLogoImg />
-      </LogoWrapper>
+      <StyledLogoWrapper>
+        <StyledLargeLogoImg />
+        <StyledSmallLogoImg />
+      </StyledLogoWrapper>
     </Link>
   );
 }
 
 export default LogoLink;
 
-const LogoWrapper = styled.div`
+const StyledLogoWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const LargeLogoImg = styled(LargeLogo)`
+const StyledLargeLogoImg = styled(LargeLogo)`
   display: block;
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
@@ -31,7 +31,7 @@ const LargeLogoImg = styled(LargeLogo)`
   }
 `;
 
-const SmallLogoImg = styled(SmallLogo)`
+const StyledSmallLogoImg = styled(SmallLogo)`
   display: none;
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
