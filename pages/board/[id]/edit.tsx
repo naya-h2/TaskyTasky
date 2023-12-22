@@ -10,6 +10,7 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import EditMyDash from '@/components/common/Table/EditMyDash';
 import DashMyMember from '@/components/common/Table/DashMyMember';
 import DashInviteList from '@/components/common/Table/DashInviteList';
+import { MEMBERS1 } from '@/lib/constants/mockup';
 
 function Edit() {
   const router = useRouter();
@@ -29,8 +30,8 @@ function Edit() {
             </ReturnButton>
           </ButtonLink>
           <EditMyDash />
-          <DashMyMember />
-          <DashInviteList />
+          <DashMyMember memberList={MEMBERS1} />
+          <DashInviteList memberList={MEMBERS1} />
           <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
         </Wrapper>
       </Content>
