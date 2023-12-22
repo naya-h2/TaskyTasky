@@ -51,14 +51,14 @@ function Input({
 
   return (
     <>
-      <Container $type={type === 'title' || type === 'tag' ? true : false}>
-        <Label $bold={type === 'dueDate' || type === 'title' || type === 'tag' || type === 'nickname' ? true : false} htmlFor={type}>
-          {label} {type === 'title' && <Span> *</Span>}
-        </Label>
+      <StyledContainer $type={type === 'title' || type === 'tag' ? true : false}>
+        <StyledLabel $bold={type === 'dueDate' || type === 'title' || type === 'tag' || type === 'nickname' ? true : false} htmlFor={type}>
+          {label} {type === 'title' && <StyledSpan> *</StyledSpan>}
+        </StyledLabel>
         {type === 'dueDate' ? (
           <Calendar placeholder={placeholder} />
         ) : (
-          <InputBox
+          <StyledInputBox
             id={type}
             placeholder={placeholder}
             type={
@@ -72,19 +72,19 @@ function Input({
         )}
         {isPassword &&
           (passwordInvisible ? (
-            <EyeOffIcon alt="비밀번호 가리기 아이콘" onClick={togglePasswordIcon} />
+            <StyledEyeOffIcon alt="비밀번호 가리기 아이콘" onClick={togglePasswordIcon} />
           ) : (
-            <EyeOnIcon alt="비밀번호 보이기 아이콘" onClick={togglePasswordIcon} />
+            <StyledEyeOnIcon alt="비밀번호 보이기 아이콘" onClick={togglePasswordIcon} />
           ))}
-        {errorMessage && <ErrorMessage className="errorMessage">{errorMessage}</ErrorMessage>}
-      </Container>
+        {errorMessage && <StyledErrorMessage className="errorMessage">{errorMessage}</StyledErrorMessage>}
+      </StyledContainer>
     </>
   );
 }
 
 export default Input;
 
-const Icon = css`
+const StyledIcon = css`
   position: absolute;
   top: 42px;
   right: 13px;
@@ -93,7 +93,7 @@ const Icon = css`
   }
 `;
 
-const Container = styled.div<{ $type: boolean }>`
+const StyledContainer = styled.div<{ $type: boolean }>`
   width: ${({ $type }) => ($type ? '450px' : '520px')};
   position: relative;
   display: flex;
@@ -108,19 +108,19 @@ const Container = styled.div<{ $type: boolean }>`
   }
 `;
 
-const Label = styled.label<{ $bold: boolean }>`
+const StyledLabel = styled.label<{ $bold: boolean }>`
   color: ${BLACK[2]};
   font-size: ${({ $bold }) => ($bold ? '1.8rem' : '1.6rem')};
   font-weight: ${({ $bold }) => ($bold ? '500' : '400')};
 `;
 
-const Span = styled.span`
+const StyledSpan = styled.span`
   color: ${VIOLET[1]};
   font-size: 1.8rem;
   font-weight: 500;
 `;
 
-const InputBox = styled.input<{ $error: string }>`
+const StyledInputBox = styled.input<{ $error: string }>`
   box-sizing: border-box;
   width: 100%;
   padding: 15px 16px;
@@ -134,15 +134,15 @@ const InputBox = styled.input<{ $error: string }>`
   }
 `;
 
-const EyeOffIcon = styled(EyeOff)`
+const StyledEyeOffIcon = styled(EyeOff)`
   ${Icon}
 `;
 
-const EyeOnIcon = styled(EyeOn)`
+const StyledEyeOnIcon = styled(EyeOn)`
   ${Icon}
 `;
 
-const ErrorMessage = styled.p`
+const StyledErrorMessage = styled.p`
   ${FONT_14};
   color: ${RED};
 `;
