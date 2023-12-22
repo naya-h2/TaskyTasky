@@ -114,6 +114,8 @@ export const Button = Object.assign({
 const inactive = css`
   background-color: ${GRAY[40]};
 
+  color: ${WHITE};
+
   &:hover {
     background-color: ${GRAY[40]};
     cursor: not-allowed;

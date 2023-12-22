@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '@/components/pages/home/Layout';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common/Button';
 import mainImage from '@/public/images/resource/desktop/main_image_pc.png'
 import landing1 from '@/public/images/resource/desktop/landging1.png';
 import landing2 from '@/public/images/resource/desktop/landging2.png';
@@ -24,7 +24,11 @@ function Home() {
         </TitleContainer>
         <Subtitle>서비스의 메인 설명 들어갑니다.</Subtitle>
         <Link href="/login">
-          <Button type="primary" fontSize="XL" roundSize="L" active={true} width="280px">로그인하기</Button>
+          <ButtonWrapper>
+            <Button.Plain  style="primary" fontSize="XL" roundSize="L">
+              로그인하기
+            </Button.Plain>
+          </ButtonWrapper>
         </Link>
         <SectionContainer>
           <FirstSection>
@@ -231,4 +235,9 @@ const Text1 = styled.p`
 const Text2 = styled.p`
   color: ${BLACK[1]};
   ${FONT_16};
+`;
+
+const ButtonWrapper = styled.div`
+  width: 280px;
+  height: 50px;
 `;
