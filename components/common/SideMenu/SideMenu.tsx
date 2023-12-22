@@ -6,12 +6,26 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { WHITE } from '@/styles/ColorStyles';
 
-function SideMenu({ dashboards }) {
+type Dashboard = {
+  id: number;
+  title: string;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: boolean;
+  userId: number;
+};
+
+type SideMenuProps = {
+  dashboards: Dashboard[];
+};
+
+function SideMenu({ dashboards }: SideMenuProps) {
   return (
-    <Wrapper>
+    <StyledWrapper>
       <LogoLink />
       <AddDashBoard />
-      <DashboardList>
+      <StyledDashboardList>
         {dashboards.map((dashboard) => (
           <DashBoard
             key={dashboard.id}
@@ -20,14 +34,14 @@ function SideMenu({ dashboards }) {
             createdByMe={dashboard.createdByMe}
           />
         ))}
-      </DashboardList>
-    </Wrapper>
+      </StyledDashboardList>
+    </StyledWrapper>
   );
 }
 
 export default SideMenu;
 
-const Wrapper = styled.div`
+const StyledWrapper = styled.div`
   width: 300px;
   height: 1550px;
   padding: 20px 24px;
@@ -53,7 +67,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const DashboardList = styled.div`
+const StyledDashboardList = styled.div`
   margin-top: 30px;
   display: flex;
   flex-direction: column;

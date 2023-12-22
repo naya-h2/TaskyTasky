@@ -13,17 +13,17 @@ interface DashBoardProps {
 
 function DashBoard({ color, title, createdByMe }: DashBoardProps) {
   return (
-    <Container>
-      <Color color={color} />
-      <DashBoardTitle>{title}</DashBoardTitle>
+    <StyledContainer>
+      <StyledColor color={color} />
+      <StyledDashBoardTitle>{title}</StyledDashBoardTitle>
       {createdByMe && <StyledCrown />}
-    </Container>
+    </StyledContainer>
   );
 }
 
 export default DashBoard;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   width: 276px;
   height: 45px;
   display: flex;
@@ -41,15 +41,15 @@ const Container = styled.div`
   }
 `;
 
-const Color = styled.div<{ color: string }>`
+const StyledColor = styled.div<{ color: string }>`
   width: 8px;
   height: 8px;
   margin-right: 16px;
-  background-color: ${(props) => props.color};
+  background-color: ${(props: { color: string }) => props.color};
   border-radius: 100%;
 `;
 
-const DashBoardTitle = styled.div`
+const StyledDashBoardTitle = styled.div`
   margin-right: 6px;
   color: ${GRAY[50]};
   ${FONT_18};
