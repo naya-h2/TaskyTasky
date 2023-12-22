@@ -2,6 +2,8 @@ import { FONT_16 } from '@/styles/FontStyles';
 import styled, { css } from 'styled-components';
 import ProfileImg from './ProfileImg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import Link from 'next/link';
+import { BLACK } from '@/styles/ColorStyles';
 
 interface Props {
   type: 'header';
@@ -14,7 +16,9 @@ function Profile({ type, id, name, profileImg }: Props) {
   return (
     <Container>
       <ProfileImg url={profileImg} size={38} name={name} id={id} />
-      <Name $type={type}>{name}</Name>
+      <LinkStyle href="/mypage">
+        <Name $type={type}>{name}</Name>
+      </LinkStyle>
     </Container>
   );
 }
@@ -38,4 +42,9 @@ const Name = styled.div<{ $type: string }>`
   ${FONT_16};
 
   ${(props) => (props.$type === 'header' ? invisibleMobile : null)};
+`;
+
+const LinkStyle = styled(Link)`
+  text-decoration: none;
+  color: ${BLACK[2]};
 `;

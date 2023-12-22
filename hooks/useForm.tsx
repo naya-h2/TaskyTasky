@@ -2,17 +2,23 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Input from '@/components/common/Input/Input';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common/Button';
 import Checkbox from '@/components/common/Checkbox';
 import { FONT_16, FONT_20 } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
-function UserForm({ type }) {
+type FormType = 'login' | 'signup';
+
+interface UserFormProps {
+  type: FormType;
+}
+
+function UserForm({ type }: UserFormProps) {
   const [password, setPassword] = useState('');
-  
+
   const isSignup = type === 'signup';
-  
+
   return (
     <Root>
       <Container>
@@ -21,15 +27,17 @@ function UserForm({ type }) {
         <Form>
           <Input type="email" />
           {isSignup && <Input type="nickname" />}
-          <Input type="password" isPassword/>
-          {isSignup && <Input type="passwordConfirm" isPassword passwordCheck={password}/>}
+          <Input type="password" isPassword />
+          {isSignup && <Input type="passwordConfirm" isPassword passwordCheck={password} />}
           {isSignup && <Checkbox label="이용약관에 동의합니다." />}
-          <Button type="primary" fontSize="XL" roundSize="L" active={false}>{isSignup ? '가입하기' : '로그인'}</Button>
+          <ButtonWrapper>
+            <Button.Plain  style="primary" fontSize="XL" roundSize="L" isNotActive>
+              {isSignup ? '가입하기' : '로그인'}
+            </Button.Plain>
+          </ButtonWrapper>
           <Wrapper>
-            {isSignup ? '이미 가입하셨나요?' : '회원이 아니신가요?'}{" "}
-            <Link href={isSignup ? "/login" : "/signup"}>
-              {isSignup ? '로그인하기' : '회원가입하기'}
-            </Link>
+            {isSignup ? '이미 가입하셨나요?' : '회원이 아니신가요?'}{' '}
+            <Link href={isSignup ? '/login' : '/signup'}>{isSignup ? '로그인하기' : '회원가입하기'}</Link>
           </Wrapper>
         </Form>
       </Container>
@@ -40,19 +48,19 @@ function UserForm({ type }) {
 export default UserForm;
 
 const Root = styled.div`
-    height: 100vh;
+  height: 100vh;
 `;
 
 const Container = styled.div`
-    width: 100%;
-    max-width: 520px;
-    height: 100%;
-    margin: 0 auto;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  width: 100%;
+  max-width: 520px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 const Logo = styled.img`
@@ -65,20 +73,25 @@ const Logo = styled.img`
 `;
 
 const Word = styled.span`
-    width: 189px;
-    height: 24px;
-    margin: 10px auto 38px;
-    text-align: center;
-    ${FONT_20};
+  width: 189px;
+  height: 24px;
+  margin: 10px auto 38px;
+  text-align: center;
+  ${FONT_20};
 `;
 
 const Form = styled.form`
-    width: 100%;
+  width: 100%;
 `;
 
 const Wrapper = styled.div`
-    margin-top: 24px;
-    text-align: center;
-    ${FONT_16};
-    color: ${BLACK[2]};
+  margin-top: 24px;
+  text-align: center;
+  ${FONT_16};
+  color: ${BLACK[2]};
+`;
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  height: 50px;
 `;

@@ -15,6 +15,13 @@ export const FONT_24 = css`
   font-weight: 500;
   line-height: 150%;
 `;
+
+export const FONT_22 = css`
+  font-size: 2.2rem;
+  font-weight: 500;
+  line-height: 150%;
+`;
+
 export const FONT_20_B = css`
   font-size: 2rem;
   font-weight: 700;
@@ -33,6 +40,11 @@ export const FONT_18_B = css`
 export const FONT_18 = css`
   font-size: 1.8rem;
   font-weight: 500;
+  line-height: 150%;
+`;
+export const FONT_16_B = css`
+  font-size: 1.6rem;
+  font-weight: 700;
   line-height: 150%;
 `;
 export const FONT_16 = css`

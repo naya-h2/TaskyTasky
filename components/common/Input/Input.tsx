@@ -62,7 +62,7 @@ function Input({
             id={type}
             placeholder={placeholder}
             type={
-              type === 'email' || type === 'title' || type === 'tag' ? 'text' : passwordInvisible ? 'password' : 'text'
+              type === 'email' || type === 'title' || type === 'tag' || type === 'nickname' ? 'text' : passwordInvisible ? 'password' : 'text'
             }
             value={value}
             onChange={handleInputChange}

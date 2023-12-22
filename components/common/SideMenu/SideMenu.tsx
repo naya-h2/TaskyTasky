@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import mock from './mock';
 import AddDashBoard from './AddDashBoard';
 import DashBoard from './DashBoard';
 import LogoLink from './LogoLink';
@@ -7,15 +6,13 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { WHITE } from '@/styles/ColorStyles';
 
-function SideMenu() {
-  const data = mock.dashboards;
-
+function SideMenu({ dashboards }) {
   return (
     <Wrapper>
       <LogoLink />
       <AddDashBoard />
       <DashboardList>
-        {data.map((dashboard, key) => (
+        {dashboards.map((dashboard) => (
           <DashBoard
             key={dashboard.id}
             color={dashboard.color}

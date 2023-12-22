@@ -3,7 +3,7 @@ import Header from '@/components/common/Header/Second';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import dashboardData from '@/components/common/SideMenu/mock';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common/Button';
 import { FONT_14 } from '@/styles/FontStyles';
 import InviteDash from '@/components/common/Table/InviteDash';
 
@@ -43,7 +43,7 @@ const inviteData = {
       updatedAt: '2023-12-20T04:38:51.003Z',
     },
     {
-      id: 2,
+      id: 3,
       inviterUserId: 3,
       teamId: 'team-8',
       dashboard: {
@@ -74,23 +74,29 @@ function Myboard() {
             <DashBoardList>
               {data &&
                 data.map((dashboard) => (
-                  <ButtonWrapper>
-                    <Button type="dashboard" height="100%" fontSize="L" fontBold crown={dashboard.createdByMe}>
+                  <ButtonWrapper key={dashboard.id}>
+                    <Button.DashBoard
+                      isOwner={dashboard.createdByMe}
+                      chipColor="pink"
+                      fontSize="L"
+                      roundSize="L"
+                      isBoldFont
+                    >
                       {dashboard.title}
-                    </Button>
+                    </Button.DashBoard>
                   </ButtonWrapper>
                 ))}
               <ButtonWrapper>
-                <Button type="plain" height="100%" fontSize="L" chip fontBold>
+                <Button.Add fontSize="L" roundSize="L" isBoldFont>
                   새로운 대시보드
-                </Button>
+                </Button.Add>
               </ButtonWrapper>
             </DashBoardList>
             <PageWrapper>
               <PageInfo>1 페이지 중 1</PageInfo>
               <MoveButton>
-                <Button type="arrow-b" />
-                <Button type="arrow-f" />
+                <Button.Arrow type="left" />
+                <Button.Arrow type="right" />
               </MoveButton>
             </PageWrapper>
           </DashBoardSection>
@@ -103,7 +109,7 @@ function Myboard() {
 
 export default Myboard;
 
-const Body = styled.body`
+const Body = styled.div`
   padding-top: 70px;
   padding-left: 300px;
 

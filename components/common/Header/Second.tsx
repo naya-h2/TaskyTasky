@@ -2,16 +2,16 @@ import styled from 'styled-components';
 import { ReactNode } from 'react';
 import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
-import Button from '@/components/common/Button';
+import { Button } from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
 import ProfileImgList from '@/components/common/Profile/ProfileImgList';
 import { USER1 } from '@/lib/constants/mockup';
 import { MEMBERS1 } from '@/lib/constants/mockup';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { Z_INDEX } from '@/styles/ZIndexStyles';
 import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
-import { Z_INDEX } from '@/styles/ZIndexStyles';
 
 interface Props {
   page: 'myboard' | 'others';
@@ -48,20 +48,20 @@ function HeaderButtons() {
   return (
     <ButtonSection>
       <SettingWrapper>
-        <Button type="plain" width="100%" height="100%">
+        <Button.Plain style="outline" roundSize="L">
           <Wrapper>
             <SettingIcon />
             <Text>관리</Text>
           </Wrapper>
-        </Button>
+        </Button.Plain>
       </SettingWrapper>
       <InviteWrapper>
-        <Button type="plain" width="100%" height="100%">
+        <Button.Plain style="outline" roundSize="L">
           <Wrapper>
             <InviteIcon />
             <Text>초대하기</Text>
           </Wrapper>
-        </Button>
+        </Button.Plain>
       </InviteWrapper>
     </ButtonSection>
   );
@@ -80,10 +80,7 @@ const Body = styled.div`
   display: flex;
   align-items: center;
 
-  background-color: ${WHITE};
-
   border-bottom: 1px solid ${GRAY[30]};
-
   background-color: ${WHITE};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
@@ -196,6 +193,7 @@ const Title = styled.div`
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 `;
 
