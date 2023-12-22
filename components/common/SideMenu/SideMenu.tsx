@@ -26,7 +26,7 @@ function SideMenu({ dashboards }: SideMenuProps) {
       <LogoLink />
       <AddDashBoard />
       <StyledDashboardList>
-        {dashboards.map((dashboard) => (
+        {dashboards?.map((dashboard) => (
           <DashBoard
             key={dashboard.id}
             color={dashboard.color}

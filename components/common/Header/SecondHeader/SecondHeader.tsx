@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ReactNode } from 'react';
 import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
-import { Button } from '@/components/common/Button';
+import Button from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
 import ProfileImgList from '@/components/common/Profile/ProfileImgList';
 import { USER1 } from '@/lib/constants/mockup';
@@ -21,24 +21,24 @@ interface Props {
 
 function Header({ page, children, crown }: Props) {
   return (
-    <Body>
-      <Container $page={page}>
-        <TitleSection $page={page}>
-          <Title>{children}</Title>
-          {crown && <CrownIcon />}
-        </TitleSection>
-        <Right>
+    <StyledBody>
+      <StyledContainer $page={page}>
+        <StyledTitleSection $page={page}>
+          <StyledTitle>{children}</StyledTitle>
+          {crown && <StyledCrownIcon />}
+        </StyledTitleSection>
+        <StyledRight>
           {page !== 'myboard' && (
             <>
               <HeaderButtons />
               <ProfileImgList memberCount={MEMBERS1.totalCount} data={MEMBERS1.members} />
-              <DividingLine />
+              <StyledDividingLine />
             </>
           )}
           <Profile type="header" name={USER1.nickname} profileImg={USER1.profileImageUrl} id={USER1.id} />
-        </Right>
-      </Container>
-    </Body>
+        </StyledRight>
+      </StyledContainer>
+    </StyledBody>
   );
 }
 
@@ -46,28 +46,28 @@ export default Header;
 
 function HeaderButtons() {
   return (
-    <ButtonSection>
-      <SettingWrapper>
+    <StyledButtonSection>
+      <StyledSettingWrapper>
         <Button.Plain style="outline" roundSize="L">
-          <Wrapper>
-            <SettingIcon />
-            <Text>관리</Text>
-          </Wrapper>
+          <StyledWrapper>
+            <StyledSettingIcon />
+            <StyledText>관리</StyledText>
+          </StyledWrapper>
         </Button.Plain>
-      </SettingWrapper>
-      <InviteWrapper>
+      </StyledSettingWrapper>
+      <StyledInviteWrapper>
         <Button.Plain style="outline" roundSize="L">
-          <Wrapper>
-            <InviteIcon />
-            <Text>초대하기</Text>
-          </Wrapper>
+          <StyledWrapper>
+            <StyledInviteIcon />
+            <StyledText>초대하기</StyledText>
+          </StyledWrapper>
         </Button.Plain>
-      </InviteWrapper>
-    </ButtonSection>
+      </StyledInviteWrapper>
+    </StyledButtonSection>
   );
 }
 
-const Body = styled.div`
+const StyledBody = styled.div`
   width: 100%;
   height: 70px;
   padding-left: 300px;
@@ -92,7 +92,7 @@ const Body = styled.div`
   }
 `;
 
-const Container = styled.div<{ $page: string }>`
+const StyledContainer = styled.div<{ $page: string }>`
   width: 100%;
   padding-left: 40px;
   padding-right: 80px;
@@ -113,7 +113,7 @@ const Container = styled.div<{ $page: string }>`
   }
 `;
 
-const Right = styled.div`
+const StyledRight = styled.div`
   display: flex;
   gap: 40px;
 
@@ -126,7 +126,7 @@ const Right = styled.div`
   }
 `;
 
-const TitleSection = styled.div<{ $page: string }>`
+const StyledTitleSection = styled.div<{ $page: string }>`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -136,12 +136,12 @@ const TitleSection = styled.div<{ $page: string }>`
   }
 `;
 
-const CrownIcon = styled(Crown)`
+const StyledCrownIcon = styled(Crown)`
   width: 20px;
   height: 16px;
 `;
 
-const ButtonSection = styled.div`
+const StyledButtonSection = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
@@ -155,7 +155,7 @@ const ButtonSection = styled.div`
   }
 `;
 
-const SettingWrapper = styled.div`
+const StyledSettingWrapper = styled.div`
   width: 88px;
   height: 40px;
 
@@ -170,7 +170,7 @@ const SettingWrapper = styled.div`
   }
 `;
 
-const InviteWrapper = styled.div`
+const StyledInviteWrapper = styled.div`
   width: 116px;
   height: 40px;
 
@@ -185,19 +185,19 @@ const InviteWrapper = styled.div`
   }
 `;
 
-const Title = styled.div`
+const StyledTitle = styled.div`
   color: ${BLACK[2]};
   ${FONT_20_B};
 `;
 
-const Wrapper = styled.div`
+const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 `;
 
-const Text = styled.div`
+const StyledText = styled.div`
   ${FONT_16};
   color: ${GRAY[50]};
 
@@ -206,7 +206,7 @@ const Text = styled.div`
   }
 `;
 
-const DividingLine = styled.div`
+const StyledDividingLine = styled.div`
   height: 38px;
 
   border-right: 1px solid ${GRAY[30]};
@@ -216,13 +216,13 @@ const DividingLine = styled.div`
   }
 `;
 
-const SettingIcon = styled(Setting)`
+const StyledSettingIcon = styled(Setting)`
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     display: none;
   }
 `;
 
-const InviteIcon = styled(Invite)`
+const StyledInviteIcon = styled(Invite)`
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     display: none;
   }

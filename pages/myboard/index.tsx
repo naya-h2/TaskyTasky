@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Header from '@/components/common/Header/Second';
+import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import InviteDash from '@/components/common/Table/InviteDash';
 import DashBoardList from '@/components/pages/myboard/DashBoardList';

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import Button from '@/components/common/Button';
-import { FONT_14 } from '@/styles/FontStyles';
+import { FONT_14, FONT_14_B, FONT_16_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { BLACK } from '@/styles/ColorStyles';
 
 interface Props {
   data: any;
@@ -17,12 +18,14 @@ function DashBoardList({ data }: Props) {
           data.map((dashboard) => (
             <StyledButtonWrapper key={dashboard.id}>
               <Button.DashBoard isOwner={dashboard.createdByMe} chipColor="pink" roundSize="L">
-                {dashboard.title}
+                <StyledButtonText>{dashboard.title}</StyledButtonText>
               </Button.DashBoard>
             </StyledButtonWrapper>
           ))}
         <StyledButtonWrapper>
-          <Button.Add roundSize="L">새로운 대시보드</Button.Add>
+          <Button.Add roundSize="L">
+            <StyledButtonText>새로운 대시보드</StyledButtonText>
+          </Button.Add>
         </StyledButtonWrapper>
       </StyledBoardList>
       <StyledPagination>
@@ -92,4 +95,13 @@ const StyledPagination = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 16px;
+`;
+
+const StyledButtonText = styled.div`
+  ${FONT_16_B};
+  ${BLACK[2]};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${FONT_14_B};
+  }
 `;

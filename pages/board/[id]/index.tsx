@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import Second from '@/components/common/Header/Second';
+import Second from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import CardList from '@/components/common/Card/CardList';
 import { Button } from '@/components/common/Button';
