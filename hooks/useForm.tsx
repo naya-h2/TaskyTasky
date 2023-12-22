@@ -8,7 +8,13 @@ import { FONT_16, FONT_20 } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
-function UserForm({ type }) {
+type FormType = 'login' | 'signup';
+
+interface UserFormProps {
+  type: FormType;
+}
+
+function UserForm({ type }: UserFormProps) {
   const [password, setPassword] = useState('');
 
   const isSignup = type === 'signup';
@@ -25,7 +31,7 @@ function UserForm({ type }) {
           {isSignup && <Input type="passwordConfirm" isPassword passwordCheck={password} />}
           {isSignup && <Checkbox label="이용약관에 동의합니다." />}
           <ButtonWrapper>
-            <Button.Plain style="primary" fontSize="XL" roundSize="L" isNotActive>
+            <Button.Plain  style="primary" fontSize="XL" roundSize="L" isNotActive>
               {isSignup ? '가입하기' : '로그인'}
             </Button.Plain>
           </ButtonWrapper>
