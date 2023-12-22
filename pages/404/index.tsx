@@ -1,4 +1,4 @@
-import Logo from '@/components/common/Logo';
+import Logo from '@/components/common/Logo/Logo';
 import { FONT_16 } from '@/styles/FontStyles';
 import styled from 'styled-components';
 
