@@ -57,5 +57,4 @@ const StyledColorBox = styled.div<{ isSelected: boolean; color: string }>`
 
     display: ${(props) => (props.isSelected ? 'flex' : 'none')};
   }
-  }
 `;
