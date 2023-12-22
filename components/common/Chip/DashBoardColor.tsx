@@ -1,3 +1,4 @@
+import { SetStateAction } from 'react';
 import styled from 'styled-components';
 import DoneIcon from '@/public/icon/done_Fillo.svg';
 import { GREEN, PURPLE, ORANGE, BLUE, PINK } from '@/styles/ColorStyles';
@@ -5,7 +6,7 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   selectedColor: string;
-  setSelectedColor: (color: string) => void;
+  setSelectedColor: (value: SetStateAction<string>) => void;
 }
 
 /**
@@ -22,8 +23,8 @@ function DashBoardColor({ selectedColor, setSelectedColor }: Props) {
         <StyledColorBox
           key={color}
           onClick={() => setSelectedColor(color)}
-          color={color}
-          isSelected={selectedColor === color}
+          $color={color}
+          $isSelected={selectedColor === color}
         >
           {selectedColor === color && <DoneIcon />}
         </StyledColorBox>
@@ -41,13 +42,13 @@ const StyledContainer = styled.div`
   gap: 10px;
 `;
 
-const StyledColorBox = styled.div<{ isSelected: boolean; color: string }>`
+const StyledColorBox = styled.div<{ $isSelected: boolean; $color: string }>`
   width: 30px;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.color};
+  background-color: ${(props) => props.$color};
   cursor: pointer;
   border-radius: 50%;
 
@@ -55,6 +56,6 @@ const StyledColorBox = styled.div<{ isSelected: boolean; color: string }>`
     width: 28px;
     height: 28px;
 
-    display: ${(props) => (props.isSelected ? 'flex' : 'none')};
+    display: ${(props) => (props.$isSelected ? 'flex' : 'none')};
   }
 `;

@@ -22,6 +22,12 @@ export const getInputLabel = (type: string) => {
     case 'nickname':
       label = '닉네임';
       break;
+    case 'name':
+      label = '이름';
+      break;
+    case 'dashboard':
+      label = '대시보드 이름';
+      break;
     default:
       label = '';
       break;

@@ -1,81 +1,138 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
-import { Z_INDEX } from '@/styles/ZIndexStyles';
 import useNotScroll from '@/hooks/useNotScroll';
-import useModal from '@/hooks/useModal';
+import { useStore } from '@/context/stores';
+import CloseIcon from '@/public/icon/crown.svg';
 import ModalPortal from './ModalPortal';
-import CloseIcon from "@/public/icon/crown.svg"
-
-const { modalFrame_Mask, modalFrame_Body } = Z_INDEX;
+import Button from '../Button';
+import { Z_INDEX } from '@/styles/ZIndexStyles';
+import { FONT_14, FONT_24_B } from '@/styles/FontStyles';
+import { BLACK } from '@/styles/ColorStyles';
+import { modalType } from '@/lib/types/zustand';
 
 interface Props {
+  height: 'Low' | 'Mid' | 'High';
+  type: modalType;
+  title?: string;
   children: ReactNode;
-  onClickClose: () => void;
+  btnFnc: () => void;
 }
 
-function ModalFrame({ children, onClickClose }: Props) {
-  const { isOpen } = useModal();
+function ModalFrame({ height, type, title, children, btnFnc }: Props) {
+  const modal = useStore((state) => state.modals);
+  const clearModal = useStore((state) => state.clearModal);
+  const hideModal = useStore((state) => state.hideModal);
 
   useNotScroll();
 
-  if(!isOpen) {
+  if (!modal.length) {
     return null;
   }
 
   return (
-    <>
-      <ModalPortal>
-        <Mask onClick={onClickClose} />
-        <Body>
-          <CloseBtn alt="모달 닫기 버튼" onClick={onClickClose} />
-          <Container>{children}</Container>
-        </Body>
-      </ModalPortal>
-    </>
+    <ModalPortal>
+      <StyledMask $height={height} onClick={() => hideModal(type)} />
+      <StyledBody $height={height} $type={type}>
+        <StyledTitle>{title}</StyledTitle>
+        {type === 'card' && <StyledCloseBtn alt="모달 닫기 버튼" onClick={clearModal} />}
+        <StyledContainer>{children}</StyledContainer>
+        {type === 'card' || (
+          <StyledButtonBox>
+            {type === 'incorrectPWAlert' || (
+              <StyledButtonWrapper>
+                <Button.Plain style="outline" roundSize="L" onClick={() => hideModal(type)}>
+                  <StyledButtonText>취소</StyledButtonText>
+                </Button.Plain>
+              </StyledButtonWrapper>
+            )}
+            <StyledButtonWrapper>
+              <Button.Plain style="primary" roundSize="L" onClick={btnFnc}>
+                <StyledButtonText>
+                  {type === 'manageColumn' && '변경'}
+                  {(type === 'createColumn' || type === 'dashBoard') && '생성'}
+                  {(type === 'deleteColumnAlert' || type === 'deleteCardAlert') && '삭제'}
+                  {type === 'incorrectPWAlert' && '확인'}
+                </StyledButtonText>
+              </Button.Plain>
+            </StyledButtonWrapper>
+          </StyledButtonBox>
+        )}
+      </StyledBody>
+    </ModalPortal>
   );
 }
 
 export default ModalFrame;
 
-const Mask = styled.div`
-  width: 100%;
-  height: 100%;
-  
+const StyledMask = styled.div<{ $height: 'Low' | 'Mid' | 'High' }>`
+  width: 100vw;
+  height: 100vh;
+
   position: fixed;
   top: 0;
   left: 0;
-  z-index: ${modalFrame_Mask};
+  ${(props) => props.$height === 'Low' && `z-index: ${Z_INDEX.modalFrame_Mask_Low}`};
+  ${(props) => props.$height === 'Mid' && `z-index: ${Z_INDEX.modalFrame_Mask_Mid}`};
+  ${(props) => props.$height === 'High' && `z-index: ${Z_INDEX.modalFrame_Mask_High}`};
 
   background-color: black;
   opacity: 0.4;
 `;
 
-const Body = styled.div`
-  width: 360px;
-  
+const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High'; $type: modalType }>`
+  width: 540px;
+  padding: ${({ $type }) =>
+    $type === 'incorrectPWAlert' || $type === 'deleteCardAlert' || $type === 'deleteColumnAlert'
+      ? '26px 28px 32px 28px'
+      : '32px 28px'};
+
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: ${modalFrame_Body};
+  ${(props) => props.$height === 'Low' && `z-index: ${Z_INDEX.modalFrame_Body_Low}`};
+  ${(props) => props.$height === 'Mid' && `z-index: ${Z_INDEX.modalFrame_Body_Mid}`};
+  ${(props) => props.$height === 'High' && `z-index: ${Z_INDEX.modalFrame_Body_High}`};
 
   border-radius: 8px;
   background: white;
 `;
 
-const CloseBtn = styled(CloseIcon)`
+const StyledTitle = styled.h1`
+  ${FONT_24_B};
+  color: ${BLACK[2]};
+`;
+
+const StyledCloseBtn = styled(CloseIcon)`
   position: absolute;
   top: 16px;
   right: 16px;
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
-const Container = styled.div`
-  padding: 32px 40px;
+const StyledContainer = styled.div`
+  width: 100%;
+  padding: 32px 0 0;
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 8px;
-`
+`;
+
+const StyledButtonBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+`;
+
+const StyledButtonWrapper = styled.div`
+  width: 120px;
+  height: 48px;
+`;
+
+const StyledButtonText = styled.span`
+  ${FONT_14};
+`;

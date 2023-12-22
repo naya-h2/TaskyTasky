@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import styled from 'styled-components';
-import Button from './Button';
-import { FONT_16 } from '@/styles/FontStyles';
-import 'react-quill/dist/quill.snow.css';
+import Button from '../Button';
+import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import { VIOLET } from '@/styles/ColorStyles';
+import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-function TextArea() {
+function Textarea() {
   const [value, setValue] = useState('');
   const [violet, setViolet] = useState(false);
 
@@ -20,9 +20,11 @@ function TextArea() {
     setViolet(!violet);
   };
 
+  const handleButtonClick = () => {};
+
   return (
-    <Wrapper>
-      <Label>댓글</Label>
+    <StyledWrapper>
+      <StyledLabel>댓글</StyledLabel>
       <StyledReactQuill
         theme="snow"
         value={value}
@@ -31,26 +33,18 @@ function TextArea() {
         onBlur={handleReactQuillBlur}
         $violet={violet}
       />
-      <Button
-        type="secondary"
-        fontSize="S"
-        width="83px"
-        height="32px"
-        active={true}
-        roundSize="S"
-        position="absolute"
-        right="10px"
-        bottom="10px"
-      >
-        입력
-      </Button>
-    </Wrapper>
+      <StyledButtonWrapper>
+        <Button.Plain style="secondary" roundSize="S" onClick={handleButtonClick}>
+          <StyledButtonText>입력</StyledButtonText>
+        </Button.Plain>
+      </StyledButtonWrapper>
+    </StyledWrapper>
   );
 }
 
-export default TextArea;
+export default Textarea;
 
-const Wrapper = styled.div`
+const StyledWrapper = styled.div`
   width: 450px;
   position: relative;
   display: flex;
@@ -58,7 +52,7 @@ const Wrapper = styled.div`
   gap: 10px;
 `;
 
-const Label = styled.label`
+const StyledLabel = styled.label`
   ${FONT_16}
 `;
 
@@ -81,4 +75,16 @@ const StyledReactQuill = styled(ReactQuill)<{ $violet: boolean }>`
     min-height: 110px;
     padding-bottom: 42px;
   }
+`;
+
+const StyledButtonWrapper = styled.div`
+  width: 83px;
+  height: 32px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+`;
+
+const StyledButtonText = styled.span`
+  ${FONT_12};
 `;

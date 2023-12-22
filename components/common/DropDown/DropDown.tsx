@@ -71,20 +71,22 @@ function DropDown({ type, initialStatus, initialPerson }: Props) {
 
   return (
     <>
-      <Wrapper ref={containerRef} $type={type}>
+      <StyledWrapper ref={containerRef} $type={type}>
         {(type === 'status' || type === 'person') && (
-          <MainBox $isOpen={isDropDownOpen} $type={type} onClick={handleAnchorRefClick}>
+          <StyledMainBox $isOpen={isDropDownOpen} $type={type} onClick={handleAnchorRefClick}>
             {type === 'status' && value.status === 'ToDo' && <ToDoLargeIcon />}
             {type === 'status' && value.status === 'OnProgress' && <OnProgressLargeIcon />}
             {type === 'status' && value.status === 'Done' && <DoneLargeIcon />}
             {type === 'person' && (
-              <Input value={value.person} onChange={handleInputChange} placeholder="이름을 입력해 주세요" />
+              <StyledInput value={value.person} onChange={handleInputChange} placeholder="이름을 입력해 주세요" />
             )}
-            {type === 'person' && !value.person ? null : <ArrowIcon $type={type} onClick={handleArrowIconClick} />}
-          </MainBox>
+            {type === 'person' && !value.person ? null : (
+              <StyledArrowIcon $type={type} onClick={handleArrowIconClick} />
+            )}
+          </StyledMainBox>
         )}
-        {type === 'kebab' && <KebabIcon onClick={handleAnchorRefClick} />}
-      </Wrapper>
+        {type === 'kebab' && <StyledKebabIcon onClick={handleAnchorRefClick} />}
+      </StyledWrapper>
       {isDropDownOpen && (
         <DropDownList
           anchorRef={containerRef}
@@ -100,14 +102,14 @@ function DropDown({ type, initialStatus, initialPerson }: Props) {
 
 export default DropDown;
 
-const Wrapper = styled.div<{ $type: string }>`
+const StyledWrapper = styled.div<{ $type: string }>`
   width: ${({ $type }) => ($type === 'kebab' ? '28px' : '217px')};
   display: flex;
   flex-direction: column;
   position: relative;
 `;
 
-const MainBox = styled.div<{ $isOpen: boolean; $type: string }>`
+const StyledMainBox = styled.div<{ $isOpen: boolean; $type: string }>`
   width: 217px;
   height: 48px;
   padding: 10px 15px;
@@ -120,7 +122,7 @@ const MainBox = styled.div<{ $isOpen: boolean; $type: string }>`
   ${({ $type }) => $type === 'status' && `cursor: pointer`};
 `;
 
-const Input = styled.input`
+const StyledInput = styled.input`
   width: 100%;
 
   &::placeholder {
@@ -128,12 +130,12 @@ const Input = styled.input`
   }
 `;
 
-const ArrowIcon = styled(ArrowDropDownIcon)<{ $type: string }>`
+const StyledArrowIcon = styled(ArrowDropDownIcon)<{ $type: string }>`
   position: ${({ $type }) => ($type === 'status' ? 'absolute' : 'static')};
   right: 10px;
   cursor: pointer;
 `;
 
-const KebabIcon = styled(MoreIcon)`
+const StyledKebabIcon = styled(MoreIcon)`
   cursor: pointer;
 `;

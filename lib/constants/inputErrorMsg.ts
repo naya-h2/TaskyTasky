@@ -12,3 +12,7 @@ export const voidTitle = '제목을 입력해주세요.';
 
 // 마감일
 export const voidDueDate = '마감일을 입력해주세요.';
+
+// 칼럼 이름
+export const overlapName = '중복된 칼럼 이름입니다.';
+export const voidName = '이름을 입력해주세요.';
