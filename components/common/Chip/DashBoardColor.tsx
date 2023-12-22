@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import DoneIcon from "@/public/icon/done_Fillo.svg"
+import styled from 'styled-components';
+import DoneIcon from '@/public/icon/done_Fillo.svg';
 import { GREEN, PURPLE, ORANGE, BLUE, PINK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
@@ -19,7 +19,12 @@ function DashBoardColor({ selectedColor, setSelectedColor }: Props) {
   return (
     <Container>
       {colors.map((color) => (
-        <ColorBox key={color} onClick={() => setSelectedColor(color)} color={color} isSelected={selectedColor === color}>
+        <ColorBox
+          key={color}
+          onClick={() => setSelectedColor(color)}
+          color={color}
+          isSelected={selectedColor === color}
+        >
           {selectedColor === color && <DoneIcon />}
         </ColorBox>
       ))}
@@ -36,7 +41,7 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-const ColorBox = styled.div<{ isSelected: boolean, color: string }>`
+const ColorBox = styled.div<{ isSelected: boolean; color: string }>`
   width: 30px;
   height: 30px;
   display: flex;

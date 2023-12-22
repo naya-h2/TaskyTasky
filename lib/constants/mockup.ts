@@ -12,8 +12,8 @@ export const MEMBERS1 = {
     {
       id: 1,
       userId: 6,
-      email: 'string',
-      nickname: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+      email: 'corditA@coddeit.com',
+      nickname: 'ㅋㅋㅋㅋㅋㅋ',
       profileImageUrl: '',
       createdAt: '2023-12-18T13:30:15.848Z',
       updatedAt: '2023-12-18T13:30:15.848Z',
@@ -22,7 +22,7 @@ export const MEMBERS1 = {
     {
       id: 1,
       userId: 2,
-      email: 'string',
+      email: 'corditB@coddeit.com',
       nickname: '윈터',
       profileImageUrl: '',
       createdAt: '2023-12-18T13:30:15.848Z',
@@ -32,7 +32,7 @@ export const MEMBERS1 = {
     {
       id: 1,
       userId: 3,
-      email: 'string',
+      email: 'corditC@coddeit.com',
       nickname: '닝닝',
       profileImageUrl: 'https://image.blip.kr/v1/file/5263a15e67dcf63c5911d8f180c7cd13',
       createdAt: '2023-12-18T13:30:15.848Z',
@@ -42,7 +42,7 @@ export const MEMBERS1 = {
     {
       id: 1,
       userId: 4,
-      email: 'string',
+      email: 'corditD@coddeit.com',
       nickname: '지젤',
       profileImageUrl: 'http://image.koreatimes.com/article/2023/06/06/20230606230239641.jpg',
       createdAt: '2023-12-18T13:30:15.848Z',
@@ -52,7 +52,7 @@ export const MEMBERS1 = {
     {
       id: 1,
       userId: 5,
-      email: 'string',
+      email: 'corditE@coddeit.com',
       nickname: '지젤',
       profileImageUrl: '',
       createdAt: '2023-12-18T13:30:15.848Z',
