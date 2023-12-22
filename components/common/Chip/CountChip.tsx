@@ -6,15 +6,15 @@ interface Props {
 
 function CountChip({number}: Props) {
   return (
-    <Container>
-      <Content>{number}</Content>
-    </Container>
+    <StyledContainer>
+      <StyledContent>{number}</StyledContent>
+    </StyledContainer>
   )
 }
 
 export default CountChip;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   padding: 3px 6px;
   display: inline-flex;
   align-items: center;
@@ -22,6 +22,6 @@ const Container = styled.div`
   border-radius: 4px;
 `;
 
-const Content = styled.span`
+const StyledContent = styled.span`
   color: #787486;
 `;

@@ -17,31 +17,31 @@ function DashBoardColor({ selectedColor, setSelectedColor }: Props) {
   const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
 
   return (
-    <Container>
+    <StyledContainer>
       {colors.map((color) => (
-        <ColorBox
+        <StyledColorBox
           key={color}
           onClick={() => setSelectedColor(color)}
           color={color}
           isSelected={selectedColor === color}
         >
           {selectedColor === color && <DoneIcon />}
-        </ColorBox>
+        </StyledColorBox>
       ))}
-    </Container>
+    </StyledContainer>
   );
 }
 
 export default DashBoardColor;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
 `;
 
-const ColorBox = styled.div<{ isSelected: boolean; color: string }>`
+const StyledColorBox = styled.div<{ isSelected: boolean; color: string }>`
   width: 30px;
   height: 30px;
   display: flex;
@@ -54,5 +54,8 @@ const ColorBox = styled.div<{ isSelected: boolean; color: string }>`
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 28px;
     height: 28px;
+
+    display: ${(props) => (props.isSelected ? 'flex' : 'none')};
+  }
   }
 `;
