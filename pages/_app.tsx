@@ -13,6 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <GlobalStyles />
       <Component {...pageProps} />
+      <div id="modal"></div>
     </>
   );
 }

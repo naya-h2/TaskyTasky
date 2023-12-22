@@ -13,11 +13,12 @@ export interface BaseProps {
   roundSize: 'L' | 'M' | 'S';
   isNotActive?: boolean;
   children?: ReactNode;
+  onClick: () => void;
 }
 
-function ButtonBase({ style = 'outline', roundSize, isNotActive = false, children }: BaseProps) {
+function ButtonBase({ style = 'outline', roundSize, isNotActive = false, children, onClick }: BaseProps) {
   return (
-    <StyledButtonBase $style={style} $isNotActive={isNotActive} $roundSize={roundSize}>
+    <StyledButtonBase $style={style} $isNotActive={isNotActive} $roundSize={roundSize} onClick={onClick}>
       {children}
     </StyledButtonBase>
   );

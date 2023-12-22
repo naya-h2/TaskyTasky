@@ -7,6 +7,7 @@ import {
   doubleCheckPassword,
   voidTitle,
   voidDueDate,
+  voidName,
 } from '../constants/inputErrorMsg';
 
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -63,6 +64,9 @@ export const validateEtc = (type: string, value: string) => {
   let errMsg = '';
   if (type === 'title' && value === '') {
     errMsg = voidTitle;
+    return errMsg;
+  } else if (type === 'name' && value === '') {
+    errMsg = voidName;
     return errMsg;
   }
   return errMsg;

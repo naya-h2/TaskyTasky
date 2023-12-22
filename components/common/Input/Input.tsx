@@ -11,7 +11,7 @@ import EyeOn from '@/public/icon/visibility.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface InputProps {
-  type: 'email' | 'password' | 'passwordConfirm' | 'title' | 'dueDate' | 'tag' | 'nickname';
+  type: 'email' | 'password' | 'passwordConfirm' | 'title' | 'dueDate' | 'tag' | 'nickname' | 'name' | 'dashboard';
   isPassword?: boolean;
   passwordCheck?: string;
   setPassword?: (value: string) => void;

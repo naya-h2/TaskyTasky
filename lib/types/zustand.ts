@@ -1,15 +1,15 @@
-export interface FishSlice {
-  fishes: number;
-  addFish: () => void;
-}
+export type modalType =
+  | 'createColumn'
+  | 'manageColumn'
+  | 'card'
+  | 'incorrectPWAlert'
+  | 'deleteColumnAlert'
+  | 'deleteCardAlert'
+  | 'dashBoard';
 
-export interface BearSlice {
-  bears: number;
-  addBear: () => void;
-  eatFish: () => void;
-}
-
-export interface SharedSlice {
-  addBoth: () => void;
-  getBoth: () => void;
+export interface ModalState {
+  modals: modalType[];
+  showModal: (type: modalType) => void;
+  hideModal: (type: modalType) => void;
+  clearModal: () => void;
 }

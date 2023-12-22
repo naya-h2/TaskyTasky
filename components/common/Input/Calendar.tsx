@@ -27,7 +27,7 @@ function Calendar({ placeholder }: Props) {
   };
 
   return (
-    <CalendarBox>
+    <StyledCalendarBox>
       <CalendarIcon />
       <StyledDatePicker
         selected={selectDate}
@@ -40,13 +40,13 @@ function Calendar({ placeholder }: Props) {
         showTimeSelect
         placeholderText={placeholder}
       />
-    </CalendarBox>
+    </StyledCalendarBox>
   );
 }
 
 export default Calendar;
 
-const CalendarBox = styled.div`
+const StyledCalendarBox = styled.div`
   width: 450px;
   height: 50px;
   padding: 15px 16px;
