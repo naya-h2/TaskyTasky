@@ -52,7 +52,10 @@ function Input({
   return (
     <>
       <StyledContainer $type={type === 'title' || type === 'tag' ? true : false}>
-        <StyledLabel $bold={type === 'dueDate' || type === 'title' || type === 'tag' || type === 'nickname' ? true : false} htmlFor={type}>
+        <StyledLabel
+          $bold={type === 'dueDate' || type === 'title' || type === 'tag' || type === 'nickname' ? true : false}
+          htmlFor={type}
+        >
           {label} {type === 'title' && <StyledSpan> *</StyledSpan>}
         </StyledLabel>
         {type === 'dueDate' ? (
@@ -62,7 +65,11 @@ function Input({
             id={type}
             placeholder={placeholder}
             type={
-              type === 'email' || type === 'title' || type === 'tag' || type === 'nickname' ? 'text' : passwordInvisible ? 'password' : 'text'
+              type === 'email' || type === 'title' || type === 'tag' || type === 'nickname'
+                ? 'text'
+                : passwordInvisible
+                  ? 'password'
+                  : 'text'
             }
             value={value}
             onChange={handleInputChange}
@@ -135,11 +142,11 @@ const StyledInputBox = styled.input<{ $error: string }>`
 `;
 
 const StyledEyeOffIcon = styled(EyeOff)`
-  ${Icon}
+  ${StyledIcon}
 `;
 
 const StyledEyeOnIcon = styled(EyeOn)`
-  ${Icon}
+  ${StyledIcon}
 `;
 
 const StyledErrorMessage = styled.p`

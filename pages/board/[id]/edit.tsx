@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
 import ArrowIcon from '@/public/icon/arrow_backward.svg';
-import Second from '@/components/common/Header/Second';
+import Second from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import { FONT_14, FONT_15, FONT_16, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';

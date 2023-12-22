@@ -14,12 +14,12 @@ interface Props {
 
 function Profile({ type, id, name, profileImg }: Props) {
   return (
-    <Container>
+    <StyledContainer>
       <ProfileImg url={profileImg} size={38} name={name} id={id} />
-      <LinkStyle href="/mypage">
-        <Name $type={type}>{name}</Name>
-      </LinkStyle>
-    </Container>
+      <StyledLink href="/mypage">
+        <StyledName $type={type}>{name}</StyledName>
+      </StyledLink>
+    </StyledContainer>
   );
 }
 
@@ -31,20 +31,20 @@ const invisibleMobile = css`
   }
 `;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 `;
 
-const Name = styled.div<{ $type: string }>`
+const StyledName = styled.div<{ $type: string }>`
   ${FONT_16};
 
   ${(props) => (props.$type === 'header' ? invisibleMobile : null)};
 `;
 
-const LinkStyle = styled(Link)`
+const StyledLink = styled(Link)`
   text-decoration: none;
   color: ${BLACK[2]};
 `;

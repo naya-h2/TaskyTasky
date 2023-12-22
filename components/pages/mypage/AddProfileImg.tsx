@@ -10,10 +10,10 @@ interface Props {
 
 function AddProfileImg({ profileImgUrl }: Props) {
   return (
-    <ProfileImgBox $url={profileImgUrl}>
-      <Mask />
-      <AddButton src="/icon/add_Fillo.svg" alt="프로필 이미지 수정하기" width={30} height={30} />
-    </ProfileImgBox>
+    <StyledProfileImgBox $url={profileImgUrl}>
+      <StyledMask />
+      <StyledAddButton src="/icon/add_Fillo.svg" alt="프로필 이미지 수정하기" width={30} height={30} />
+    </StyledProfileImgBox>
   );
 }
 
@@ -23,7 +23,7 @@ const noProfileImg = css`
   background-color: ${GRAY[15]};
 `;
 
-const ProfileImgBox = styled.div<{ $url: string }>`
+const StyledProfileImgBox = styled.div<{ $url: string }>`
   width: 182px;
   height: 182px;
 
@@ -45,7 +45,7 @@ const ProfileImgBox = styled.div<{ $url: string }>`
   }
 `;
 
-const Mask = styled.div`
+const StyledMask = styled.div`
   width: 100%;
   height: 100%;
 
@@ -57,7 +57,7 @@ const Mask = styled.div`
   left: 0;
 `;
 
-const AddButton = styled(Image)`
+const StyledAddButton = styled(Image)`
   z-index: ${Z_INDEX.AddProfileImg_AddButton};
 
   &:hover {
