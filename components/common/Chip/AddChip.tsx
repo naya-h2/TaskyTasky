@@ -4,15 +4,15 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 function AddChip() {
   return (
-    <Container>
+    <StyledContainer>
       <StyledAddFilloIcon />
-    </Container>
+    </StyledContainer>
   );
 }
 
 export default AddChip;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   width: 22px;
   height: 22px;
   padding: 3px;

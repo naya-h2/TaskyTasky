@@ -18,15 +18,15 @@ interface Props {
 function ChipColor({ backgroundColor, fontColor, text }: Props) {
 
   return (
-    <Container backgroundColor={backgroundColor} fontColor={fontColor}>
+    <StyledContainer backgroundColor={backgroundColor} fontColor={fontColor}>
       {text}
-    </Container>
+    </StyledContainer>
   );
 };
 
 export default ChipColor;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   padding: 4px 6px;
   display: inline-block;
   background-color: ${props => props.backgroundColor};

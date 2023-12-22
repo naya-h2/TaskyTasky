@@ -9,16 +9,16 @@ interface Props {
 
 function ColumnNameChip({content}: Props) {
   return (
-    <Container>
+    <StyledContainer>
         <VioletChipIcon />
-        <Content>{content}</Content>
-    </Container>
+        <StyledContent>{content}</StyledContent>
+    </StyledContainer>
   )
 }
 
 export default ColumnNameChip;
 
-const Container = styled.div`
+const StyledContainer = styled.div`
   padding: 4px 8px;
   display: inline-flex;
   align-items: center;
@@ -27,7 +27,7 @@ const Container = styled.div`
   border-radius: 11px;
 `;
 
-const Content = styled.span`
+const StyledContent = styled.span`
   text-align: center;
   color: #5534DA;
   ${FONT_12};
