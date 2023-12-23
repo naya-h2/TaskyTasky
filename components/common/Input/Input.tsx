@@ -15,6 +15,8 @@ interface InputProps {
   isPassword?: boolean;
   passwordCheck?: string;
   setPassword?: (value: string) => void;
+  register?: any;
+  error?: any;
 }
 
 function Input({
@@ -22,6 +24,8 @@ function Input({
   isPassword, // isPassword가 true라면 눈모양 아이콘이 보이도록
   passwordCheck, // passwordConfirm으로 쓰일 경우, password와 passwordConfirm이 같은지 확인하는 것 (password 값)
   setPassword, // 비밀번호가 setter 프로퍼티
+  register,
+  error,
 }: InputProps) {
   const [passwordInvisible, setPasswordInvisible] = useState(true);
   const [value, setValue] = useState('');
@@ -76,10 +80,11 @@ function Input({
                   ? 'password'
                   : 'text'
             }
-            value={value}
-            onChange={handleInputChange}
+            // value={value}
+            // onChange={handleInputChange}
             onBlur={handleInputFocusOut}
-            $error={errorMessage}
+            $error={error}
+            {...register}
           />
         )}
         {isPassword &&
@@ -88,7 +93,7 @@ function Input({
           ) : (
             <StyledEyeOnIcon alt="비밀번호 보이기 아이콘" onClick={togglePasswordIcon} />
           ))}
-        {errorMessage && <StyledErrorMessage className="errorMessage">{errorMessage}</StyledErrorMessage>}
+        {error && <StyledErrorMessage className="errorMessage">{error.message}</StyledErrorMessage>}
       </StyledContainer>
     </>
   );

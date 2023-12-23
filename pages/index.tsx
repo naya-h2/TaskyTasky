@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '@/components/pages/home/Layout';
-import { Button } from '@/components/common/Button';
-import mainImage from '@/public/images/resource/desktop/main_image_pc.png'
+import Button from '@/components/common/Button';
+import mainImage from '@/public/images/resource/desktop/main_image_pc.png';
 import landing1 from '@/public/images/resource/desktop/landging1.png';
 import landing2 from '@/public/images/resource/desktop/landging2.png';
 import landing3 from '@/public/images/resource/desktop/landging3.png';
@@ -11,13 +11,19 @@ import landing4 from '@/public/images/resource/desktop/landging4.png';
 import landing5 from '@/public/images/resource/desktop/landging5.png';
 import { BLACK, WHITE, GRAY, VIOLET } from '@/styles/ColorStyles';
 import { FONT_16, FONT_18, FONT_18_B, FONT_22, FONT_28_B } from '@/styles/FontStyles';
-
+import { login } from '@/api/auth/login';
+import { editPassword } from '@/api/auth/editPassword';
+import { getCard } from '@/api/cards/getCardInfo';
 
 function Home() {
+  // login({ email: 'test@codeit.com', password: '1234asdf' });
+  //editPassword({ password: '1234asdf', newPassword: '1234asdf!' });
+  //getCard(1);
+
   return (
     <Layout>
       <Container>
-        <Image src={mainImage} alt="메인 이미지"/>
+        <Image src={mainImage} alt="메인 이미지" />
         <TitleContainer>
           <Title>새로운 일정 관리</Title>
           <TaskifyTitle>Taskify</TaskifyTitle>
@@ -25,7 +31,7 @@ function Home() {
         <Subtitle>서비스의 메인 설명 들어갑니다.</Subtitle>
         <Link href="/login">
           <ButtonWrapper>
-            <Button.Plain  style="primary" fontSize="XL" roundSize="L">
+            <Button.Plain style="primary" roundSize="L">
               로그인하기
             </Button.Plain>
           </ButtonWrapper>
@@ -34,12 +40,15 @@ function Home() {
           <FirstSection>
             <Text>
               <Point>Point 1</Point>
-              <Content>일의 <SPAN>우선순위</SPAN>를<br/>관리하세요</Content>
+              <Content>
+                일의 <SPAN>우선순위</SPAN>를<br />
+                관리하세요
+              </Content>
             </Text>
-            <Image src={landing1} alt="랜딩 1"/>
+            <Image src={landing1} alt="랜딩 1" />
           </FirstSection>
           <SecondSection>
-            <Image src={landing2} alt="랜딩 2"/>
+            <Image src={landing2} alt="랜딩 2" />
             <Text>
               <Point>Point 2</Point>
               <Content>해야 할 일을 등록하세요</Content>
@@ -50,7 +59,7 @@ function Home() {
             <ThirdContainer>
               <WrapperBox>
                 <ImageBox>
-                  <Image src={landing3} alt="랜딩 3" height="133"/>
+                  <Image src={landing3} alt="랜딩 3" height="133" />
                 </ImageBox>
                 <TextBox>
                   <Text1>대시보드 설정</Text1>
@@ -59,7 +68,7 @@ function Home() {
               </WrapperBox>
               <WrapperBox>
                 <ImageBox>
-                  <Image src={landing4} alt="랜딩 4" width="323" height="176"/>
+                  <Image src={landing4} alt="랜딩 4" width="323" height="176" />
                 </ImageBox>
                 <TextBox>
                   <Text1>초대</Text1>
@@ -68,7 +77,7 @@ function Home() {
               </WrapperBox>
               <WrapperBox>
                 <ImageBox>
-                  <Image src={landing5} alt="랜딩 5" height="210"/>
+                  <Image src={landing5} alt="랜딩 5" height="210" />
                 </ImageBox>
                 <TextBox>
                   <Text1>구성원</Text1>
@@ -78,8 +87,6 @@ function Home() {
             </ThirdContainer>
           </ThirdSection>
         </SectionContainer>
-
-        
       </Container>
     </Layout>
   );
@@ -152,7 +159,9 @@ const Text = styled.div`
 const Point = styled.p`
   ${FONT_22};
   color: ${GRAY[40]};
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
 `;
 
 const Content = styled.p`
@@ -161,7 +170,9 @@ const Content = styled.p`
   font-weight: 700;
   line-height: 64px; /* 133.333% */
   color: ${BLACK[1]};
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
 `;
 
 const SPAN = styled.span`
@@ -186,14 +197,16 @@ const ThirdSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 36px;
-  background: ${WHITE};//배경 색이랑 똑같게
+  background: ${WHITE}; //배경 색이랑 똑같게
   border-radius: 8px;
 `;
 
 const ThirdSectionTitle = styled.p`
   ${FONT_28_B};
   color: ${BLACK[1]};
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
 `;
 
 const ThirdContainer = styled.div`
@@ -212,7 +225,7 @@ const WrapperBox = styled.div`
 const ImageBox = styled.div`
   width: 100%;
   height: 260px;
-  display: flex;  
+  display: flex;
   justify-content: center;
   align-items: center;
 `;
