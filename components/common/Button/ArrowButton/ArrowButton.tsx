@@ -8,11 +8,12 @@ import BackwordIcon from '@/public/icon/arrow_backward.svg';
 interface Props {
   type: 'left' | 'right';
   isNotActive?: boolean;
+  onClick?: () => void;
 }
 
-export function ArrowButton({ type, isNotActive = false }: Props) {
+export function ArrowButton({ type, isNotActive = false, onClick }: Props) {
   return (
-    <StyledArrowButton $type={type} $isNotActive={isNotActive}>
+    <StyledArrowButton $type={type} $isNotActive={isNotActive} onClick={onClick}>
       {type === 'left' ? <BackwordIcon /> : <ForwordIcon />}
     </StyledArrowButton>
   );

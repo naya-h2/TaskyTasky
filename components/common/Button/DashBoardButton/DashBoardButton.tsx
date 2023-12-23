@@ -18,9 +18,9 @@ interface Props extends BaseProps {
   chipColor: 'green' | 'purple' | 'orange' | 'blue' | 'pink';
 }
 
-export function DashBoardButton({ isOwner = false, chipColor, roundSize, children }: Props) {
+export function DashBoardButton({ isOwner = false, chipColor, roundSize, children, onClick }: Props) {
   return (
-    <ButtonBase style="outline" roundSize={roundSize}>
+    <ButtonBase style="outline" roundSize={roundSize} onClick={onClick}>
       <StyledLayout>
         <StyledChip $color={chipColor} />
         {children}
