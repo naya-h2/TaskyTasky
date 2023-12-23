@@ -2,11 +2,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Input from '@/components/common/Input/Input';
-import { Button } from '@/components/common/Button';
-import Checkbox from '@/components/common/Checkbox';
+import Button from '@/components/common/Button';
+import Checkbox from '@/components/common/Checkbox/Checkbox';
 import { FONT_16, FONT_20 } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { useForm } from 'react-hook-form';
+import { login } from '@/api/auth/login';
 
 type FormType = 'login' | 'signup';
 
@@ -15,6 +17,11 @@ interface UserFormProps {
 }
 
 function UserForm({ type }: UserFormProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
   const [password, setPassword] = useState('');
 
   const isSignup = type === 'signup';
@@ -24,14 +31,14 @@ function UserForm({ type }: UserFormProps) {
       <Container>
         <Logo src="/images/logo_main.svg" alt="Main logo" />
         <Word>{isSignup ? '첫 방문을 환영합니다!' : '오늘도 만나서 반가워요!'}</Word>
-        <Form>
-          <Input type="email" />
+        <Form onSubmit={handleSubmit((data) => login({}))}>
+          <Input type="email" register={register('email')} error={errors.email} />
           {isSignup && <Input type="nickname" />}
           <Input type="password" isPassword />
           {isSignup && <Input type="passwordConfirm" isPassword passwordCheck={password} />}
           {isSignup && <Checkbox label="이용약관에 동의합니다." />}
           <ButtonWrapper>
-            <Button.Plain  style="primary" fontSize="XL" roundSize="L" isNotActive>
+            <Button.Plain style="primary" roundSize="L">
               {isSignup ? '가입하기' : '로그인'}
             </Button.Plain>
           </ButtonWrapper>

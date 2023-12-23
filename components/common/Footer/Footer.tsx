@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { useMediaQuery } from 'react-responsive';
 import { GRAY, VIOLET } from '@/styles/ColorStyles';
 import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
@@ -17,8 +16,6 @@ const SNS_LIST = [
 ];
 
 function Footer() {
-  const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
-
   return (
     <Body>
       <Container>
