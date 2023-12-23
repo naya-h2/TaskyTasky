@@ -1,15 +1,15 @@
 import { styled } from 'styled-components';
-import { GRAY, WHITE } from '@/styles/ColorStyles';
+import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import ListHeader from './ListHeader';
-import { Members } from '@/lib/types/type';
+import { MemberList } from '@/lib/types/type';
 import { FONT_14, FONT_16 } from '@/styles/FontStyles';
 import Button from '../Button';
 import ProfileImg from '../Profile/ProfileImg';
 import { useMediaQuery } from 'react-responsive';
 
 interface Props {
-  memberList: Members;
+  memberList: MemberList;
 }
 
 function DashMyMember({ memberList }: Props) {
@@ -25,27 +25,22 @@ function DashMyMember({ memberList }: Props) {
         <ListTitle>이름</ListTitle>
         <ListLayout>
           {members.map((member) => (
-            <MemberWrapper>
+            <MemberWrapper key={member.id}>
               <MemberNameLayout>
                 <ProfileImgLayout>
                   <ProfileImg
                     id={member.id}
                     name={member.nickname}
                     size={isMobile ? ImageMobileSize : ImageSize}
-                    url={member.profileImageUrl}
+                    url={member.profileImageUrl as string}
                   />
                 </ProfileImgLayout>
                 <NameLayout>
                   <MemberName>{member.nickname}</MemberName>
                   <MemberDeleteButton>
-                    <Button
-                      type="plain"
-                      children="삭제"
-                      width={isMobile ? '52px' : '84px'}
-                      height="32px"
-                      roundSize="S"
-                      fontSize="M"
-                    />
+                    <Button.Plain style="secondary" roundSize="S">
+                      <ButtonText>삭제</ButtonText>
+                    </Button.Plain>
                   </MemberDeleteButton>
                 </NameLayout>
               </MemberNameLayout>
@@ -117,10 +112,21 @@ const MemberName = styled.div`
     ${[FONT_14]}
   }
 `;
-const MemberDeleteButton = styled.div``;
+const MemberDeleteButton = styled.div`
+  width: 84px;
+  height: 32px;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 52px;
+    height: 28px;
+  }
+`;
 const ListLayout = styled.div``;
 const ProfileImgLayout = styled.div`
   flex-basis: 5%;
+`;
+
+const ButtonText = styled.div`
+  color: ${[VIOLET[1]]};
 `;
 
 const NameLayout = styled.div`

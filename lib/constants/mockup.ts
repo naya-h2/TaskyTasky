@@ -20,7 +20,7 @@ export const MEMBERS1 = {
       isOwner: true,
     },
     {
-      id: 1,
+      id: 2,
       userId: 2,
       email: 'corditB@coddeit.com',
       nickname: '윈터',
@@ -30,7 +30,7 @@ export const MEMBERS1 = {
       isOwner: true,
     },
     {
-      id: 1,
+      id: 3,
       userId: 3,
       email: 'corditC@coddeit.com',
       nickname: '닝닝',
@@ -40,7 +40,7 @@ export const MEMBERS1 = {
       isOwner: true,
     },
     {
-      id: 1,
+      id: 4,
       userId: 4,
       email: 'corditD@coddeit.com',
       nickname: '지젤',
@@ -50,7 +50,7 @@ export const MEMBERS1 = {
       isOwner: true,
     },
     {
-      id: 1,
+      id: 5,
       userId: 5,
       email: 'corditE@coddeit.com',
       nickname: '지젤',
