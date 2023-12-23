@@ -21,6 +21,9 @@ function AlertModal({ type }: Props) {
       case 'deleteCardAlert':
         errorMsg = '현재 카드가 삭제됩니다.';
         break;
+      case 'deleteCommentAlert':
+        errorMsg = '현재 댓글이 삭제됩니다.';
+        break;
       default:
         break;
     }

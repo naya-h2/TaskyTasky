@@ -5,7 +5,6 @@ import Input from '../Input/Input';
 import ModalFrame from './ModalFrame';
 import { FONT_14 } from '@/styles/FontStyles';
 import { GRAY } from '@/styles/ColorStyles';
-import AlertModal from './AlertModal';
 
 interface Props {
   type: modalType;
@@ -33,7 +32,6 @@ function ColumnModal({ type }: Props) {
       {type === 'manageColumn' && (
         <StyledDeleteButton onClick={() => handleDeleteClick('deleteColumnAlert')}>삭제하기</StyledDeleteButton>
       )}
-      {modal[modal.length - 1] === 'deleteColumnAlert' && <AlertModal type="deleteColumnAlert" />}
     </ModalFrame>
   );
 }

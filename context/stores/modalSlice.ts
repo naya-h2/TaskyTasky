@@ -6,5 +6,5 @@ export const createModalSlice: StateCreator<ModalState> = (set) => ({
   showModal: (type) => set((state) => ({ ...state, modals: [...state.modals, type] })),
   hideModal: (type) =>
     set((state) => ({ ...state, modals: [...state.modals.filter((modalType) => modalType !== type)] })),
-  clearModal: () => set((state) => ({ ...state, modals: [] })),
+  clearModal: () => set(() => ({ modals: [] })),
 });

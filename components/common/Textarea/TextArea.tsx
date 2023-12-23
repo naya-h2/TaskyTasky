@@ -8,8 +8,13 @@ import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-function Textarea() {
-  const [value, setValue] = useState('');
+interface Props {
+  isEditing: boolean;
+  initialValue: string;
+}
+
+function Textarea({ isEditing, initialValue }: Props) {
+  const [value, setValue] = useState(initialValue);
   const [violet, setViolet] = useState(false);
 
   const handleReactQuillFocus = () => {
@@ -24,7 +29,7 @@ function Textarea() {
 
   return (
     <StyledWrapper>
-      <StyledLabel>댓글</StyledLabel>
+      {isEditing || <StyledLabel>댓글</StyledLabel>}
       <StyledReactQuill
         theme="snow"
         value={value}
@@ -45,11 +50,12 @@ function Textarea() {
 export default Textarea;
 
 const StyledWrapper = styled.div`
-  width: 450px;
+  width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
+  margin-top: 5px;
 `;
 
 const StyledLabel = styled.label`
@@ -57,7 +63,8 @@ const StyledLabel = styled.label`
 `;
 
 const StyledReactQuill = styled(ReactQuill)<{ $violet: boolean }>`
-  width: 450px;
+  width: 100%;
+  margin-bottom: 50px;
 
   .ql-snow {
     ${(props) => props.$violet && `border: 1px solid ${VIOLET[1]}`};
@@ -72,8 +79,7 @@ const StyledReactQuill = styled(ReactQuill)<{ $violet: boolean }>`
   }
 
   .ql-editor {
-    min-height: 110px;
-    padding-bottom: 42px;
+    min-height: 80px;
   }
 `;
 
@@ -82,7 +88,7 @@ const StyledButtonWrapper = styled.div`
   height: 32px;
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  bottom: 20px;
 `;
 
 const StyledButtonText = styled.span`

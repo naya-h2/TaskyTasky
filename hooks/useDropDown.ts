@@ -3,18 +3,18 @@ import { useState } from 'react';
 /**
  * 모달을 열고, 닫을 때 사용하는 커스텀 훅
  */
-function useModal() {
+function useDropDown() {
   const [isOpen, setIsOpen] = useState(false);
 
-  function handleModalOpen(): void {
+  function handleDropDownOpen(): void {
     setIsOpen(true);
   }
 
-  function handleModalClose(): void {
+  function handleDropDownClose(): void {
     setIsOpen(false);
   }
 
-  return { isOpen, handleModalOpen, handleModalClose };
+  return { isOpen, handleDropDownOpen, handleDropDownClose };
 }
 
-export default useModal;
+export default useDropDown;

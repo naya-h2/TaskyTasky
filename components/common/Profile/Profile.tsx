@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { BLACK } from '@/styles/ColorStyles';
 
 interface Props {
-  type: 'header';
+  type: 'header' | 'card';
   id: number;
   name: string;
   profileImg: string;
@@ -14,7 +14,7 @@ interface Props {
 
 function Profile({ type, id, name, profileImg }: Props) {
   return (
-    <StyledContainer>
+    <StyledContainer $type={type}>
       <ProfileImg url={profileImg} size={38} name={name} id={id} />
       <StyledLink href="/mypage">
         <StyledName $type={type}>{name}</StyledName>
@@ -31,10 +31,10 @@ const invisibleMobile = css`
   }
 `;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ $type: 'header' | 'card' }>`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.$type === 'header' ? 'space-between' : 'flex-start')};
   gap: 12px;
 `;
 
