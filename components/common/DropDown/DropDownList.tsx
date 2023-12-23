@@ -7,6 +7,7 @@ import AlertModal from '../Modal/AlertModal';
 import { modalType } from '@/lib/types/zustand';
 import { useStore } from '@/context/stores';
 import { statusCollection, userCollection } from '@/lib/constants/statusCollection';
+import { Z_INDEX } from '@/styles/ZIndexStyles';
 import ToDoLargeIcon from '@/public/icon/todo_large.svg';
 import OnProgressLargeIcon from '@/public/icon/onProgress_large.svg';
 import DoneLargeIcon from '@/public/icon/done_large.svg';
@@ -98,6 +99,7 @@ const StyledWrapperUl = styled.ul<{ $isUser: number; $type: string }>`
   border: 1px solid ${GRAY[30]};
   border-radius: 6px;
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+  z-index: ${Z_INDEX.modalFrame_Body_Mid};
 
   ${({ $isUser }) => $isUser || `display: none`};
 `;
@@ -112,6 +114,7 @@ const StyledWrapperLi = styled.li`
   gap: 5px;
   background-color: white;
   border-radius: 6px;
+  z-index: ${Z_INDEX.modalFrame_Body_Mid};
 
   &:hover {
     background-color: ${GRAY[15]};

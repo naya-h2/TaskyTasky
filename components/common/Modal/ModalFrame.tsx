@@ -2,9 +2,10 @@ import { ReactNode } from 'react';
 import styled from 'styled-components';
 import useNotScroll from '@/hooks/useNotScroll';
 import { useStore } from '@/context/stores';
-import CloseIcon from '@/public/icon/crown.svg';
+import CloseIcon from '@/public/icon/close.svg';
 import ModalPortal from './ModalPortal';
 import Button from '../Button';
+import DropDown from '@/components/common/DropDown/DropDown';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { FONT_14, FONT_24_B } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
@@ -31,16 +32,21 @@ function ModalFrame({ height, type, title, children, btnFnc }: Props) {
 
   return (
     <ModalPortal>
-      <StyledMask $height={height} onClick={() => hideModal(type)} />
+      <StyledMask $height={height} onClick={() => hideModal(modal[modal.length - 1])} />
       <StyledBody $height={height} $type={type}>
         <StyledTitle>{title}</StyledTitle>
-        {type === 'card' && <StyledCloseBtn alt="모달 닫기 버튼" onClick={clearModal} />}
+        {type === 'card' && (
+          <StyledToolBox>
+            <DropDown type="kebab" />
+            <StyledCloseBtn alt="모달 닫기 버튼" onClick={clearModal} />
+          </StyledToolBox>
+        )}
         <StyledContainer>{children}</StyledContainer>
         {type === 'card' || (
           <StyledButtonBox>
             {type === 'incorrectPWAlert' || (
               <StyledButtonWrapper>
-                <Button.Plain style="outline" roundSize="L" onClick={() => hideModal(type)}>
+                <Button.Plain style="outline" roundSize="L" onClick={() => hideModal(modal[modal.length - 1])}>
                   <StyledButtonText>취소</StyledButtonText>
                 </Button.Plain>
               </StyledButtonWrapper>
@@ -50,7 +56,8 @@ function ModalFrame({ height, type, title, children, btnFnc }: Props) {
                 <StyledButtonText>
                   {type === 'manageColumn' && '변경'}
                   {(type === 'createColumn' || type === 'dashBoard') && '생성'}
-                  {(type === 'deleteColumnAlert' || type === 'deleteCardAlert') && '삭제'}
+                  {(type === 'deleteColumnAlert' || type === 'deleteCardAlert' || type === 'deleteCommentAlert') &&
+                    '삭제'}
                   {type === 'incorrectPWAlert' && '확인'}
                 </StyledButtonText>
               </Button.Plain>
@@ -80,11 +87,13 @@ const StyledMask = styled.div<{ $height: 'Low' | 'Mid' | 'High' }>`
 `;
 
 const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High'; $type: modalType }>`
-  width: 540px;
+  width: ${({ $type }) => ($type === 'card' ? '730px' : '540px')};
   padding: ${({ $type }) =>
     $type === 'incorrectPWAlert' || $type === 'deleteCardAlert' || $type === 'deleteColumnAlert'
       ? '26px 28px 32px 28px'
-      : '32px 28px'};
+      : $type === 'card'
+        ? '32px 28px 64px'
+        : '32px 28px'};
 
   position: fixed;
   top: 50%;
@@ -103,10 +112,16 @@ const StyledTitle = styled.h1`
   color: ${BLACK[2]};
 `;
 
-const StyledCloseBtn = styled(CloseIcon)`
+const StyledToolBox = styled.div`
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 32px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`;
+
+const StyledCloseBtn = styled(CloseIcon)`
   &:hover {
     cursor: pointer;
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FONT_12, FONT_10} from '@/styles/FontStyles'
+import { FONT_12, FONT_10 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
@@ -16,21 +16,20 @@ interface Props {
  */
 
 function ChipColor({ backgroundColor, fontColor, text }: Props) {
-
   return (
-    <StyledContainer backgroundColor={backgroundColor} fontColor={fontColor}>
+    <StyledContainer $backgroundColor={backgroundColor} $fontColor={fontColor}>
       {text}
     </StyledContainer>
   );
-};
+}
 
 export default ChipColor;
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ $backgroundColor: string; $fontColor: string }>`
   padding: 4px 6px;
   display: inline-block;
-  background-color: ${props => props.backgroundColor};
-  color: ${props => props.fontColor};
+  background-color: ${(props) => props.$backgroundColor};
+  color: ${(props) => props.$fontColor};
   border-radius: 4px;
   ${FONT_12};
 

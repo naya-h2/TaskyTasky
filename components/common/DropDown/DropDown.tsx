@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
 import ArrowDropDownIcon from '@/public/icon/arrow_drop_down.svg';
-import useModal from '@/hooks/useModal';
+import useModal from '@/hooks/useDropDown';
 import useOnClickOutside from '@/hooks/useOnClickOutSide';
 import DropDownList from './DropDownList';
 import ToDoLargeIcon from '@/public/icon/todo_large.svg';
@@ -30,8 +30,8 @@ function DropDown({ type, initialStatus, initialPerson }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const {
     isOpen: isDropDownOpen,
-    handleModalOpen: handleDropDownOpen,
-    handleModalClose: handleDropDownClose,
+    handleDropDownOpen: handleDropDownOpen,
+    handleDropDownClose: handleDropDownClose,
   } = useModal();
 
   useOnClickOutside(containerRef, handleDropDownClose);

@@ -5,6 +5,7 @@ export type modalType =
   | 'incorrectPWAlert'
   | 'deleteColumnAlert'
   | 'deleteCardAlert'
+  | 'deleteCommentAlert'
   | 'dashBoard';
 
 export interface ModalState {
