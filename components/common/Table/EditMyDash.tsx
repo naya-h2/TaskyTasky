@@ -24,7 +24,7 @@ function EditMyDash() {
     <Wrapper>
       <Container>
         <EditDashChip>
-          <Title>제목</Title>
+          <BoardTitle>제목</BoardTitle>
           <DashBoardColor selectedColor={GREEN} setSelectedColor={setSelectedColor} />
         </EditDashChip>
         <EditDashName>
@@ -82,7 +82,7 @@ const EditDashChip = styled.div`
   align-items: center;
 `;
 
-const Title = styled.div`
+const BoardTitle = styled.div`
   ${[FONT_20_B]}
 `;
 
