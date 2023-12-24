@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
-import { GRAY, WHITE } from '@/styles/ColorStyles';
-import { FONT_16, FONT_18, FONT_20_B } from '@/styles/FontStyles';
+import { GRAY, GREEN, WHITE } from '@/styles/ColorStyles';
+import { FONT_14, FONT_16, FONT_18, FONT_20_B } from '@/styles/FontStyles';
 import React, { useState } from 'react';
 import DashBoardColor from '../Chip/DashBoardColor';
 import Button from '../Button';
@@ -8,8 +8,6 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useMediaQuery } from 'react-responsive';
 
 function EditMyDash() {
-  const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
-
   const [selectedColor, setSelectedColor] = useState('');
   const [editName, setEditName] = useState('뉴프로젝트');
 
@@ -26,8 +24,8 @@ function EditMyDash() {
     <Wrapper>
       <Container>
         <EditDashChip>
-          <Title>제목</Title>
-          <DashBoardColor selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
+          <BoardTitle>제목</BoardTitle>
+          <DashBoardColor selectedColor={GREEN} setSelectedColor={setSelectedColor} />
         </EditDashChip>
         <EditDashName>
           <DashNameText>대시보드 이름</DashNameText>
@@ -37,7 +35,9 @@ function EditMyDash() {
         </EditDashName>
         <EditButton>
           <ButtonWrapper>
-            <Button type="primary" children="변경" height="100%" roundSize="S" fontSize={isMobile ? 'S' : 'M'} />
+            <Button.Plain style="primary" roundSize="M">
+              <ButtonText>변경</ButtonText>
+            </Button.Plain>
           </ButtonWrapper>
         </EditButton>
       </Container>
@@ -82,7 +82,7 @@ const EditDashChip = styled.div`
   align-items: center;
 `;
 
-const Title = styled.div`
+const BoardTitle = styled.div`
   ${[FONT_20_B]}
 `;
 
@@ -120,6 +120,20 @@ const EditButton = styled.div`
 const ButtonWrapper = styled.div`
   width: 84px;
   height: 32px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    height: 28px;
+  }
+`;
+
+const ButtonText = styled.text`
+  display: flex;
+  width: 84px;
+  height: 32px;
+  padding: 7px 29px;
+  justify-content: center;
+  align-items: center;
+  ${[FONT_14]}
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     height: 28px;

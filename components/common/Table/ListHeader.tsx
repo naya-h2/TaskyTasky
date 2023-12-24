@@ -18,31 +18,21 @@ function ListHeader({ title = '구성원' }: ListHeaderProps) {
         <PageStatus>1 페이지 중 1</PageStatus>
         <ArrowButton>
           <ButtonLayout>
-            <Button
-              type="arrow-b"
-              active={false}
-              width={isMobile ? '36px' : '40px'}
-              height={isMobile ? '36px' : '40px'}
-            ></Button>
-            <Button
-              type="arrow-f"
-              active={false}
-              width={isMobile ? '36px' : '40px'}
-              height={isMobile ? '36px' : '40px'}
-            ></Button>
+            <Button.Arrow type="left" isNotActive />
+            <Button.Arrow type="right" isNotActive />
           </ButtonLayout>
         </ArrowButton>
         {title === '초대 내역' && (
-          <Button
-            type="primary"
-            width={isMobile ? '86px' : '105px'}
-            height={isMobile ? '28px' : '32px'}
-            fontSize={isMobile ? 'S' : 'M'}
-            roundSize="S"
-          >
-            <AddBox />
-            초대하기
-          </Button>
+          <InviteButtonLayout>
+            <Button.Plain style="primary" roundSize="S">
+              <ButtonStyle>
+                <ButtonIcon>
+                  <AddBox />
+                </ButtonIcon>
+                <ButtonText>초대하기</ButtonText>
+              </ButtonStyle>
+            </Button.Plain>
+          </InviteButtonLayout>
         )}
       </HeaderRight>
     </ListHeaderLayout>
@@ -107,7 +97,43 @@ const ButtonLayout = styled.div`
   display: flex;
 `;
 
+const InviteButtonLayout = styled.div`
+  width: 105px;
+  height: 32px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 86px;
+    height: 28px;
+  }
+`;
+
+const ButtonStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    gap: 6px;
+  }
+`;
+
 const AddBox = styled(AddBoxIcon)`
   width: 16px;
   heightL 16px;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 14px;
+    height: 14px;
+  }
+`;
+
+const ButtonIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonText = styled.text`
+  ${[FONT_14]}
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${[FONT_12]}
+  }
 `;

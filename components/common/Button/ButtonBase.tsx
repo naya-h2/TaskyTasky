@@ -13,7 +13,7 @@ export interface BaseProps {
   roundSize: 'L' | 'M' | 'S';
   isNotActive?: boolean;
   children?: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 function ButtonBase({ style = 'outline', roundSize, isNotActive = false, children, onClick }: BaseProps) {

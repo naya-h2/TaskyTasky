@@ -3,17 +3,16 @@ import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import ListHeader from './ListHeader';
 import { FONT_14, FONT_16 } from '@/styles/FontStyles';
-import { Members } from '@/lib/types/type';
+import { MemberList } from '@/lib/types/type';
 import Button from '../Button';
 import { useMediaQuery } from 'react-responsive';
 
 interface Props {
-  memberList: Members;
+  memberList: MemberList;
 }
 
 function DashInviteList({ memberList }: Props) {
   const { members, totalCount } = memberList;
-  const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
   return (
     <Wrapper>
       <Container>
@@ -21,18 +20,13 @@ function DashInviteList({ memberList }: Props) {
         <ListTitle>이메일</ListTitle>
         <ListLayout>
           {members.map((member) => (
-            <InviterEmailWrapper>
+            <InviterEmailWrapper key={member.id}>
               <InviterEmailLayout>
                 <InviteEmail>{member.email}</InviteEmail>
                 <InviteCancelButton>
-                  <Button
-                    type="plain"
-                    children="취소"
-                    width={isMobile ? '52px' : '84px'}
-                    height="32px"
-                    roundSize="S"
-                    fontSize="M"
-                  />
+                  <Button.Plain style="outline" roundSize="S">
+                    <ButtonText>취소</ButtonText>
+                  </Button.Plain>
                 </InviteCancelButton>
               </InviterEmailLayout>
             </InviterEmailWrapper>
@@ -108,4 +102,14 @@ const InviteEmail = styled.div`
     ${[FONT_14]}
   }
 `;
-const InviteCancelButton = styled.div``;
+const InviteCancelButton = styled.div`
+  width: 84px;
+  height: 32px;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 52px;
+    height: 28px;
+  }
+`;
+const ButtonText = styled.div`
+  color: ${[VIOLET[1]]};
+`;
