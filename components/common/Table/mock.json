@@ -11,6 +11,7 @@
       },
       "invitee": {
         "nickname": "손동희",
+        "email": "AAA@naver.com",
         "id": 2
       },
       "inviteAccepted": true,
@@ -27,6 +28,7 @@
       },
       "invitee": {
         "nickname": "안귀영",
+        "email": "AAA@naver.com",
         "id": 3
       },
       "inviteAccepted": true,
@@ -34,7 +36,7 @@
       "updatedAt": "2023-12-20T04:38:51.003Z"
     },
     {
-      "id": 2,
+      "id": 3,
       "inviterUserId": 3,
       "teamId": "team-8",
       "dashboard": {
@@ -43,6 +45,7 @@
       },
       "invitee": {
         "nickname": "장혁",
+        "email": "AAA@naver.com",
         "id": 3
       },
       "inviteAccepted": true,

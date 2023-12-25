@@ -5,6 +5,7 @@ import InviteDash from '@/components/common/Table/InviteDash';
 import DashBoardList from '@/components/pages/myboard/DashBoardList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import dashboardData from '@/components/common/SideMenu/mock';
+import inviteList from '@/components/common/Table/mock.json';
 
 const inviteData = {
   cursorId: 123,
@@ -70,7 +71,7 @@ function Myboard() {
       <StyledBody>
         <StyledContainer>
           <DashBoardList data={data} />
-          <InviteDash inviteList={inviteData} />
+          <InviteDash inviteList={inviteList} />
         </StyledContainer>
       </StyledBody>
     </>

@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { GRAY } from '@/styles/ColorStyles';
+import { GRAY, WHITE } from '@/styles/ColorStyles';
 import SearchIcon from '@/public/icon/search.svg';
 import InviteList from './InviteList';
-import { Invites } from '@/lib/types/type';
+import { InvitationList } from '@/lib/types/type';
+import { FONT_16, FONT_20_B, FONT_24_B } from '@/styles/FontStyles';
 
 interface Props {
-  inviteList: Invites;
+  inviteList: InvitationList;
 }
 
 function InviteDash({ inviteList }: Props) {
@@ -15,10 +16,12 @@ function InviteDash({ inviteList }: Props) {
   return (
     <Container>
       <InviteDashTitle>초대받은 대시보드</InviteDashTitle>
-      <InviteDashInputWrap>
-        <Search />
-        <SearchInput />
-      </InviteDashInputWrap>
+      <InviteInputLayout>
+        <InviteDashInputWrap>
+          <Search />
+          <SearchInput />
+        </InviteDashInputWrap>
+      </InviteInputLayout>
       <InviteListHead>
         <Subject>이름</Subject>
         <Subject>초대자</Subject>
@@ -36,9 +39,10 @@ function InviteDash({ inviteList }: Props) {
 export default InviteDash;
 
 const Container = styled.div`
-  width: 1022px;
+  width: 950px;
   height: 600px;
   padding-top: 32px;
+  background-color: ${[WHITE]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 504px;
@@ -48,23 +52,29 @@ const Container = styled.div`
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 260px;
     height: 836px;
-    padding: 24px 16px 0;
   }
 `;
 
 const InviteDashTitle = styled.div`
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+  ${[FONT_24_B]}
   padding: 0 28px;
-`;
 
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${[FONT_20_B]}
+    padding: 0 16px;
+  }
+`;
+const InviteInputLayout = styled.div`
+  margin: 20px 0 24px;
+  padding: 0 28px;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    padding: 0 16px;
+  }
+`;
 const InviteDashInputWrap = styled.div`
   border: 1px solid ${GRAY[30]};
   border-radius: 6px;
   display: flex;
-  margin: 32px;
 `;
 
 const Search = styled(SearchIcon)`
@@ -83,24 +93,26 @@ const InviteContent = styled.div`
 
 const InviteListHead = styled.div`
   display: flex;
-  width: 870px;
   padding: 20px 32px;
   color: ${GRAY[40]};
-  :nth-child(1) {
-    flex-basis: 40%;
-    flex-grow: 1;
+
+  & > div:nth-child(1) {
+    flex-basis: 38%;
+    @media (max-width: ${DEVICE_SIZE.tablet}) {
+      flex-basis: 41%;
+    }
   }
-  :nth-child(2) {
-    flex-basis: 30%;
-    flex-grow: 1;
+  & > div:nth-child(2) {
+    flex-basis: 41%;
+    @media (max-width: ${DEVICE_SIZE.tablet}) {
+      flex-basis: 25%;
+    }
   }
-  :nth-child(3) {
-    flex-basis: 20%;
-    flex-grow: 1;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    display: none;
   }
 `;
 
 const Subject = styled.div`
-  font-size: 16px;
-  font-weight: 400;
+  ${[FONT_16]};
 `;
