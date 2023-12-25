@@ -85,6 +85,7 @@ const InviteContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
+    padding: 0px 16px;
   }
 `;
 
@@ -95,11 +96,9 @@ const InviteDashLayout = styled.div`
 
     & > div:nth-child(1) {
       flex-basis: 30%;
-      border: 1px solid red;
     }
     & > div:nth-child(2) {
       flex-basis: 70%;
-      border: 1px solid blue;
     }
   }
 `;
@@ -111,11 +110,9 @@ const InviterName = styled.div`
 
     & > div:nth-child(1) {
       flex-basis: 30%;
-      border: 1px solid red;
     }
     & > div:nth-child(2) {
       flex-basis: 70%;
-      border: 1px solid blue;
     }
   }
 `;
