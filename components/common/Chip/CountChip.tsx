@@ -1,15 +1,15 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 interface Props {
-  number: string;
+  number: number;
 }
 
-function CountChip({number}: Props) {
+function CountChip({ number }: Props) {
   return (
     <StyledContainer>
       <StyledContent>{number}</StyledContent>
     </StyledContainer>
-  )
+  );
 }
 
 export default CountChip;
@@ -18,7 +18,7 @@ const StyledContainer = styled.div`
   padding: 3px 6px;
   display: inline-flex;
   align-items: center;
-  background: #EEE;
+  background: #eee;
   border-radius: 4px;
 `;
 

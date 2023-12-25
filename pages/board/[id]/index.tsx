@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-import Second from '@/components/common/Header/SecondHeader/SecondHeader';
+import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import CardList from '@/components/common/Card/CardList';
-import { Button } from '@/components/common/Button';
+import Button from '@/components/common/Button';
 import { GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { FONT_18_B } from '@/styles/FontStyles';
 
 import mockData from '@/components/common/Card/mock.json';
 import boardMockData from '@/components/common/SideMenu/mock';
@@ -16,28 +17,28 @@ function Board() {
   const { id } = router.query;
 
   return (
-    <Root>
-      <Second page="others" children="제목" />
+    <StyledRoot>
+      <Header page="others" children="제목" />
       <SideMenu dashboards={boardMockData.dashboards} />
-      <Content>
+      <StyledContent>
         <CardList label="To Do" cardList={mockData} />
         <CardList label="On Progress" cardList={mockData} />
         <CardList label="Done" cardList={mockData} />
-        <AddColumnBtnWrapper>
-          <Button.Add roundSize="L" fontSize="L" isBoldFont>
-            새로운 컬럼 추가하기
+        <StyledBtnWrapper>
+          <Button.Add roundSize="L">
+            <StyledText>새로운 컬럼 추가하기</StyledText>
           </Button.Add>
-        </AddColumnBtnWrapper>
-      </Content>
-    </Root>
+        </StyledBtnWrapper>
+      </StyledContent>
+    </StyledRoot>
   );
 }
 
 export default Board;
 
-const Root = styled.div``;
+const StyledRoot = styled.div``;
 
-const Content = styled.div`
+const StyledContent = styled.div`
   width: 100%;
   padding-top: 70px;
   padding-left: 300px;
@@ -59,19 +60,24 @@ const Content = styled.div`
   }
 `;
 
-const AddColumnBtnWrapper = styled.div`
+const StyledBtnWrapper = styled.div`
   width: 100%;
   max-width: 354px;
   height: 70px;
   margin: 68px 20px;
+
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     max-width: none;
-    margin: 0 0 20px;
+    margin: 20px 0;
     padding: 0 20px;
   }
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     height: 60px;
-    margin: 0 0 12px;
+    margin: 12px 0;
     padding: 0 15px;
   }
+`;
+
+const StyledText = styled.div`
+  ${FONT_18_B}
 `;
