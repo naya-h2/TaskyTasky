@@ -5,6 +5,7 @@ import SearchIcon from '@/public/icon/search.svg';
 import InviteList from './InviteList';
 import { InvitationList } from '@/lib/types/type';
 import { FONT_16, FONT_20_B, FONT_24_B } from '@/styles/FontStyles';
+import NullInviteList from './NullInviteList';
 
 interface Props {
   inviteList: InvitationList;
@@ -13,9 +14,13 @@ interface Props {
 function InviteDash({ inviteList }: Props) {
   const { cursorId, invitations } = inviteList;
 
+  if (invitations.length === 0) {
+    return <NullInviteList />;
+  }
+
   return (
     <Container>
-      <InviteDashTitle>초대받은 대시보드</InviteDashTitle>
+      <InviteDashTitle> 초대받은 대시보드</InviteDashTitle>
       <InviteInputLayout>
         <InviteDashInputWrap>
           <Search />
