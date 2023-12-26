@@ -6,7 +6,7 @@ import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
 
-import { TempTagChip } from './tempChip';
+import ChipColor from '../Chip/ChipColor';
 
 interface Props {
   card: CardType;
@@ -14,34 +14,34 @@ interface Props {
 
 function Card({ card }: Props) {
   return (
-    <Wrapper>
-      {card.imageUrl && <Thumbnail src={card.imageUrl} width={274} height={160} alt="" />}
-      <Content>
-        <Title>{card.title}</Title>
-        <Detail>
-          <TagWrapper>
+    <StyledWrapper>
+      {card.imageUrl && <StyledThumbnail src={card.imageUrl} width={274} height={160} alt="" />}
+      <StyledContent>
+        <StyledTitle>{card.title}</StyledTitle>
+        <StyledDetail>
+          <StyledTagWrapper>
             {card.tags.map((t) => (
-              <TempTagChip key={t} content={t} />
+              <ChipColor key={t} backgroundColor="#f9eee3" fontColor="#d58d49" text={t}></ChipColor>
             ))}
-          </TagWrapper>
-          <DateWrapper>
+          </StyledTagWrapper>
+          <StyledDateWrapper>
             <Calendar />
             {card.dueDate}
-          </DateWrapper>
+          </StyledDateWrapper>
           {card.assignee.profileImageUrl ? (
-            <ProfileChip src={card.assignee.profileImageUrl} width={24} height={24} alt="프로필 이미지" />
+            <StyledProfileChip src={card.assignee.profileImageUrl} width={24} height={24} alt="프로필 이미지" />
           ) : (
-            <DefaultProfileChip>{card.assignee.nickname[0]}</DefaultProfileChip>
+            <StyledDefaultProfileChip>{card.assignee.nickname[0]}</StyledDefaultProfileChip>
           )}
-        </Detail>
-      </Content>
-    </Wrapper>
+        </StyledDetail>
+      </StyledContent>
+    </StyledWrapper>
   );
 }
 
 export default Card;
 
-const Wrapper = styled.div`
+const StyledWrapper = styled.div`
   width: 100%;
   height: fit-content;
   margin-bottom: 16px;
@@ -56,13 +56,17 @@ const Wrapper = styled.div`
 
   cursor: pointer;
 
+  &:hover {
+    background-color: ${GRAY[20]};
+  }
+
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
     display: flex;
     flex-direction: row;
   }
 `;
 
-const Thumbnail = styled(Image)`
+const StyledThumbnail = styled(Image)`
   width: 100%;
   margin-bottom: 12px;
 
@@ -77,17 +81,17 @@ const Thumbnail = styled(Image)`
   }
 `;
 
-const Content = styled.div`
+const StyledContent = styled.div`
   width: 100%;
 `;
 
-const Title = styled.div`
+const StyledTitle = styled.div`
   margin-bottom: 10px;
 
   ${FONT_16}
 `;
 
-const Detail = styled.div`
+const StyledDetail = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -97,7 +101,7 @@ const Detail = styled.div`
   }
 `;
 
-const TagWrapper = styled.div`
+const StyledTagWrapper = styled.div`
   margin-bottom: 15px;
 
   display: flex;
@@ -111,7 +115,7 @@ const TagWrapper = styled.div`
   }
 `;
 
-const DateWrapper = styled.div`
+const StyledDateWrapper = styled.div`
   display: flex;
   align-items: center;
   column-gap: 6px;
@@ -119,7 +123,7 @@ const DateWrapper = styled.div`
   color: ${GRAY[50]};
 `;
 
-const ProfileChip = styled(Image)`
+const StyledProfileChip = styled(Image)`
   position: absolute;
   right: 20px;
   bottom: 20px;
@@ -127,16 +131,17 @@ const ProfileChip = styled(Image)`
   border-radius: 50%;
 `;
 
-const DefaultProfileChip = styled.div`
+const StyledDefaultProfileChip = styled.div`
   width: 24px;
   height: 24px;
+
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 
   display: flex;
   align-items: center;
   justify-content: space-around;
-  position: absolute;
-  right: 20px;
-  bottom: 20px;
 
   background-color: ${GRAY[40]};
 

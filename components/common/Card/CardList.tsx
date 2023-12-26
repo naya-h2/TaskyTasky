@@ -1,49 +1,50 @@
 import styled from 'styled-components';
 import Card from './Card';
-import { Cards } from '@/lib/types/type';
+import Button from '../Button';
+import { CheckCard } from '@/lib/types/type';
 import { BLACK, VIOLET, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_18_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import SettingIcon from '@/public/icon/settings.svg';
-import ChipAdd from '@/public/images/chip_add.svg';
+import CountChip from '../Chip/CountChip';
 
 interface Props {
   label: String;
-  cardList: Cards;
+  cardList: CheckCard;
 }
 
 /**
  * @param label 컬럼 제목
- * @param cards 카드 리스트
+ * @param cardList 카드 리스트
  */
 function CardList({ label, cardList }: Props) {
   const { totalCount, cards } = cardList;
 
   return (
-    <Root>
-      <Top>
-        <LabelWrapper>
-          <Ellipse />
-          <Label>{label}</Label>
-          {/* <Chip content={cards.totalCount}/> */}
-        </LabelWrapper>
-        <SettingButton>
+    <StyledRoot>
+      <StyledTop>
+        <StyledLabelWrapper>
+          <StyledEllipse />
+          <StyledLabel>{label}</StyledLabel>
+          <CountChip number={totalCount}></CountChip>
+        </StyledLabelWrapper>
+        <StyledSettingButton>
           <SettingIcon />
-        </SettingButton>
-      </Top>
-      <AdderCard>
-        <ChipAdd />
-      </AdderCard>
+        </StyledSettingButton>
+      </StyledTop>
+      <StyledBtnWrapper>
+        <Button.Add roundSize="M"></Button.Add>
+      </StyledBtnWrapper>
       {cards.map((card) => (
         <Card key={card.id} card={card} />
       ))}
-    </Root>
+    </StyledRoot>
   );
 }
 
 export default CardList;
 
-const Root = styled.div`
+const StyledRoot = styled.div`
   width: 354px;
   height: 100vh;
   padding: 22px 20px;
@@ -63,7 +64,7 @@ const Root = styled.div`
   }
 `;
 
-const Top = styled.div`
+const StyledTop = styled.div`
   margin-bottom: 25px;
 
   display: flex;
@@ -72,13 +73,13 @@ const Top = styled.div`
   align-items: center;
 `;
 
-const LabelWrapper = styled.div`
+const StyledLabelWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
 
-const Ellipse = styled.div`
+const StyledEllipse = styled.div`
   width: 8px;
   height: 8px;
   margin-right: 8px;
@@ -88,14 +89,14 @@ const Ellipse = styled.div`
   border-radius: 50%;
 `;
 
-const Label = styled.div`
+const StyledLabel = styled.div`
   margin-right: 12px;
 
   color: ${BLACK[2]};
   ${FONT_18_B};
 `;
 
-const SettingButton = styled.button`
+const StyledSettingButton = styled.button`
   width: 24px;
   height: 24px;
 
@@ -104,8 +105,9 @@ const SettingButton = styled.button`
   cursor: pointer;
 `;
 
-const AdderCard = styled.button`
+const StyledBtnWrapper = styled.button`
   width: 100%;
+  max-width: 314px;
   height: 40px;
   margin-bottom: 16px;
 
@@ -113,10 +115,9 @@ const AdderCard = styled.button`
   align-items: center;
   justify-content: space-around;
 
-  background: ${WHITE};
-
-  border-radius: 6px;
-  border: 1px solid ${GRAY[30]};
-
   cursor: pointer;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    max-width: none;
+  }
 `;
