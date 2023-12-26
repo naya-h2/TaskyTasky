@@ -14,7 +14,14 @@ interface Props {
  * @param data dashboard 목록의 배열
  */
 function DashBoardList({ data }: Props) {
-  const { modals, showModal } = useStore((state) => ({ modals: state.modals, showModal: state.showModal }));
+  const { modals, showModal, page, total, increasePage, decreasePage } = useStore((state) => ({
+    modals: state.modals,
+    showModal: state.showModal,
+    page: state.myboardPageNumber,
+    total: state.myboardTotalPage,
+    increasePage: state.increasePage,
+    decreasePage: state.decreasePage,
+  }));
 
   function handleDashboardAdd() {
     showModal('dashBoard');
@@ -39,10 +46,12 @@ function DashBoardList({ data }: Props) {
           </StyledButtonWrapper>
         </StyledBoardList>
         <StyledPagination>
-          <StyledPageInfo>1 페이지 중 1</StyledPageInfo>
+          <StyledPageInfo>
+            {total} 페이지 중 {page}
+          </StyledPageInfo>
           <StyledMoveButtonWrapper>
-            <Button.Arrow type="left" />
-            <Button.Arrow type="right" />
+            <Button.Arrow type="left" isNotActive={page === 1} onClick={() => decreasePage(page)} />
+            <Button.Arrow type="right" isNotActive={page === total} onClick={() => increasePage(page)} />
           </StyledMoveButtonWrapper>
         </StyledPagination>
       </StyledLayout>

@@ -15,6 +15,6 @@ export const getDashboardList = async (
 ) => {
   const query = navigationMethod === 'infiniteScroll' ? `cursorId=${cursorId}` : `page=${page}`;
   const response = await instance.get(`/api/dashboards?navigationMethod=${navigationMethod}&${query}&size=${size}`);
-  console.log(response);
+
   return response.data;
 };

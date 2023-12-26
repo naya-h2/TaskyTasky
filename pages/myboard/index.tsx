@@ -4,8 +4,11 @@ import SideMenu from '@/components/common/SideMenu/SideMenu';
 import InviteDash from '@/components/common/Table/InviteDash';
 import DashBoardList from '@/components/pages/myboard/DashBoardList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import dashboardData from '@/components/common/SideMenu/mock';
 import inviteList from '@/components/common/Table/mock.json';
+import { getDashboardList } from '@/api/dashboards/getDashboardList';
+import { useEffect, useState } from 'react';
+import { DashboardType } from '@/lib/types/dashboards';
+import { useStore } from '@/context/stores';
 
 const inviteData = {
   cursorId: 123,
@@ -62,16 +65,27 @@ const inviteData = {
 };
 
 function Myboard() {
-  const data = dashboardData.dashboards;
+  const { page, setTotal } = useStore((state) => ({ page: state.myboardPageNumber, setTotal: state.calcTotalPage }));
+  const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getDashboardList('pagination', 5, undefined, page);
+      setDashboardList(result.dashboards);
+      setTotal(Math.ceil(result.totalCount / 5));
+    };
+
+    fetchData();
+  }, [page]);
 
   return (
     <>
       <Header page="myboard">내 대시보드</Header>
-      <SideMenu dashboards={data} />
+      <SideMenu dashboards={dashboardList} />
       <StyledBody>
         <StyledContainer>
-          <DashBoardList data={data} />
-          <InviteDash inviteList={inviteList} />
+          <DashBoardList data={dashboardList} />
+          <InviteDash inviteList={inviteData} />
         </StyledContainer>
       </StyledBody>
     </>
