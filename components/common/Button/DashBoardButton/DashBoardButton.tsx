@@ -5,17 +5,9 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import ForwordIcon from '@/public/icon/arrow_forward.svg';
 import Crown from '@/public/icon/crown.svg';
 
-const CHIP_COLOR = {
-  green: GREEN,
-  purple: PURPLE,
-  orange: ORANGE,
-  blue: BLUE,
-  pink: PINK[1],
-};
-
 interface Props extends BaseProps {
   isOwner?: boolean;
-  chipColor: 'green' | 'purple' | 'orange' | 'blue' | 'pink';
+  chipColor: string;
 }
 
 export function DashBoardButton({ isOwner = false, chipColor, roundSize, children, onClick }: Props) {
@@ -40,13 +32,13 @@ const StyledLayout = styled.div`
   position: relative;
 `;
 
-const StyledChip = styled.div<{ $color: 'green' | 'purple' | 'orange' | 'blue' | 'pink' }>`
+const StyledChip = styled.div<{ $color: string }>`
   margin-right: 16px;
 
   width: 8px;
   height: 8px;
 
-  background-color: ${({ $color }) => `${CHIP_COLOR[$color]}`};
+  background-color: ${({ $color }) => `${$color}`};
   border-radius: 100%;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {

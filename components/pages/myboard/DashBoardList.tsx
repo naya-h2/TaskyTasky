@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Button from '@/components/common/Button';
 import { FONT_14, FONT_14_B, FONT_16_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { BLACK } from '@/styles/ColorStyles';
+import { BLACK, VIOLET } from '@/styles/ColorStyles';
 import { DashboardType } from '@/lib/types/dashboards';
 import { useStore } from '@/context/stores';
 import DashboardModal from '@/components/common/Modal/DashboardModal';
@@ -32,25 +32,26 @@ function DashBoardList({ data }: Props) {
     <>
       <StyledLayout>
         <StyledBoardList>
-          {data &&
-            data.map((dashboard) => (
-              <Link href={`/board/${dashboard.id}`} key={dashboard.id}>
-                <StyledButtonWrapper>
-                  <Button.DashBoard isOwner={dashboard.createdByMe} chipColor="pink" roundSize="L">
-                    <StyledButtonText>{dashboard.title}</StyledButtonText>
-                  </Button.DashBoard>
-                </StyledButtonWrapper>
-              </Link>
-            ))}
           <StyledButtonWrapper>
             <Button.Add roundSize="L" onClick={handleDashboardAdd}>
               <StyledButtonText>새로운 대시보드</StyledButtonText>
             </Button.Add>
           </StyledButtonWrapper>
+          {data &&
+            data.map((dashboard) => (
+              <Link href={`/board/${dashboard.id}`} key={dashboard.id}>
+                <StyledButtonWrapper>
+                  <Button.DashBoard isOwner={dashboard.createdByMe} chipColor={dashboard.color} roundSize="L">
+                    <StyledButtonText>{dashboard.title}</StyledButtonText>
+                  </Button.DashBoard>
+                </StyledButtonWrapper>
+              </Link>
+            ))}
         </StyledBoardList>
         <StyledPagination>
           <StyledPageInfo>
-            {total} 페이지 중 {page}
+            {total} 페이지 중<span style={{ paddingRight: '5px' }} />
+            <StyledHighlight>{page}</StyledHighlight>
           </StyledPageInfo>
           <StyledMoveButtonWrapper>
             <Button.Arrow type="left" isNotActive={page === 1} onClick={() => decreasePage(page)} />
@@ -128,4 +129,8 @@ const StyledButtonText = styled.div`
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     ${FONT_14_B};
   }
+`;
+
+const StyledHighlight = styled.span`
+  font-weight: 700;
 `;
