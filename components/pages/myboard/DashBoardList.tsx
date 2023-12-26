@@ -6,6 +6,7 @@ import { BLACK } from '@/styles/ColorStyles';
 import { DashboardType } from '@/lib/types/dashboards';
 import { useStore } from '@/context/stores';
 import DashboardModal from '@/components/common/Modal/DashboardModal';
+import Link from 'next/link';
 
 interface Props {
   data: DashboardType[];
@@ -33,11 +34,13 @@ function DashBoardList({ data }: Props) {
         <StyledBoardList>
           {data &&
             data.map((dashboard) => (
-              <StyledButtonWrapper key={dashboard.id}>
-                <Button.DashBoard isOwner={dashboard.createdByMe} chipColor="pink" roundSize="L">
-                  <StyledButtonText>{dashboard.title}</StyledButtonText>
-                </Button.DashBoard>
-              </StyledButtonWrapper>
+              <Link href={`/board/${dashboard.id}`} key={dashboard.id}>
+                <StyledButtonWrapper>
+                  <Button.DashBoard isOwner={dashboard.createdByMe} chipColor="pink" roundSize="L">
+                    <StyledButtonText>{dashboard.title}</StyledButtonText>
+                  </Button.DashBoard>
+                </StyledButtonWrapper>
+              </Link>
             ))}
           <StyledButtonWrapper>
             <Button.Add roundSize="L" onClick={handleDashboardAdd}>
