@@ -1,4 +1,4 @@
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 대시보드 목록 조회
@@ -7,14 +7,14 @@ import axios from 'axios';
  * @param cursorId 무한 스크롤 선택 시 사용
  * @param page 페이지네이션 선택 시 사용
  */
-export const getCardList = async (
+export const getDashboardList = async (
   navigationMethod: 'infiniteScroll' | 'pagination',
   size: number,
   cursorId?: number,
   page?: number,
 ) => {
   const query = navigationMethod === 'infiniteScroll' ? `cursorId=${cursorId}` : `page=${page}`;
-  const response = await axios.get(`/api/dashboards?navigationMethod=${navigationMethod}&${query}&size=${size}`);
+  const response = await instance.get(`/api/dashboards?navigationMethod=${navigationMethod}&${query}&size=${size}`);
   console.log(response);
   return response.data;
 };
