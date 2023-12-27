@@ -17,6 +17,12 @@ export const voidDueDate = '마감일을 입력해주세요.';
 export const overlapName = '중복된 칼럼 이름입니다.';
 export const voidName = '이름을 입력해주세요.';
 
+// url
+export const voidUrl = 'Url을 입력해주세요.';
+
+// etc
+export const voidEtc = '입력된 값이 없습니다. 입력해주세요.';
+
 export const ERROR_MSG = {
   emptyEmail: '이메일을 입력해주세요.',
   emptyPassword: '비밀번호를 입력해주세요.',

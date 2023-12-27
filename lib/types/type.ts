@@ -201,6 +201,7 @@ export type InputType =
   | 'nickname'
   | 'name'
   | 'dashboard'
+  | 'imgUrl'
   | 'etc';
 
 export interface columnList {

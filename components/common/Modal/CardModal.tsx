@@ -97,14 +97,14 @@ const StyledContainer = styled.div`
 `;
 
 const StyledLeftWrapper = styled.div`
-  width: 450px;
+  width: 440px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
 const StyledRightWrapper = styled.div`
-  width: 200px;
+  width: 190px;
 `;
 
 const StyledTaskSmallInfoBox = styled.div`

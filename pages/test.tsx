@@ -5,6 +5,7 @@ import CardModal from '@/components/common/Modal/CardModal';
 import AlertModal from '@/components/common/Modal/AlertModal';
 import { cardInfo, columnLists, members } from '@/components/common/Modal/Mockup';
 import TodoModal from '@/components/common/Modal/TodoModal';
+import ImgUrlModal from '@/components/common/Modal/ImgUrlModal';
 
 /**
  * 컴포넌트 실험용 페이지입니다. (컴포넌트 구현 완료 후 삭제 예정)
@@ -27,7 +28,7 @@ export default function Test() {
       {modal[modal.length - 1] === 'deleteCardAlert' && <AlertModal type={'deleteCardAlert'} />}
       {modal[modal.length - 1] === 'deleteCommentAlert' && <AlertModal type={'deleteCommentAlert'} />}
       {modal[modal.length - 1] === 'createTodo' && <TodoModal type={'createTodo'} />}
-      {modal[modal.length - 1] === 'editTodo' && (
+      {modal.includes('editTodo') && (
         <TodoModal
           type={'editTodo'}
           cardInfo={cardInfo}
@@ -36,6 +37,7 @@ export default function Test() {
           memberLists={members}
         />
       )}
+      {modal[modal.length - 1] === 'imgUrl' && <ImgUrlModal type="imgUrl" />}
     </Div>
   );
 }

@@ -76,6 +76,7 @@ const StyledWrapper = styled.div`
 const StyledLabel = styled.label<{ $type: 'basic' | 'comment' }>`
   ${({ $type }) => $type === 'comment' && `${FONT_16}`};
   ${({ $type }) => $type === 'basic' && `${FONT_18}`};
+  color: ${BLACK[2]};
 `;
 
 const StyledSpan = styled.span`

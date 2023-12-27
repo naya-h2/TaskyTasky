@@ -4,9 +4,11 @@ import ReactDatePicker, { registerLocale } from 'react-datepicker'; // ReactDate
 import 'react-datepicker/dist/react-datepicker.css';
 // 출처: https://reactdatepicker.com/#example-filter-dates
 // 출처: https://date-fns.org/
-import { GRAY } from '@/styles/ColorStyles';
+import { GRAY, PINK, VIOLET } from '@/styles/ColorStyles';
 import CalendarIcon from '@/public/icon/calendar.svg';
 import ko from 'date-fns/locale/ko'; // 한국어로
+import { Z_INDEX } from '@/styles/ZIndexStyles';
+import { FONT_12 } from '@/styles/FontStyles';
 registerLocale('ko', ko); // 한국어로
 const _ = require('lodash'); // _.range를 표현하기 위하여 사용
 //  출처: https://blog.naver.com/PostList.naver?blogId=marsdo
@@ -29,17 +31,19 @@ function Calendar({ placeholder, initialValue }: Props) {
   return (
     <StyledCalendarBox>
       <CalendarIcon />
-      <StyledDatePicker
-        selected={selectDate}
-        onChange={(date: Date) => setSelectDate(date)}
-        dateFormat={'yyyy.MM.dd aa h:mm'}
-        locale={'ko'}
-        minDate={new Date()}
-        filterTime={filterPassedTime}
-        closeOnScroll
-        showTimeSelect
-        placeholderText={placeholder}
-      />
+      <StyledDatePickerWrapper>
+        <StyledDatePicker
+          selected={selectDate}
+          onChange={(date: Date) => setSelectDate(date)}
+          dateFormat={'yyyy.MM.dd aa h:mm'}
+          locale={'ko'}
+          minDate={new Date()}
+          filterTime={filterPassedTime}
+          closeOnScroll
+          showTimeSelect
+          placeholderText={placeholder}
+        />
+      </StyledDatePickerWrapper>
     </StyledCalendarBox>
   );
 }
@@ -55,6 +59,49 @@ const StyledCalendarBox = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+`;
+
+const StyledDatePickerWrapper = styled.div`
+  .react-datepicker {
+    ${FONT_12};
+  }
+
+  .react-datepicker__month-container {
+    width: 200px;
+  }
+
+  .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::after {
+    border-bottom-color: ${VIOLET[8]};
+  }
+
+  .react-datepicker__header {
+    background-color: ${VIOLET[8]};
+  }
+
+  .react-datepicker__current-month {
+    ${FONT_12};
+  }
+
+  .react-datepicker__day-name {
+    ${FONT_12};
+    margin: 3px;
+  }
+
+  .react-datepicker__day {
+    margin: 3px;
+  }
+
+  .react-datepicker__time-container {
+    width: 86px;
+  }
+
+  .react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+    height: 163px;
+  }
+
+  .react-datepicker-popper {
+    z-index: ${Z_INDEX['modalFrame_Body_High']};
+  }
 `;
 
 const StyledDatePicker = styled(ReactDatePicker)`

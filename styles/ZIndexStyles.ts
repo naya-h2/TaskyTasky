@@ -9,6 +9,8 @@ export const Z_INDEX = {
   modalFrame_Body_Mid: 800,
   modalFrame_Mask_High: 900,
   modalFrame_Body_High: 900,
+  modalFrame_Mask_Top: 999,
+  modalFrame_Body_Top: 999,
   profileImgList_Img: [1, 2, 3, 4],
   profileImgList_Rest: 5,
   secondHeader_Body: 100,

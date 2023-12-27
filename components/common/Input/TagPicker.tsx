@@ -1,8 +1,7 @@
 import { GRAY, VIOLET } from '@/styles/ColorStyles';
 import TagPicker from 'rsuite/TagPicker';
 import styled from 'styled-components';
-import { Z_INDEX } from '@/styles/ZIndexStyles';
-import 'rsuite/dist/rsuite.min.css';
+import 'rsuite/dist/rsuite.css';
 
 interface Props {
   initialValue?: string[];
@@ -16,7 +15,14 @@ function TagPickerCreatable({ initialValue }: Props) {
       }))
     : [];
 
-  return <StyledTagPicker creatable data={data} placeholder="입력 후 Enter" />;
+  return (
+    <StyledTagPicker
+      creatable
+      data={data}
+      menuStyle={{ height: 120, zIndex: 900, overflowY: 'auto' }}
+      placeholder="입력 후 Enter"
+    />
+  );
 }
 
 export default TagPickerCreatable;
@@ -28,10 +34,6 @@ const StyledTagPicker = styled(TagPicker)`
   align-items: center;
   border: 1px solid ${GRAY[30]};
   border-radius: 6px;
-
-  .rs-picker-menu {
-    z-index: ${Z_INDEX['modalFrame_Body_High']};
-  }
 
   &:focus {
     border: 1px solid ${VIOLET[1]};

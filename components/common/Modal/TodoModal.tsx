@@ -7,6 +7,7 @@ import DropDown from '../DropDown/DropDown';
 import Input from '../Input/Input';
 import Textarea from '../Textarea/Textarea';
 import AddProfileImg from '@/components/pages/mypage/AddProfileImg';
+import { useState } from 'react';
 
 interface Props {
   type: modalType;
@@ -43,7 +44,7 @@ function TodoModal({ type, cardInfo, columnLists, initialStatus, memberLists }: 
         <Textarea type="basic" initialValue={cardInfo?.description} />
         <Input type="dueDate" initValue={cardInfo?.dueDate} />
         <Input type="tag" initValue={cardInfo?.tags} />
-        <AddProfileImg profileImgUrl={cardInfo?.imageUrl} />
+        <AddProfileImg type="card" profileImgUrl={cardInfo?.imageUrl} />
       </StyledContainer>
     </ModalFrame>
   );

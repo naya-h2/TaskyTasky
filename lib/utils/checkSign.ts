@@ -8,6 +8,8 @@ import {
   voidTitle,
   voidDueDate,
   voidName,
+  voidUrl,
+  voidEtc,
 } from '../constants/inputErrorMsg';
 
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -67,6 +69,12 @@ export const validateEtc = (type: string, value: string) => {
     return errMsg;
   } else if (type === 'name' && value === '') {
     errMsg = voidName;
+    return errMsg;
+  } else if (type === 'imgUrl' && value === '') {
+    errMsg = voidUrl;
+    return errMsg;
+  } else {
+    errMsg = voidEtc;
     return errMsg;
   }
   return errMsg;

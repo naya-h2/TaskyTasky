@@ -9,6 +9,7 @@ export type modalType =
   | 'dashBoard'
   | 'createTodo'
   | 'editTodo'
+  | 'imgUrl'
   | 'duplicateEmailAlert'
   | 'signUpSuccessAlert'
   | 'signUpFailedAlert';
