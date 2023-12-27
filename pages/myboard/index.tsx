@@ -68,7 +68,11 @@ const inviteData = {
 };
 
 function Myboard() {
-  const { page, setTotal } = useStore((state) => ({ page: state.myboardPageNumber, setTotal: state.calcTotalPage }));
+  const { page, setTotal, search } = useStore((state) => ({
+    page: state.myboardPageNumber,
+    setTotal: state.calcTotalPage,
+    search: state.dashboardSearch,
+  }));
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [invitationList, setInvitationList] = useState<GetInvitationResponseType>({ cursorId: null, invitations: [] });
 
@@ -97,13 +101,12 @@ function Myboard() {
       /**TODO : 무한스크롤
        * 무한스크롤 완료되면 위에 시험 코드들 지울 예정
        */
-      const dashboardData = await getInvitationList(10, null);
-      //console.log(dashboardData);
+      const dashboardData = await getInvitationList(10, null, search);
       setInvitationList(dashboardData);
     };
 
     fetchInviteListData();
-  }, []);
+  }, [search]);
 
   return (
     <>
