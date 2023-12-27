@@ -13,11 +13,11 @@ const _ = require('lodash'); // _.range를 표현하기 위하여 사용
 
 interface Props {
   placeholder: string;
+  initialValue: string;
 }
 
-function Calendar({ placeholder }: Props) {
-  const [selectDate, setSelectDate] = useState<Date | null>(null);
-  console.log(selectDate);
+function Calendar({ placeholder, initialValue }: Props) {
+  const [selectDate, setSelectDate] = useState<Date | null>(new Date(initialValue));
 
   const filterPassedTime = (time: Date) => {
     const currentDate = new Date();

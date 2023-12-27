@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { modalType } from '@/lib/types/zustand';
 import { useStore } from '@/context/stores';
 import ProfileImg from '../Profile/ProfileImg';
-import Textarea from '../Textarea/TextArea';
+import Textarea from '../Textarea/Textarea';
 import { Comment } from '@/lib/types/type';
 import { FONT_12, FONT_14_B } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
@@ -39,7 +39,7 @@ function CommentSingle({ data }: Props) {
           <StyledDate>{data.createdAt}</StyledDate>
         </StyledInformation>
         {isEditing ? (
-          <Textarea isEditing={true} initialValue={commentContent} />
+          <Textarea type="comment" isEditing={true} initialValue={commentContent} />
         ) : (
           <StyledContent>{data.content}</StyledContent>
         )}

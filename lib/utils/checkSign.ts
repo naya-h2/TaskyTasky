@@ -76,27 +76,9 @@ export const validateSignInput = (
   type: string,
   value: string,
   setErrorMessage: (value: SetStateAction<string>) => void,
-  passwordCheck?: string,
 ) => {
-  if (type === 'email') {
-    const errorMsg = validateEmailInput(value);
-    if (errorMsg) {
-      setErrorMessage(errorMsg);
-    }
-  } else if (type === 'password') {
-    const errorMsg = validatePasswordInput(value);
-    if (errorMsg) {
-      setErrorMessage(errorMsg);
-    }
-  } else if (type === 'passwordConfirm' && passwordCheck) {
-    const errorMsg = validatePasswordConfirmInput(passwordCheck, value);
-    if (errorMsg) {
-      setErrorMessage(errorMsg);
-    }
-  } else {
-    const errorMsg = validateEtc(type, value);
-    if (errorMsg) {
-      setErrorMessage(errorMsg);
-    }
+  const errorMsg = validateEtc(type, value);
+  if (errorMsg) {
+    setErrorMessage(errorMsg);
   }
 };

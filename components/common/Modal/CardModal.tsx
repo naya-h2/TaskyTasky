@@ -6,7 +6,7 @@ import { Card } from '@/lib/types/type';
 import ColumnNameChip from '../Chip/ColumnNameChip';
 import Profile from '../Profile/Profile';
 import ChipColor from '../Chip/ChipColor';
-import Textarea from '../Textarea/TextArea';
+import Textarea from '../Textarea/Textarea';
 import CommentCollection from './CommentCollection';
 import { FONT_12, FONT_14 } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
@@ -65,7 +65,7 @@ function ColumnModal({ type, columnTitle, cardInfo, teamId }: Props) {
           <StyledImgWrapper>
             <Image src={cardInfo.imageUrl as string} alt="할일 이미지" fill priority style={{ objectFit: 'cover' }} />
           </StyledImgWrapper>
-          <Textarea isEditing={false} initialValue="" />
+          <Textarea type="comment" isEditing={false} initialValue="" />
           <StyledCommentsArea>
             <CommentCollection teamId={teamId} cardId={cardInfo.id} />
           </StyledCommentsArea>

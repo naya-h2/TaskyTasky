@@ -6,42 +6,57 @@ import ModalPortal from '../Modal/ModalPortal';
 import AlertModal from '../Modal/AlertModal';
 import { modalType } from '@/lib/types/zustand';
 import { useStore } from '@/context/stores';
-import { statusCollection, userCollection } from '@/lib/constants/statusCollection';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
-import ToDoLargeIcon from '@/public/icon/todo_large.svg';
-import OnProgressLargeIcon from '@/public/icon/onProgress_large.svg';
-import DoneLargeIcon from '@/public/icon/done_large.svg';
+import ColumnNameChip from '../Chip/ColumnNameChip';
+import Profile from '../Profile/Profile';
+import { getFilteredUser } from '@/lib/utils/getFilteredUser';
+import { columnLists, memberLists } from '@/lib/types/type';
 
 interface Value {
   status: string;
-  person: string;
+  member: string;
+  memberImage: string;
+  memberId: number;
 }
 
 interface Props {
   anchorRef: RefObject<HTMLElement>;
   setValue: (value: SetStateAction<Value>) => void;
   value: Value;
-  type: 'status' | 'person' | 'kebab';
+  type: 'status' | 'member' | 'kebab';
   handleDropDownClose: () => void;
+  columnLists?: columnLists;
+  memberLists?: memberLists;
 }
 
-function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }: Props) {
+function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose, columnLists, memberLists }: Props) {
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
-  const filteredUser = userCollection.filter((item) => item.name.includes(value.person));
+  const filteredUser = getFilteredUser(type, memberLists, value);
 
-  const handleClickOption = (value: string) => {
+  const handleClickOption = (value: string, img?: string, id?: string) => {
+    const memberId = parseInt(id as string);
     if (type === 'status') {
       setValue((prev) => ({
         ...prev,
         status: value,
       }));
     }
-    if (type === 'person') {
-      setValue((prev) => ({
-        ...prev,
-        person: value,
-      }));
+    if (type === 'member') {
+      if (img) {
+        setValue((prev) => ({
+          ...prev,
+          member: value,
+          memberImage: img,
+        }));
+      } else {
+        setValue((prev) => ({
+          ...prev,
+          member: value,
+          memberImage: '',
+          memberId: memberId,
+        }));
+      }
     }
     handleDropDownClose();
   };
@@ -53,31 +68,34 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose }:
 
   return (
     <ModalPortal container={anchorRef.current}>
-      <StyledWrapperUl $isUser={filteredUser.length} $type={type}>
+      <StyledWrapperUl $isUser={filteredUser ? filteredUser.length : 0} $type={type}>
         {type === 'status' &&
-          statusCollection.map((item) => {
+          columnLists &&
+          columnLists.data.map((item) => {
             return (
-              <StyledWrapperLi key={item.id} onClick={() => handleClickOption(item.type)}>
-                {value.status === item.type ? <CheckIcon /> : <StyledTransparentBox />}
-                {item.type === 'ToDo' && <ToDoLargeIcon />}
-                {item.type === 'OnProgress' && <OnProgressLargeIcon />}
-                {item.type === 'Done' && <DoneLargeIcon />}
+              <StyledWrapperLi key={item.id} onClick={() => handleClickOption(item.title)}>
+                {value.status === item.title ? <CheckIcon /> : <StyledTransparentBox />}
+                <ColumnNameChip content={item.title} />
               </StyledWrapperLi>
             );
           })}
-        {type === 'person' &&
-          value.person &&
+        {type === 'member' &&
+          value.member &&
+          filteredUser &&
           filteredUser.map((item) => {
             return (
-              <StyledWrapperLi key={item.id} onClick={() => handleClickOption(item.name)}>
-                {value.person === item.name ? <CheckIcon /> : <StyledTransparentBox />}
-                {item.name}
+              <StyledWrapperLi
+                key={item.id}
+                onClick={() => handleClickOption(item.nickname, item.profileImageUrl, String(item.id))}
+              >
+                {value.member === item.nickname ? <CheckIcon /> : <StyledTransparentBox />}
+                <Profile type="card" id={item.id} name={item.nickname} profileImg={item.profileImageUrl} />
               </StyledWrapperLi>
             );
           })}
         {type === 'kebab' && (
           <>
-            <StyledModalPopLi>수정하기</StyledModalPopLi>
+            <StyledModalPopLi onClick={() => handleButtonClick('editTodo')}>수정하기</StyledModalPopLi>
             <StyledModalPopLi onClick={() => handleButtonClick('deleteCardAlert')}>삭제하기</StyledModalPopLi>
             {modal[modal.length - 1] === 'deleteCardAlert' && <AlertModal type="deleteCardAlert" />}
           </>
@@ -93,7 +111,7 @@ const StyledWrapperUl = styled.ul<{ $isUser: number; $type: string }>`
   width: ${({ $type }) => ($type === 'kebab' ? '93px' : '217px')};
   padding: ${({ $type }) => ($type === 'kebab' ? '6px' : null)};
   position: absolute;
-  top: ${({ $type }) => ($type === 'kebab' ? '30px' : '55px')};
+  top: ${({ $type }) => ($type === 'kebab' ? '30px' : '88px')};
   right: ${({ $type }) => ($type === 'kebab' ? '10px' : null)};
   background-color: white;
   border: 1px solid ${GRAY[30]};
@@ -101,7 +119,7 @@ const StyledWrapperUl = styled.ul<{ $isUser: number; $type: string }>`
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
   z-index: ${Z_INDEX.modalFrame_Body_Mid};
 
-  ${({ $isUser }) => $isUser || `display: none`};
+  ${({ $isUser, $type }) => $isUser === 0 && $type === 'member' && `display: none`};
 `;
 
 const StyledWrapperLi = styled.li`

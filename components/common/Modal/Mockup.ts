@@ -1,3 +1,97 @@
+export const columnLists = {
+  result: 'SUCCESS',
+  data: [
+    {
+      id: 0,
+      title: 'To Do',
+      teamId: 'ABC',
+      createdAt: '2023-12-26T03:44:58.297Z',
+      updatedAt: '2023-12-26T03:44:58.297Z',
+    },
+    {
+      id: 1,
+      title: 'OnProgress',
+      teamId: 'ABC',
+      createdAt: '2023-12-26T03:44:58.297Z',
+      updatedAt: '2023-12-26T03:44:58.297Z',
+    },
+    {
+      id: 2,
+      title: 'Done',
+      teamId: 'ABC',
+      createdAt: '2023-12-26T03:44:58.297Z',
+      updatedAt: '2023-12-26T03:44:58.297Z',
+    },
+  ],
+};
+
+export const members = {
+  members: [
+    {
+      id: 0,
+      userId: 0,
+      email: 'ahn@naver.com',
+      nickname: '안희원',
+      profileImageUrl: '',
+      createdAt: '2023-12-26T03:44:58.326Z',
+      updatedAt: '2023-12-26T03:44:58.326Z',
+      isOwner: true,
+    },
+    {
+      id: 1,
+      userId: 1,
+      email: 'yoo@naver.com',
+      nickname: '안유진',
+      profileImageUrl: '',
+      createdAt: '2023-12-26T03:44:58.326Z',
+      updatedAt: '2023-12-26T03:44:58.326Z',
+      isOwner: false,
+    },
+    {
+      id: 2,
+      userId: 2,
+      email: 'song@naver.com',
+      nickname: '송규경',
+      profileImageUrl: '',
+      createdAt: '2023-12-26T03:44:58.326Z',
+      updatedAt: '2023-12-26T03:44:58.326Z',
+      isOwner: false,
+    },
+    {
+      id: 3,
+      userId: 3,
+      email: 'ho@naver.com',
+      nickname: '이규호',
+      profileImageUrl: '',
+      createdAt: '2023-12-26T03:44:58.326Z',
+      updatedAt: '2023-12-26T03:44:58.326Z',
+      isOwner: false,
+    },
+    {
+      id: 4,
+      userId: 4,
+      email: 'tae@naver.com',
+      nickname: '이태희',
+      profileImageUrl: '',
+      createdAt: '2023-12-26T03:44:58.326Z',
+      updatedAt: '2023-12-26T03:44:58.326Z',
+      isOwner: false,
+    },
+    {
+      id: 5,
+      userId: 5,
+      email: 'hye@naver.com',
+      nickname: '혜인',
+      profileImageUrl:
+        'data:image/jpeg;base64,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',
+      createdAt: '2023-12-26T03:44:58.326Z',
+      updatedAt: '2023-12-26T03:44:58.326Z',
+      isOwner: false,
+    },
+  ],
+  totalCount: 6,
+};
+
 export const cardInfo = {
   id: 0,
   title: '새로운 일정 관리 Taskify',

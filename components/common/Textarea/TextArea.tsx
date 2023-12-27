@@ -1,19 +1,20 @@
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
-import { FONT_12, FONT_16 } from '@/styles/FontStyles';
-import { VIOLET } from '@/styles/ColorStyles';
+import { FONT_12, FONT_16, FONT_18 } from '@/styles/FontStyles';
+import { BLACK, GRAY, VIOLET } from '@/styles/ColorStyles';
 import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface Props {
-  isEditing: boolean;
-  initialValue: string;
+  type: 'basic' | 'comment';
+  isEditing?: boolean;
+  initialValue?: string | undefined;
 }
 
-function Textarea({ isEditing, initialValue }: Props) {
+function Textarea({ type, isEditing, initialValue }: Props) {
   const [value, setValue] = useState(initialValue);
   const [violet, setViolet] = useState(false);
 
@@ -25,24 +26,38 @@ function Textarea({ isEditing, initialValue }: Props) {
     setViolet(!violet);
   };
 
+  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(e.target.value);
+  };
+
   const handleButtonClick = () => {};
 
   return (
     <StyledWrapper>
-      {isEditing || <StyledLabel>댓글</StyledLabel>}
-      <StyledReactQuill
-        theme="snow"
-        value={value}
-        onChange={setValue}
-        onFocus={handleReactQuillFocus}
-        onBlur={handleReactQuillBlur}
-        $violet={violet}
-      />
-      <StyledButtonWrapper>
-        <Button.Plain style="secondary" roundSize="S" onClick={handleButtonClick}>
-          <StyledButtonText>입력</StyledButtonText>
-        </Button.Plain>
-      </StyledButtonWrapper>
+      {type === 'basic' && (
+        <StyledLabel $type={type} htmlFor={type}>
+          설명 <StyledSpan> *</StyledSpan>
+        </StyledLabel>
+      )}
+      {type === 'basic' && <StyledTextarea value={value} onChange={handleTextareaChange} id={type} />}
+      {type === 'comment' && !isEditing && <StyledLabel $type={type}>댓글</StyledLabel>}
+      {type === 'comment' && (
+        <StyledReactQuill
+          theme="snow"
+          value={value}
+          onChange={setValue}
+          onFocus={handleReactQuillFocus}
+          onBlur={handleReactQuillBlur}
+          $violet={violet}
+        />
+      )}
+      {type === 'comment' && (
+        <StyledButtonWrapper>
+          <Button.Plain style="secondary" roundSize="S" onClick={handleButtonClick}>
+            <StyledButtonText>입력</StyledButtonText>
+          </Button.Plain>
+        </StyledButtonWrapper>
+      )}
     </StyledWrapper>
   );
 }
@@ -58,8 +73,32 @@ const StyledWrapper = styled.div`
   margin-top: 5px;
 `;
 
-const StyledLabel = styled.label`
-  ${FONT_16}
+const StyledLabel = styled.label<{ $type: 'basic' | 'comment' }>`
+  ${({ $type }) => $type === 'comment' && `${FONT_16}`};
+  ${({ $type }) => $type === 'basic' && `${FONT_18}`};
+`;
+
+const StyledSpan = styled.span`
+  color: ${VIOLET[1]};
+  font-size: 1.8rem;
+  font-weight: 500;
+`;
+
+const StyledTextarea = styled.textarea`
+  width: 100%;
+  min-height: 96px;
+  border-radius: 6px;
+  border: 1px solid ${GRAY[30]};
+  background-color: white;
+  padding: 15px;
+  color: ${BLACK[2]};
+  ${FONT_16};
+  font-weight: 400;
+  resize: none;
+
+  &:focus {
+    border: 1px solid ${VIOLET[1]};
+  }
 `;
 
 const StyledReactQuill = styled(ReactQuill)<{ $violet: boolean }>`

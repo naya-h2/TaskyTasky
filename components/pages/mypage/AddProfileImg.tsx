@@ -1,17 +1,18 @@
+import Image from 'next/image';
 import styled, { css } from 'styled-components';
 import { GRAY, WHITE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import Image from 'next/image';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 
 interface Props {
-  profileImgUrl: string;
+  profileImgUrl: string | undefined;
 }
 
 function AddProfileImg({ profileImgUrl }: Props) {
   return (
     <StyledProfileImgBox $url={profileImgUrl}>
       <StyledMask />
+      {/* <input type="file" onChange={} /> */}
       <StyledAddButton src="/icon/add_Fillo.svg" alt="프로필 이미지 수정하기" width={30} height={30} />
     </StyledProfileImgBox>
   );
@@ -23,7 +24,7 @@ const noProfileImg = css`
   background-color: ${GRAY[15]};
 `;
 
-const StyledProfileImgBox = styled.div<{ $url: string }>`
+const StyledProfileImgBox = styled.div<{ $url: string | undefined }>`
   width: 182px;
   height: 182px;
 

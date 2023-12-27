@@ -56,10 +56,11 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
               <Button.Plain style="primary" roundSize="L" onClick={btnFnc} isNotActive={disabledBtn}>
                 <StyledButtonText>
                   {type === 'manageColumn' && '변경'}
-                  {(type === 'createColumn' || type === 'dashBoard') && '생성'}
+                  {(type === 'createColumn' || type === 'dashBoard' || type === 'createTodo') && '생성'}
                   {(type === 'deleteColumnAlert' || type === 'deleteCardAlert' || type === 'deleteCommentAlert') &&
                     '삭제'}
                   {type === 'incorrectPWAlert' && '확인'}
+                  {type === 'editTodo' && '수정'}
                 </StyledButtonText>
               </Button.Plain>
             </StyledButtonWrapper>
@@ -88,7 +89,10 @@ const StyledMask = styled.div<{ $height: 'Low' | 'Mid' | 'High' }>`
 `;
 
 const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High'; $type: modalType }>`
-  width: ${({ $type }) => ($type === 'card' ? '730px' : '540px')};
+  width: 540px;
+  ${({ $type }) => $type === 'card' && 'width: 730px'};
+  ${({ $type }) => ($type === 'editTodo' || $type === 'createTodo') && 'width: 506px'};
+
   padding: ${({ $type }) =>
     $type === 'incorrectPWAlert' || $type === 'deleteCardAlert' || $type === 'deleteColumnAlert'
       ? '26px 28px 32px 28px'
