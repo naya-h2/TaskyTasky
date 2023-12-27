@@ -3,12 +3,12 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GRAY, WHITE } from '@/styles/ColorStyles';
 import SearchIcon from '@/public/icon/search.svg';
 import InviteList from './InviteList';
-import { InvitationList } from '@/lib/types/type';
 import { FONT_16, FONT_20_B, FONT_24_B } from '@/styles/FontStyles';
 import NullInviteList from './NullInviteList';
+import { GetInvitationResponseType } from '@/lib/types/invitations';
 
 interface Props {
-  inviteList: InvitationList;
+  inviteList: GetInvitationResponseType;
 }
 
 function InviteDash({ inviteList }: Props) {
@@ -44,18 +44,18 @@ function InviteDash({ inviteList }: Props) {
 export default InviteDash;
 
 const Container = styled.div`
-  width: 950px;
+  width: 100%;
   height: 600px;
   padding-top: 32px;
   background-color: ${[WHITE]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    width: 504px;
+    /* width: 504px; */
     height: 592px;
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 260px;
+    /* width: 260px; */
     height: 836px;
   }
 `;
@@ -76,7 +76,7 @@ const InviteInputLayout = styled.div`
     padding: 0 16px;
   }
 `;
-const InviteDashInputWrap = styled.div`
+const InviteDashInputWrap = styled.form`
   border: 1px solid ${GRAY[30]};
   border-radius: 6px;
   display: flex;

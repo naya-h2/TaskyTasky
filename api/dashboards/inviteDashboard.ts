@@ -1,10 +1,17 @@
+import instance from '@/lib/axios';
 import { PostDashboardInvitationRequestType } from '@/lib/types/dashboards';
-import axios from 'axios';
 
 /**
  * 대시보드 초대하기
  */
 export const inviteDashboard = async (dashboardId: number, data: PostDashboardInvitationRequestType) => {
-  const response = await axios.post(`/api/dashboards/${dashboardId}/invitations`, data);
-  return response.data;
+  try {
+    const response = await instance.post(`/api/dashboards/${dashboardId}/invitations`, data);
+    alert('초대 성공 ><!');
+    return response.data;
+  } catch (error: any) {
+    const errorMsg = error.response.data.message;
+    console.log(errorMsg);
+    return errorMsg;
+  }
 };
