@@ -1,10 +1,12 @@
-import { Invitation } from '@/lib/types/type';
 import { GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_16, FONT_14, FONT_12 } from '@/styles/FontStyles';
 import { styled } from 'styled-components';
 import { BLUE, GREEN, ORANGE, PINK, PURPLE } from '@/styles/ColorStyles';
 import Button from '../Button';
+import { editInvitation } from '@/api/invitations/editInvitation';
+import { InvitationType } from '@/lib/types/invitations';
+import { useEffect, useState } from 'react';
 
 const CHIP_COLOR = {
   green: GREEN,
@@ -14,11 +16,24 @@ const CHIP_COLOR = {
   pink: PINK[1],
 };
 
+const ALERT_MSG = {
+  invitationAccept: '초대를 수락하였습니다.',
+  invitationReject: '초대를 거절하였습니다.',
+};
+
 interface Props {
-  invite: Invitation;
+  invite: InvitationType;
 }
 
 function InviteList({ invite }: Props) {
+  const handleInvitationClick = async (name: string, isAccept: boolean) => {
+    await editInvitation(`${invite.id}`, { inviteAccepted: isAccept });
+    const invitationInfo = `[ ${name} ]`;
+    const msg = (isAccept ? ALERT_MSG.invitationAccept : ALERT_MSG.invitationReject) + '\n' + invitationInfo;
+    alert(msg);
+    window.location.reload();
+  };
+
   return (
     <InviteWrap>
       <InviteContainer>
@@ -33,12 +48,20 @@ function InviteList({ invite }: Props) {
         </InviterName>
         <ButtonGroup>
           <ButtonLayout>
-            <Button.Plain style="primary" roundSize="S">
+            <Button.Plain
+              style="primary"
+              roundSize="S"
+              onClick={() => handleInvitationClick(invite.dashboard.title, true)}
+            >
               <ButtonText>수락</ButtonText>
             </Button.Plain>
           </ButtonLayout>
           <ButtonLayout>
-            <Button.Plain style="secondary" roundSize="S">
+            <Button.Plain
+              style="secondary"
+              roundSize="S"
+              onClick={() => handleInvitationClick(invite.dashboard.title, false)}
+            >
               <ButtonText>거절</ButtonText>
             </Button.Plain>
           </ButtonLayout>

@@ -21,12 +21,12 @@ export interface InvitationType {
 }
 
 export interface GetInvitationResponseType {
-  cursorId: number;
-  invitations: InvitationType;
+  cursorId: number | null;
+  invitations: InvitationType[];
 }
 
 export interface PutInvitationRequestType {
-  inviteeAccepted: boolean;
+  inviteAccepted: boolean;
 }
 
 export interface PutInvitationResponseType extends InvitationType {}

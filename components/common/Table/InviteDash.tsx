@@ -3,18 +3,38 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GRAY, WHITE } from '@/styles/ColorStyles';
 import SearchIcon from '@/public/icon/search.svg';
 import InviteList from './InviteList';
-import { InvitationList } from '@/lib/types/type';
 import { FONT_16, FONT_20_B, FONT_24_B } from '@/styles/FontStyles';
 import NullInviteList from './NullInviteList';
+import { GetInvitationResponseType } from '@/lib/types/invitations';
+import { useForm } from 'react-hook-form';
+import { useStore } from '@/context/stores';
+import RefreshIcon from '@/public/icon/close_circle.svg';
+import { FormEvent, useRef, useState } from 'react';
+import Image from 'next/image';
 
 interface Props {
-  inviteList: InvitationList;
+  inviteList: GetInvitationResponseType;
 }
 
 function InviteDash({ inviteList }: Props) {
   const { cursorId, invitations } = inviteList;
+  const { search, setDashboardSearch } = useStore((state) => ({
+    setDashboardSearch: state.setDashboardSearch,
+    search: state.dashboardSearch,
+  }));
+  const inputValue = useRef<HTMLInputElement>(null);
 
-  if (invitations.length === 0) {
+  const handleSearchSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    if (inputValue.current) setDashboardSearch(inputValue.current.value);
+  };
+
+  const handleRefreshClick = () => {
+    setDashboardSearch('');
+    if (inputValue.current) inputValue.current.value = '';
+  };
+
+  if (invitations.length === 0 && !search) {
     return <NullInviteList />;
   }
 
@@ -22,9 +42,18 @@ function InviteDash({ inviteList }: Props) {
     <Container>
       <InviteDashTitle> 초대받은 대시보드</InviteDashTitle>
       <InviteInputLayout>
-        <InviteDashInputWrap>
+        <InviteDashInputWrap onSubmit={handleSearchSubmit}>
           <Search />
-          <SearchInput />
+          <SearchInput ref={inputValue} placeholder="대시보드 이름을 검색해보세요." />
+          {search && (
+            <StyledRefreshIcon
+              alt="검색 모드 취소"
+              src="/icon/close_circle.svg"
+              width={25}
+              height={25}
+              onClick={handleRefreshClick}
+            />
+          )}
         </InviteDashInputWrap>
       </InviteInputLayout>
       <InviteListHead>
@@ -44,18 +73,18 @@ function InviteDash({ inviteList }: Props) {
 export default InviteDash;
 
 const Container = styled.div`
-  width: 950px;
+  width: 100%;
   height: 600px;
   padding-top: 32px;
   background-color: ${[WHITE]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    width: 504px;
+    /* width: 504px; */
     height: 592px;
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 260px;
+    /* width: 260px; */
     height: 836px;
   }
 `;
@@ -76,11 +105,6 @@ const InviteInputLayout = styled.div`
     padding: 0 16px;
   }
 `;
-const InviteDashInputWrap = styled.div`
-  border: 1px solid ${GRAY[30]};
-  border-radius: 6px;
-  display: flex;
-`;
 
 const Search = styled(SearchIcon)`
   width: 24px;
@@ -90,6 +114,27 @@ const Search = styled(SearchIcon)`
 
 const SearchInput = styled.input`
   width: 100%;
+  padding-right: 40px;
+
+  border-radius: 6px;
+`;
+
+const StyledRefreshIcon = styled(Image)`
+  position: absolute;
+  right: 6px;
+  top: 8px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const InviteDashInputWrap = styled.form`
+  border: 1px solid ${GRAY[30]};
+  border-radius: 6px;
+  display: flex;
+
+  position: relative;
 `;
 
 const InviteContent = styled.div`

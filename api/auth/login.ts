@@ -7,7 +7,7 @@ export const login = async (data: Login) => {
     if (response.status === 201) window.localStorage.setItem('login', response.data.accessToken);
     alert('로그인 성공!');
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     const errorMsg = error.response.data.message;
     console.log(errorMsg);
     return errorMsg;

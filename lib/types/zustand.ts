@@ -16,9 +16,11 @@ export interface ModalState {
 }
 
 export interface myboardPageState {
+  dashboardSearch: string;
   myboardTotalPage: number;
   myboardPageNumber: number;
-  calcTotalPage: (prev: number) => void;
+  calcTotalPage: (totalDataNum: number) => void;
   increasePage: (prev: number) => void;
   decreasePage: (prev: number) => void;
+  setDashboardSearch: (word: string) => void;
 }
