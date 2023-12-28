@@ -7,32 +7,11 @@ import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useForm } from 'react-hook-form';
 import { login } from '@/api/auth/login';
-import { editPassword } from '@/api/auth/editPassword';
-
-export const ERROR_MSG = {
-  emptyEmail: '이메일을 입력해주세요.',
-  emptyPassword: '비밀번호를 입력해주세요.',
-  invalidEmail: '올바른 이메일 주소가 아닙니다.',
-  invalidPassword: '비밀번호는 영문, 숫자 조합 8자 이상 입력해 주세요.',
-  wrongEmail: '이메일을 확인해주세요.',
-  wrongPassword: '비밀번호를 확인해주세요.',
-  notEqualPassword: '비밀번호가 일치하지 않아요.',
-  duplicatedEmail: '이미 존재하는 이메일입니다.',
-};
-
-export const emailRules = {
-  required: ERROR_MSG.emptyEmail,
-  pattern: {
-    value: /[0-9a-zA-Z]*@[0-9a-zA-Z]*\.[a-zA-Z]{2,3}$/i,
-    message: ERROR_MSG.invalidEmail,
-  },
-};
-
-export const signInPwRules = {
-  required: ERROR_MSG.emptyPassword,
-};
+import { emailRules, signInPwRules } from '@/lib/constants/inputErrorRules';
+import { useRouter } from 'next/router';
 
 function Login() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -40,12 +19,25 @@ function Login() {
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
 
+  async function handleLogin(data: any) {
+    try {
+      // 로그인 API 호출
+      await login({ email: data.email, password: data.password });
+      alert('로그인에 성공했습니다!');
+      router.push('/');
+    } catch (error: any) {
+        alert(error.message);
+      }
+    }
+
   return (
     <StyledRoot>
       <StyledContainer>
-        <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
+        <Link href="/">
+          <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
+        </Link>
         <StyledWord>오늘도 만나서 반가워요!</StyledWord>
-        <StyledForm onSubmit={handleSubmit((data) => login({ email: data.email, password: data.password }))}>
+        <StyledForm onSubmit={handleSubmit(handleLogin)}>
           <Input type="email" register={register('email', emailRules)} error={errors.email} />
           <Input type="password" isPassword register={register('password', signInPwRules)} error={errors.password} />
           <StyledButtonWrapper>

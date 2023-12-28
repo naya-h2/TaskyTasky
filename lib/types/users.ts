@@ -7,13 +7,13 @@ export interface UserType {
   updatedAt: string;
 }
 
-export interface PostSignupRequestType {
+export interface PostSignUpRequestType {
   email: string;
   nickname: string;
   password: string;
 }
 
-export interface PostSignupResponseType extends UserType {}
+export interface PostSignUpResponseType extends UserType {}
 
 export interface GetUserInfoResponseType extends UserType {}
 
