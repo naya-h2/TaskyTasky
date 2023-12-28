@@ -1,4 +1,4 @@
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 내가 받은 초대 목록 조회
@@ -6,8 +6,12 @@ import axios from 'axios';
  * @param cursorId
  * @param title
  */
-export const getInvitationList = async (size: number, cursorId: number, title: string) => {
-  const response = await axios.get(`/api/invitations?size=${size}&cursorId=${cursorId}&title=${title}`);
-  console.log(response);
+export const getInvitationList = async (size: number, cursorId: number | null, title?: string) => {
+  let path = `/api/invitations?size=${size}`;
+  path += cursorId ? `&cursorId=${cursorId}` : '';
+  path += title ? `&title=${title}` : '';
+
+  const response = await instance.get(path);
+
   return response.data;
 };

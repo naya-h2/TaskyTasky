@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import ButtonBase, { BaseProps } from '../ButtonBase';
 import AddChip from '@/components/common/Chip/AddChip';
 
-export function AddButton({ roundSize, children }: BaseProps) {
+export function AddButton({ roundSize, children, onClick }: BaseProps) {
   return (
-    <ButtonBase style="outline" roundSize={roundSize}>
+    <ButtonBase style="outline" roundSize={roundSize} onClick={onClick}>
       <StyledLayout>
         {children}
         <AddChip />

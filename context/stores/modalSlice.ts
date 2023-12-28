@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { ModalState } from '@/lib/types/zustand';
+import { ModalState, myboardPageState } from '@/lib/types/zustand';
 
 export const createModalSlice: StateCreator<ModalState> = (set) => ({
   modals: [],

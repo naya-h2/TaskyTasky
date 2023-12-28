@@ -16,7 +16,7 @@ interface Props {
   type: modalType;
   title?: string;
   children: ReactNode;
-  btnFnc: () => void;
+  btnFnc?: () => void;
 }
 
 function ModalFrame({ height, type, title, children, btnFnc }: Props) {

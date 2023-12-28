@@ -105,7 +105,7 @@ const StyledSettingButton = styled.button`
   cursor: pointer;
 `;
 
-const StyledBtnWrapper = styled.button`
+const StyledBtnWrapper = styled.div`
   width: 100%;
   max-width: 314px;
   height: 40px;

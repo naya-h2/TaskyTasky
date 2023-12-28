@@ -17,3 +17,13 @@ export interface ModalState {
   hideModal: (type: modalType) => void;
   clearModal: () => void;
 }
+
+export interface myboardPageState {
+  dashboardSearch: string;
+  myboardTotalPage: number;
+  myboardPageNumber: number;
+  calcTotalPage: (totalDataNum: number) => void;
+  increasePage: (prev: number) => void;
+  decreasePage: (prev: number) => void;
+  setDashboardSearch: (word: string) => void;
+}
