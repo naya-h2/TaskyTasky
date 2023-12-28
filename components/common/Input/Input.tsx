@@ -35,11 +35,12 @@ function Input({
 
   return (
     <>
-      <StyledContainer $type={type === 'email' || type === 'password' || type === 'passwordConfirm' || type === 'nickname' ? true : false}>
-        <StyledLabel
-          $bold={type === 'dueDate' || type === 'title' || type === 'tag' ? true : false}
-          htmlFor={type}
-        >
+      <StyledContainer
+        $type={
+          type === 'email' || type === 'password' || type === 'passwordConfirm' || type === 'nickname' ? true : false
+        }
+      >
+        <StyledLabel $bold={type === 'dueDate' || type === 'title' || type === 'tag' ? true : false} htmlFor={type}>
           {label} {type === 'title' && <StyledSpan> *</StyledSpan>}
         </StyledLabel>
         {type === 'dueDate' ? (
