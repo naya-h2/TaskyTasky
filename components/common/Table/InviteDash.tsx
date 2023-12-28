@@ -17,7 +17,7 @@ interface Props {
 }
 
 function InviteDash({ inviteList }: Props) {
-  const { cursorId, invitations } = inviteList;
+  const { invitations } = inviteList;
   const { search, setDashboardSearch } = useStore((state) => ({
     setDashboardSearch: state.setDashboardSearch,
     search: state.dashboardSearch,
@@ -40,27 +40,26 @@ function InviteDash({ inviteList }: Props) {
 
   return (
     <Container>
-      <InviteDashTitle> 초대받은 대시보드</InviteDashTitle>
-      <InviteInputLayout>
-        <InviteDashInputWrap onSubmit={handleSearchSubmit}>
-          <Search />
-          <SearchInput ref={inputValue} placeholder="대시보드 이름을 검색해보세요." />
-          {search && (
-            <StyledRefreshIcon
-              alt="검색 모드 취소"
-              src="/icon/close_circle.svg"
-              width={25}
-              height={25}
-              onClick={handleRefreshClick}
-            />
-          )}
-        </InviteDashInputWrap>
-      </InviteInputLayout>
+      <InviteDashTitle>초대받은 대시보드</InviteDashTitle>
+      <InviteDashInputWrap onSubmit={handleSearchSubmit}>
+        <Search />
+        <SearchInput ref={inputValue} placeholder="대시보드 이름을 검색해보세요." />
+        {search && (
+          <StyledRefreshIcon
+            alt="검색 모드 취소"
+            src="/icon/close_circle.svg"
+            width={25}
+            height={25}
+            onClick={handleRefreshClick}
+          />
+        )}
+      </InviteDashInputWrap>
       <InviteListHead>
         <Subject>이름</Subject>
         <Subject>초대자</Subject>
         <Subject>수락여부</Subject>
       </InviteListHead>
+      {!invitations.length && search && <StyledNoSearch>검색 결과가 없습니다.</StyledNoSearch>}
       <InviteContent>
         {invitations.map((list) => (
           <InviteList key={list.id} invite={list} />
@@ -74,35 +73,19 @@ export default InviteDash;
 
 const Container = styled.div`
   width: 100%;
-  height: 600px;
-  padding-top: 32px;
+  min-height: 400px;
+  padding: 32px 28px 0;
+
   background-color: ${[WHITE]};
 
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    /* width: 504px; */
-    height: 592px;
-  }
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    /* width: 260px; */
-    height: 836px;
-  }
+  border-radius: 16px;
 `;
 
 const InviteDashTitle = styled.div`
-  ${[FONT_24_B]}
-  padding: 0 28px;
+  ${[FONT_24_B]};
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     ${[FONT_20_B]}
-    padding: 0 16px;
-  }
-`;
-const InviteInputLayout = styled.div`
-  margin: 20px 0 24px;
-  padding: 0 28px;
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding: 0 16px;
   }
 `;
 
@@ -130,11 +113,21 @@ const StyledRefreshIcon = styled(Image)`
 `;
 
 const InviteDashInputWrap = styled.form`
+  margin: 20px 0 4px;
+
   border: 1px solid ${GRAY[30]};
   border-radius: 6px;
   display: flex;
 
   position: relative;
+
+  &:focus-within {
+    box-shadow: 0px 0px 5px ${GRAY[30]};
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 5px ${GRAY[30]};
+  }
 `;
 
 const InviteContent = styled.div`
@@ -142,22 +135,12 @@ const InviteContent = styled.div`
 `;
 
 const InviteListHead = styled.div`
-  display: flex;
-  padding: 20px 32px;
+  padding: 20px 28px 0;
   color: ${GRAY[40]};
 
-  & > div:nth-child(1) {
-    flex-basis: 38%;
-    @media (max-width: ${DEVICE_SIZE.tablet}) {
-      flex-basis: 41%;
-    }
-  }
-  & > div:nth-child(2) {
-    flex-basis: 41%;
-    @media (max-width: ${DEVICE_SIZE.tablet}) {
-      flex-basis: 25%;
-    }
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     display: none;
   }
@@ -165,4 +148,16 @@ const InviteListHead = styled.div`
 
 const Subject = styled.div`
   ${[FONT_16]};
+`;
+
+const StyledNoSearch = styled.div`
+  width: 100%;
+  height: 180px;
+
+  ${[FONT_16]};
+  color: ${GRAY[50]};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 
 const ROUND_SIZE = {
+  XL: '12px',
   L: '8px',
   M: '6px',
   S: '4px',
@@ -10,16 +11,23 @@ const ROUND_SIZE = {
 
 export interface BaseProps {
   style?: 'primary' | 'secondary' | 'outline';
-  roundSize: 'L' | 'M' | 'S';
+  roundSize: 'XL' | 'L' | 'M' | 'S';
   isNotActive?: boolean;
   children?: ReactNode;
   onClick?: () => void;
-  type?: "button" | "reset" | "submit";
+  type?: 'button' | 'reset' | 'submit';
 }
 
 function ButtonBase({ style = 'outline', roundSize, isNotActive = false, children, onClick, type }: BaseProps) {
   return (
-    <StyledButtonBase $style={style} $isNotActive={isNotActive} $roundSize={roundSize} onClick={onClick} type={type}>
+    <StyledButtonBase
+      $style={style}
+      $isNotActive={isNotActive}
+      $roundSize={roundSize}
+      onClick={onClick}
+      type={type}
+      disabled={isNotActive}
+    >
       {children}
     </StyledButtonBase>
   );
@@ -72,7 +80,7 @@ export const outline = css`
 const StyledButtonBase = styled.button<{
   $style: 'primary' | 'secondary' | 'outline';
   $isNotActive: boolean;
-  $roundSize: 'L' | 'M' | 'S';
+  $roundSize: 'XL' | 'L' | 'M' | 'S';
 }>`
   width: 100%;
   height: 100%;

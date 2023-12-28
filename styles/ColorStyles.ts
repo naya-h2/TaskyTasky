@@ -17,6 +17,7 @@ export const VIOLET = {
   1: '#5534DA',
   2: '#4826CF',
   8: '#F1EFFD',
+  9: '#F6F4FF',
 };
 
 export const PINK = {

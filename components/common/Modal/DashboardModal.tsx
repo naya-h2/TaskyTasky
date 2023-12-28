@@ -1,26 +1,31 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { modalType } from '@/lib/types/zustand';
 import Input from '../Input/Input';
 import ModalFrame from './ModalFrame';
-import { GREEN, PURPLE, ORANGE, BLUE, PINK } from '@/styles/ColorStyles';
 import DashBoardColor from '../Chip/DashBoardColor';
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, useForm, useWatch } from 'react-hook-form';
 import { createDashboard } from '@/api/dashboards/createDashboard';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/context/stores';
+import { ERROR_MSG } from '@/lib/constants/inputErrorMsg';
 
 interface Props {
   type: modalType;
 }
 
 function DashboardModal({ type }: Props) {
-  const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
-  const initialColor = colors[0];
-  const [color, setColor] = useState(initialColor);
-  const { hideModal } = useStore((state) => ({ hideModal: state.hideModal }));
-  const { register, handleSubmit } = useForm();
   const { push } = useRouter();
+  const [color, setColor] = useState('');
+  const { hideModal } = useStore((state) => ({ hideModal: state.hideModal }));
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
+  const nameValue = watch('newDashboard');
+  const isAllSelected = nameValue && color;
 
   const addNewDashboard = async (data: FieldValues) => {
     const body = { title: data.newDashboard, color };
@@ -36,9 +41,14 @@ function DashboardModal({ type }: Props) {
         title={'새로운 대시보드'}
         height="Low"
         btnFnc={handleSubmit((data) => addNewDashboard(data))}
+        disabledBtn={!isAllSelected}
       >
         <form onSubmit={handleSubmit((data) => addNewDashboard(data))}>
-          <Input type="dashboard" register={register('newDashboard')} />
+          <Input
+            type="dashboard"
+            register={register('newDashboard', { required: ERROR_MSG.emptyDashboardName })}
+            error={errors.newDashboard}
+          />
           <StyledColorWrapper>
             <DashBoardColor selectedColor={color} setSelectedColor={setColor} />
           </StyledColorWrapper>

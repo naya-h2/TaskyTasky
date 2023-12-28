@@ -2,19 +2,9 @@ import { GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_16, FONT_14, FONT_12 } from '@/styles/FontStyles';
 import { styled } from 'styled-components';
-import { BLUE, GREEN, ORANGE, PINK, PURPLE } from '@/styles/ColorStyles';
 import Button from '../Button';
 import { editInvitation } from '@/api/invitations/editInvitation';
 import { InvitationType } from '@/lib/types/invitations';
-import { useEffect, useState } from 'react';
-
-const CHIP_COLOR = {
-  green: GREEN,
-  purple: PURPLE,
-  orange: ORANGE,
-  blue: BLUE,
-  pink: PINK[1],
-};
 
 const ALERT_MSG = {
   invitationAccept: '초대를 수락하였습니다.',
@@ -37,7 +27,6 @@ function InviteList({ invite }: Props) {
   return (
     <InviteWrap>
       <InviteContainer>
-        <StyledChip $color="green" />
         <InviteDashLayout>
           <InviteInformation>이름</InviteInformation>
           <InviteData>{invite.dashboard.title}</InviteData>
@@ -79,32 +68,14 @@ const InviteWrap = styled.div`
 `;
 
 const InviteContainer = styled.div`
-  display: flex;
   padding: 0px 28px;
   align-items: center;
-  & > div:nth-child(1) {
-    @media (max-width: ${DEVICE_SIZE.tablet}) {
-      flex-basis: 3%;
-    }
-    @media (max-width: ${DEVICE_SIZE.mobile}) {
-      display: none;
-    }
-  }
-  & > div:nth-child(2) {
-    flex-basis: 36%;
 
-    @media (max-width: ${DEVICE_SIZE.tablet}) {
-      flex-basis: 60%;
-    }
-  }
-  & > div:nth-child(3) {
-    flex-basis: 40%;
-  }
-  & > div:nth-child(4) {
-    flex-basis: 20%;
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
@@ -116,13 +87,7 @@ const InviteDashLayout = styled.div`
   display: flex;
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     margin-bottom: 10px;
-
-    & > div:nth-child(1) {
-      flex-basis: 30%;
-    }
-    & > div:nth-child(2) {
-      flex-basis: 70%;
-    }
+    gap: 28px;
   }
 `;
 
@@ -130,25 +95,7 @@ const InviterName = styled.div`
   display: flex;
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     margin-bottom: 16px;
-
-    & > div:nth-child(1) {
-      flex-basis: 30%;
-    }
-    & > div:nth-child(2) {
-      flex-basis: 70%;
-    }
-  }
-`;
-
-const StyledChip = styled.div<{ $color: 'green' | 'purple' | 'orange' | 'blue' | 'pink' }>`
-  margin-right: 16px;
-  width: 8px;
-  height: 8px;
-  background-color: ${({ $color }) => `${CHIP_COLOR[$color]}`};
-  border-radius: 100%;
-
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    margin-right: 12px;
+    gap: 16px;
   }
 `;
 

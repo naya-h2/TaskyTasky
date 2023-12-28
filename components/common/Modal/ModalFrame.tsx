@@ -17,9 +17,10 @@ interface Props {
   title?: string;
   children: ReactNode;
   btnFnc?: () => void;
+  disabledBtn?: boolean;
 }
 
-function ModalFrame({ height, type, title, children, btnFnc }: Props) {
+function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false }: Props) {
   const modal = useStore((state) => state.modals);
   const clearModal = useStore((state) => state.clearModal);
   const hideModal = useStore((state) => state.hideModal);
@@ -52,7 +53,7 @@ function ModalFrame({ height, type, title, children, btnFnc }: Props) {
               </StyledButtonWrapper>
             )}
             <StyledButtonWrapper>
-              <Button.Plain style="primary" roundSize="L" onClick={btnFnc}>
+              <Button.Plain style="primary" roundSize="L" onClick={btnFnc} isNotActive={disabledBtn}>
                 <StyledButtonText>
                   {type === 'manageColumn' && '변경'}
                   {(type === 'createColumn' || type === 'dashBoard') && '생성'}
