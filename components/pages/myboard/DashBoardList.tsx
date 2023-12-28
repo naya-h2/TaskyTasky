@@ -33,7 +33,7 @@ function DashBoardList({ data }: Props) {
       <StyledLayout>
         <StyledBoardList>
           <StyledButtonWrapper>
-            <Button.Add roundSize="L" onClick={handleDashboardAdd}>
+            <Button.Add roundSize="XL" onClick={handleDashboardAdd}>
               <StyledButtonText>새로운 대시보드</StyledButtonText>
             </Button.Add>
           </StyledButtonWrapper>
@@ -41,7 +41,7 @@ function DashBoardList({ data }: Props) {
             data.map((dashboard) => (
               <Link href={`/board/${dashboard.id}`} key={dashboard.id}>
                 <StyledButtonWrapper>
-                  <Button.DashBoard isOwner={dashboard.createdByMe} chipColor={dashboard.color} roundSize="L">
+                  <Button.DashBoard isOwner={dashboard.createdByMe} chipColor={dashboard.color} roundSize="XL">
                     <StyledButtonText>{dashboard.title}</StyledButtonText>
                   </Button.DashBoard>
                 </StyledButtonWrapper>

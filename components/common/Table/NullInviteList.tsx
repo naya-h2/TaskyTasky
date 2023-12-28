@@ -21,20 +21,13 @@ function NullInviteList() {
 export default NullInviteList;
 
 const Wrapper = styled.div`
-  width: 1022px;
+  width: 100%;
   height: 400px;
   padding: 32px 28px;
-  border-radius: 8px;
+  border-radius: 16px;
   background-color: ${[WHITE]};
 
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    width: 504px;
-    height: 400px;
-  }
-
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 260px;
-    height: 400px;
     padding: 24px 16px;
   }
 `;

@@ -17,7 +17,7 @@ interface Props {
 }
 
 function InviteDash({ inviteList }: Props) {
-  const { cursorId, invitations } = inviteList;
+  const { invitations } = inviteList;
   const { search, setDashboardSearch } = useStore((state) => ({
     setDashboardSearch: state.setDashboardSearch,
     search: state.dashboardSearch,
@@ -59,6 +59,7 @@ function InviteDash({ inviteList }: Props) {
         <Subject>초대자</Subject>
         <Subject>수락여부</Subject>
       </InviteListHead>
+      {!invitations.length && search && <StyledNoSearch>검색 결과가 없습니다.</StyledNoSearch>}
       <InviteContent>
         {invitations.map((list) => (
           <InviteList key={list.id} invite={list} />
@@ -72,6 +73,7 @@ export default InviteDash;
 
 const Container = styled.div`
   width: 100%;
+  min-height: 400px;
   padding: 32px 28px 0;
 
   background-color: ${[WHITE]};
@@ -118,6 +120,14 @@ const InviteDashInputWrap = styled.form`
   display: flex;
 
   position: relative;
+
+  &:focus-within {
+    box-shadow: 0px 0px 5px ${GRAY[30]};
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 5px ${GRAY[30]};
+  }
 `;
 
 const InviteContent = styled.div`
@@ -138,4 +148,16 @@ const InviteListHead = styled.div`
 
 const Subject = styled.div`
   ${[FONT_16]};
+`;
+
+const StyledNoSearch = styled.div`
+  width: 100%;
+  height: 180px;
+
+  ${[FONT_16]};
+  color: ${GRAY[50]};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

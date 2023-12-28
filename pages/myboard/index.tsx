@@ -12,60 +12,6 @@ import { getInvitationList } from '@/api/invitations/getInvitationList';
 import { inviteDashboard } from '@/api/dashboards/inviteDashboard';
 import { GetInvitationResponseType } from '@/lib/types/invitations';
 
-const inviteData = {
-  cursorId: 123,
-  invitations: [
-    {
-      id: 1,
-      inviterUserId: 2,
-      teamId: 'team-10',
-      dashboard: {
-        title: '프로덕트 디자인',
-        id: 234,
-      },
-      invitee: {
-        nickname: '손동희',
-        id: 2,
-      },
-      inviteAccepted: true,
-      createdAt: '2023-12-20T04:38:51.003Z',
-      updatedAt: '2023-12-20T04:38:51.003Z',
-    },
-    {
-      id: 2,
-      inviterUserId: 3,
-      teamId: 'team-8',
-      dashboard: {
-        title: '새로운 기획 문서',
-        id: 234,
-      },
-      invitee: {
-        nickname: '안귀영',
-        id: 3,
-      },
-      inviteAccepted: true,
-      createdAt: '2023-12-20T04:38:51.003Z',
-      updatedAt: '2023-12-20T04:38:51.003Z',
-    },
-    {
-      id: 3,
-      inviterUserId: 3,
-      teamId: 'team-8',
-      dashboard: {
-        title: '유닛A',
-        id: 234,
-      },
-      invitee: {
-        nickname: '장혁',
-        id: 3,
-      },
-      inviteAccepted: true,
-      createdAt: '2023-12-20T04:38:51.003Z',
-      updatedAt: '2023-12-20T04:38:51.003Z',
-    },
-  ],
-};
-
 function Myboard() {
   const { page, setTotal, search } = useStore((state) => ({
     page: state.myboardPageNumber,
@@ -95,7 +41,7 @@ function Myboard() {
       // const data4 = await inviteDashboard(483, { email: 'test@codeit.com' });
 
       /**TODO : 무한스크롤
-       * 무한스크롤 완료되면 위에 시험 코드들 지울 예정
+       * 초대하기 기능 완료되면 위에 시험 코드들 지울 예정
        */
       const dashboardData = await getInvitationList(10, null, search);
       setInvitationList(dashboardData);

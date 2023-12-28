@@ -45,7 +45,7 @@ const StyledWrapper = styled.div`
   width: 300px;
   height: 1550px;
   padding: 20px 24px;
-  /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 0 0 0; */
+  /* box-shadow: 15px 0 15px -15px ${GRAY[30]}; */ //사이드메뉴 접었다 열었다..하고싶다..
   border-right: 1px solid ${GRAY[30]};
   position: fixed;
   left: 0;
