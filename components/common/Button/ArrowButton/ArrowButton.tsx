@@ -13,7 +13,7 @@ interface Props {
 
 export function ArrowButton({ type, isNotActive = false, onClick }: Props) {
   return (
-    <StyledArrowButton $type={type} $isNotActive={isNotActive} onClick={onClick}>
+    <StyledArrowButton $type={type} $isNotActive={isNotActive} onClick={onClick} disabled={isNotActive}>
       {type === 'left' ? <BackwordIcon /> : <ForwordIcon />}
     </StyledArrowButton>
   );

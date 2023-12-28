@@ -14,12 +14,19 @@ export interface BaseProps {
   isNotActive?: boolean;
   children?: ReactNode;
   onClick?: () => void;
-  type?: "button" | "reset" | "submit";
+  type?: 'button' | 'reset' | 'submit';
 }
 
 function ButtonBase({ style = 'outline', roundSize, isNotActive = false, children, onClick, type }: BaseProps) {
   return (
-    <StyledButtonBase $style={style} $isNotActive={isNotActive} $roundSize={roundSize} onClick={onClick} type={type}>
+    <StyledButtonBase
+      $style={style}
+      $isNotActive={isNotActive}
+      $roundSize={roundSize}
+      onClick={onClick}
+      type={type}
+      disabled={isNotActive}
+    >
       {children}
     </StyledButtonBase>
   );
