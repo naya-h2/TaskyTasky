@@ -6,7 +6,10 @@ export type modalType =
   | 'deleteColumnAlert'
   | 'deleteCardAlert'
   | 'deleteCommentAlert'
-  | 'dashBoard';
+  | 'dashBoard'
+  | 'duplicateEmailAlert'
+  | 'signUpSuccessAlert'
+  | 'signUpFailedAlert'
 
 export interface ModalState {
   modals: modalType[];

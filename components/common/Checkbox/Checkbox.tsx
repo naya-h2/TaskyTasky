@@ -2,15 +2,19 @@ import { useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { FONT_16 } from '@/styles/FontStyles';
 
-interface CheckboxProps {
+interface Props {
   label: string;
+  onChange: () => void;
 }
 
-function Checkbox({ label }: CheckboxProps) {
+function Checkbox({ label, onChange }: Props) {
   const [checked, setChecked] = useState(false);
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
+    if(onChange) {
+      onChange();
+    }
   };
 
   return (

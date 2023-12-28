@@ -10,7 +10,7 @@ import EyeOff from '@/public/icon/visibility_off.svg';
 import EyeOn from '@/public/icon/visibility.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
-interface InputProps {
+interface Props {
   type: 'email' | 'password' | 'passwordConfirm' | 'title' | 'dueDate' | 'tag' | 'nickname' | 'name' | 'dashboard';
   isPassword?: boolean;
   passwordCheck?: string;
@@ -22,14 +22,10 @@ interface InputProps {
 function Input({
   type, // email, password, passwordConfirm 중 어떤 타입인지
   isPassword, // isPassword가 true라면 눈모양 아이콘이 보이도록
-  passwordCheck, // passwordConfirm으로 쓰일 경우, password와 passwordConfirm이 같은지 확인하는 것 (password 값)
-  setPassword, // 비밀번호가 setter 프로퍼티
   register,
   error,
-}: InputProps) {
+}: Props) {
   const [passwordInvisible, setPasswordInvisible] = useState(true);
-  const [value, setValue] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const placeholder = getPlaceholder(type);
   const label = getInputLabel(type);
 
@@ -37,27 +33,11 @@ function Input({
     setPasswordInvisible((prev) => !prev);
   };
 
-  const handleInputFocusOut = () => {
-    if (passwordCheck) {
-      validateSignInput(type, value, setErrorMessage, passwordCheck);
-    } else {
-      validateSignInput(type, value, setErrorMessage);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-    setErrorMessage('');
-    if (setPassword && type === 'password') {
-      setPassword(e.target.value);
-    }
-  };
-
   return (
     <>
-      <StyledContainer $type={type === 'email' || type === 'password' || type === 'passwordConfirm' ? true : false}>
+      <StyledContainer $type={type === 'email' || type === 'password' || type === 'passwordConfirm' || type === 'nickname' ? true : false}>
         <StyledLabel
-          $bold={type === 'dueDate' || type === 'title' || type === 'tag' || type === 'nickname' ? true : false}
+          $bold={type === 'dueDate' || type === 'title' || type === 'tag' ? true : false}
           htmlFor={type}
         >
           {label} {type === 'title' && <StyledSpan> *</StyledSpan>}
@@ -80,9 +60,6 @@ function Input({
                   ? 'password'
                   : 'text'
             }
-            // value={value}
-            // onChange={handleInputChange}
-            onBlur={handleInputFocusOut}
             $error={error}
             {...register}
           />
@@ -93,7 +70,7 @@ function Input({
           ) : (
             <StyledEyeOnIcon alt="비밀번호 보이기 아이콘" onClick={togglePasswordIcon} />
           ))}
-        {error && <StyledErrorMessage className="errorMessage">{error.message}</StyledErrorMessage>}
+        {error && <StyledErrorMessage>{error.message}</StyledErrorMessage>}
       </StyledContainer>
     </>
   );
