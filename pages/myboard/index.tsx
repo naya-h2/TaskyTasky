@@ -10,7 +10,6 @@ import { DashboardType } from '@/lib/types/dashboards';
 import { useStore } from '@/context/stores';
 import { getInvitationList } from '@/api/invitations/getInvitationList';
 import { inviteDashboard } from '@/api/dashboards/inviteDashboard';
-import { login } from '@/api/auth/login';
 import { GetInvitationResponseType } from '@/lib/types/invitations';
 
 const inviteData = {
@@ -88,15 +87,12 @@ function Myboard() {
 
   useEffect(() => {
     const fetchInviteListData = async () => {
-      //login
-      //const lg = login({ email: 'test@codeit.com', password: '1234asdf!' });
-      //const lg = login({ email: 'spfe01032@codeit.kr', password: 'asdf1234' });
       //대시보드 초대
-      // const data = await inviteDashboard(351, { email: 'test@codeit.com' });
-      // const data1 = await inviteDashboard(350, { email: 'test@codeit.com' });
-      // const data2 = await inviteDashboard(348, { email: 'test@codeit.com' });
-      // const data3 = await inviteDashboard(347, { email: 'test@codeit.com' });
-      // const data4 = await inviteDashboard(346, { email: 'test@codeit.com' });
+      // const data = await inviteDashboard(487, { email: 'test@codeit.com' });
+      // const data1 = await inviteDashboard(486, { email: 'test@codeit.com' });
+      // const data2 = await inviteDashboard(485, { email: 'test@codeit.com' });
+      // const data3 = await inviteDashboard(484, { email: 'test@codeit.com' });
+      // const data4 = await inviteDashboard(483, { email: 'test@codeit.com' });
 
       /**TODO : 무한스크롤
        * 무한스크롤 완료되면 위에 시험 코드들 지울 예정

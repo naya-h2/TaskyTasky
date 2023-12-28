@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { GRAY } from './ColorStyles';
+import { VIOLET } from './ColorStyles';
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -19,7 +19,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html{
-    background-color: ${GRAY[10]};
+    background-color: ${VIOLET[9]};
   }
 
   html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
