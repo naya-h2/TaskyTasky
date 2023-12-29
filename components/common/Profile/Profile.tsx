@@ -16,9 +16,13 @@ function Profile({ type, id, name, profileImg }: Props) {
   return (
     <StyledContainer $type={type}>
       <ProfileImg url={profileImg} size={38} name={name} id={id} />
-      <StyledLink href="/mypage">
+      {type === 'header' ? (
+        <StyledLink href="/mypage">
+          <StyledName $type={type}>{name}</StyledName>
+        </StyledLink>
+      ) : (
         <StyledName $type={type}>{name}</StyledName>
-      </StyledLink>
+      )}
     </StyledContainer>
   );
 }

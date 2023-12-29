@@ -1,7 +1,9 @@
 // Auth
 
+import { UserType } from './users';
+
 export interface Auth {
-  user: User;
+  user: UserType;
   accessToken: string;
 }
 
@@ -72,7 +74,7 @@ export interface Column {
 }
 
 export interface CheckColumn {
-  result: 'SUCCESS'; // ???????????????
+  result: string; // ???????????????
   data: Column[];
 }
 
@@ -187,4 +189,45 @@ export interface Member {
   createdAt: string;
   updatedAt: string;
   isOwner: boolean;
+}
+
+export type InputType =
+  | 'email'
+  | 'password'
+  | 'passwordConfirm'
+  | 'title'
+  | 'dueDate'
+  | 'tag'
+  | 'nickname'
+  | 'name'
+  | 'dashboard'
+  | 'imgUrl'
+  | 'etc';
+
+export interface columnList {
+  id: number;
+  title: string;
+  teamId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface columnLists {
+  result: string;
+  data: columnList[];
+}
+
+export interface memberList {
+  id: number;
+  userId: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
+}
+export interface memberLists {
+  members: memberList[];
+  totalCount: number;
 }

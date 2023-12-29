@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { GRAY, VIOLET, RED, BLACK } from '@/styles/ColorStyles';
 import { FONT_16, FONT_14 } from '@/styles/FontStyles';
@@ -6,31 +6,51 @@ import Calendar from './Calendar';
 import { validateSignInput } from '@/lib/utils/checkSign';
 import { getPlaceholder } from '@/lib/utils/getPlaceholder';
 import { getInputLabel } from '@/lib/utils/getInputLabel';
+import { InputType } from '@/lib/types/type';
 import EyeOff from '@/public/icon/visibility_off.svg';
 import EyeOn from '@/public/icon/visibility.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import TagPickerCreatable from './TagPicker';
 
-interface Props {
-  type: 'email' | 'password' | 'passwordConfirm' | 'title' | 'dueDate' | 'tag' | 'nickname' | 'name' | 'dashboard';
+interface InputProps {
+  type: InputType;
   isPassword?: boolean;
-  passwordCheck?: string;
-  setPassword?: (value: string) => void;
   register?: any;
   error?: any;
+  isHookForm?: boolean;
+  initPlaceholder?: string;
+  initLabel?: string;
+  initValue?: string[] | string;
 }
 
 function Input({
-  type, // email, password, passwordConfirm 중 어떤 타입인지
+  type,
   isPassword, // isPassword가 true라면 눈모양 아이콘이 보이도록
   register,
   error,
-}: Props) {
+  isHookForm,
+  initPlaceholder,
+  initLabel,
+  initValue,
+}: InputProps) {
+  const initialValue = initValue ? initValue : '';
   const [passwordInvisible, setPasswordInvisible] = useState(true);
-  const placeholder = getPlaceholder(type);
-  const label = getInputLabel(type);
+  const [value, setValue] = useState(initialValue);
+  const [errorMessage, setErrorMessage] = useState('');
+  const placeholder = initPlaceholder ? initPlaceholder : getPlaceholder(type);
+  const label = initLabel ? initLabel : getInputLabel(type);
 
   const togglePasswordIcon = () => {
     setPasswordInvisible((prev) => !prev);
+  };
+
+  const handleInputFocusOut = () => {
+    validateSignInput(type, value as string, setErrorMessage);
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    setErrorMessage('');
   };
 
   return (
@@ -44,25 +64,33 @@ function Input({
           {label} {type === 'title' && <StyledSpan> *</StyledSpan>}
         </StyledLabel>
         {type === 'dueDate' ? (
-          <Calendar placeholder={placeholder} />
+          <Calendar placeholder={placeholder} initialValue={value as string} />
+        ) : type === 'tag' ? (
+          <TagPickerCreatable initialValue={value as string[]} />
+        ) : isHookForm ? (
+          <StyledInputBox
+            id={type}
+            placeholder={placeholder}
+            type={
+              type === 'password' || type === 'passwordConfirm' ? (passwordInvisible ? 'password' : 'text') : 'text'
+            }
+            // value={value}
+            // onChange={handleInputChange}
+            onBlur={handleInputFocusOut}
+            $error={error}
+            {...register}
+          />
         ) : (
           <StyledInputBox
             id={type}
             placeholder={placeholder}
             type={
-              type === 'email' ||
-              type === 'title' ||
-              type === 'tag' ||
-              type === 'nickname' ||
-              type === 'name' ||
-              type === 'dashboard'
-                ? 'text'
-                : passwordInvisible
-                  ? 'password'
-                  : 'text'
+              type === 'password' || type === 'passwordConfirm' ? (passwordInvisible ? 'password' : 'text') : 'text'
             }
-            $error={error}
-            {...register}
+            value={value}
+            onChange={handleInputChange}
+            onBlur={handleInputFocusOut}
+            $error={errorMessage}
           />
         )}
         {isPassword &&
@@ -71,7 +99,8 @@ function Input({
           ) : (
             <StyledEyeOnIcon alt="비밀번호 보이기 아이콘" onClick={togglePasswordIcon} />
           ))}
-        {error && <StyledErrorMessage>{error.message}</StyledErrorMessage>}
+        {isHookForm && error && <StyledErrorMessage>{error.message}</StyledErrorMessage>}
+        {isHookForm || (errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>)}
       </StyledContainer>
     </>
   );

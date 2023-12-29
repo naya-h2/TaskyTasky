@@ -7,9 +7,12 @@ export type modalType =
   | 'deleteCardAlert'
   | 'deleteCommentAlert'
   | 'dashBoard'
+  | 'createTodo'
+  | 'editTodo'
+  | 'imgUrl'
   | 'duplicateEmailAlert'
   | 'signUpSuccessAlert'
-  | 'signUpFailedAlert'
+  | 'signUpFailedAlert';
 
 export interface ModalState {
   modals: modalType[];

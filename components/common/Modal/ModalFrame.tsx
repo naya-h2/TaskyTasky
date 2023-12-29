@@ -12,7 +12,7 @@ import { BLACK } from '@/styles/ColorStyles';
 import { modalType } from '@/lib/types/zustand';
 
 interface Props {
-  height: 'Low' | 'Mid' | 'High';
+  height: 'Low' | 'Mid' | 'High' | 'Top';
   type: modalType;
   title?: string;
   children: ReactNode;
@@ -56,10 +56,11 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
               <Button.Plain style="primary" roundSize="L" onClick={btnFnc} isNotActive={disabledBtn}>
                 <StyledButtonText>
                   {type === 'manageColumn' && '변경'}
-                  {(type === 'createColumn' || type === 'dashBoard') && '생성'}
+                  {(type === 'createColumn' || type === 'dashBoard' || type === 'createTodo') && '생성'}
                   {(type === 'deleteColumnAlert' || type === 'deleteCardAlert' || type === 'deleteCommentAlert') &&
                     '삭제'}
-                  {type === 'incorrectPWAlert' && '확인'}
+                  {(type === 'incorrectPWAlert' || type === 'imgUrl') && '확인'}
+                  {type === 'editTodo' && '수정'}
                 </StyledButtonText>
               </Button.Plain>
             </StyledButtonWrapper>
@@ -72,7 +73,7 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
 
 export default ModalFrame;
 
-const StyledMask = styled.div<{ $height: 'Low' | 'Mid' | 'High' }>`
+const StyledMask = styled.div<{ $height: 'Low' | 'Mid' | 'High' | 'Top' }>`
   width: 100vw;
   height: 100vh;
 
@@ -82,13 +83,27 @@ const StyledMask = styled.div<{ $height: 'Low' | 'Mid' | 'High' }>`
   ${(props) => props.$height === 'Low' && `z-index: ${Z_INDEX.modalFrame_Mask_Low}`};
   ${(props) => props.$height === 'Mid' && `z-index: ${Z_INDEX.modalFrame_Mask_Mid}`};
   ${(props) => props.$height === 'High' && `z-index: ${Z_INDEX.modalFrame_Mask_High}`};
+  ${(props) => props.$height === 'Top' && `z-index: ${Z_INDEX.modalFrame_Mask_Top}`};
 
   background-color: black;
   opacity: 0.4;
 `;
 
-const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High'; $type: modalType }>`
-  width: ${({ $type }) => ($type === 'card' ? '730px' : '540px')};
+const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High' | 'Top'; $type: modalType }>`
+  width: 540px;
+  ${({ $type }) =>
+    ($type === 'card' || $type === 'editTodo' || $type === 'createTodo') &&
+    `
+    width: 720px;
+    height: 650px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `};
+  ${({ $type }) => ($type === 'editTodo' || $type === 'createTodo') && 'width: 506px'};
+
   padding: ${({ $type }) =>
     $type === 'incorrectPWAlert' || $type === 'deleteCardAlert' || $type === 'deleteColumnAlert'
       ? '26px 28px 32px 28px'
@@ -103,6 +118,7 @@ const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High'; $type: modalTyp
   ${(props) => props.$height === 'Low' && `z-index: ${Z_INDEX.modalFrame_Body_Low}`};
   ${(props) => props.$height === 'Mid' && `z-index: ${Z_INDEX.modalFrame_Body_Mid}`};
   ${(props) => props.$height === 'High' && `z-index: ${Z_INDEX.modalFrame_Body_High}`};
+  ${(props) => props.$height === 'Top' && `z-index: ${Z_INDEX.modalFrame_Body_Top}`};
 
   border-radius: 8px;
   background: white;
