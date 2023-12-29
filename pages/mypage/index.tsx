@@ -14,7 +14,7 @@ function MyPage() {
 
   return (
     <>
-      <Header page="others">계정관리</Header>
+      <Header page="myboard">계정관리</Header>
       <SideMenu data={dashboardData.dashboards} />
       <StyledBody>
         <StyledContainer>
@@ -31,6 +31,9 @@ function MyPage() {
 
 export default MyPage;
 
+/**
+ * TODO: 컴포넌트로 따로 빼고 & 애니메이션 & 링크 설정
+ */
 function BackButton() {
   return (
     <StyledBackWrapper>
@@ -78,5 +81,5 @@ const StyledBackText = styled.div`
 const StyledCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
 `;
