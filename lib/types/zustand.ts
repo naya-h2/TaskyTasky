@@ -12,7 +12,8 @@ export type modalType =
   | 'imgUrl'
   | 'duplicateEmailAlert'
   | 'signUpSuccessAlert'
-  | 'signUpFailedAlert';
+  | 'signUpFailedAlert'
+  | 'customAlert';
 
 export interface ModalState {
   modals: modalType[];

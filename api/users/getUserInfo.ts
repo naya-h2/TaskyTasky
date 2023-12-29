@@ -5,6 +5,5 @@ import instance from '@/lib/axios';
  */
 export const getUserInfo = async () => {
   const response = await instance.get(`/api/users/me`);
-  console.log(response);
   return response.data;
 };

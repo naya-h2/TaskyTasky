@@ -10,7 +10,12 @@ import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useForm } from 'react-hook-form';
 import { createUser } from '@/api/users/createUser';
-import { emailRules, nicknameRules, signUpPasswordRules, signUpPasswordCheckRules } from '@/lib/constants/inputErrorRules';
+import {
+  emailRules,
+  nicknameRules,
+  signUpPasswordRules,
+  signUpPasswordCheckRules,
+} from '@/lib/constants/inputErrorRules';
 import { ERROR_MSG } from '@/lib/constants/inputErrorMsg';
 import { PostSignUpRequestType } from '@/lib/types/users';
 
@@ -20,9 +25,10 @@ function SignUp() {
   const {
     register,
     handleSubmit,
-    getValues,
+    watch,
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
+  const passwordValue = watch('password');
   const isButtonActive = Object.keys(errors).length === 0 && isChecked;
 
   const onSubmit = async (data: any) => {
@@ -30,7 +36,7 @@ function SignUp() {
       // 회원 생성 API 호출
       const result = await createUser(data);
       alert('회원가입에 성공했습니다!');
-      router.push('/myboard'); 
+      router.push('/myboard');
     } catch (error: any) {
       alert(error.message);
     }
@@ -39,34 +45,35 @@ function SignUp() {
   return (
     <StyledRoot>
       <StyledContainer>
-        <Link href='/'>
+        <Link href="/">
           <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
         </Link>
         <StyledWord>첫 방문을 환영합니다!</StyledWord>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <Input type="email" register={register('email', emailRules)} error={errors.email} />
           <Input type="nickname" register={register('nickname', nicknameRules)} error={errors.nickname} />
-          <Input type="password" isPassword register={register('password', signUpPasswordRules)} error={errors.password} />
+          <Input
+            type="password"
+            isPassword
+            register={register('password', signUpPasswordRules)}
+            error={errors.password}
+          />
           <Input
             type="passwordConfirm"
             isPassword
-            register={register('passwordCheck', signUpPasswordCheckRules(getValues))}
+            register={register('passwordCheck', signUpPasswordCheckRules(passwordValue))}
             error={errors.passwordCheck}
           />
           <Checkbox label="이용약관에 동의합니다." onChange={() => setIsChecked(!isChecked)} />
           <StyledButtonWrapper>
-            <Button.Plain 
-              type="submit"
-              style="primary" 
-              roundSize="L" 
-              isNotActive={!isButtonActive}>
+            <Button.Plain type="submit" style="primary" roundSize="L" isNotActive={!isButtonActive}>
               가입하기
             </Button.Plain>
           </StyledButtonWrapper>
           <StyledWrapper>
             이미 가입하셨나요? <Link href="/login">로그인하기</Link>
           </StyledWrapper>
-          </StyledForm>
+        </StyledForm>
       </StyledContainer>
     </StyledRoot>
   );

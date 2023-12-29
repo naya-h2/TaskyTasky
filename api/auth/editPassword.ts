@@ -11,8 +11,6 @@ export const editPassword = async (data: PutPasswordRequestType) => {
     console.log(response);
     return response.data;
   } catch (error) {
-    const errorMsg = error.response.data.message;
-    console.log(errorMsg);
-    return errorMsg;
+    return error.response;
   }
 };

@@ -3,12 +3,18 @@ import { modalType } from '@/lib/types/zustand';
 import ModalFrame from './ModalFrame';
 import { BLACK } from '@/styles/ColorStyles';
 import { FONT_18 } from '@/styles/FontStyles';
+import { ReactNode } from 'react';
+import { useStore } from '@/context/stores';
 
 interface Props {
   type: modalType;
+  children?: ReactNode;
 }
 
-function AlertModal({ type }: Props) {
+function AlertModal({ type, children }: Props) {
+  const { hideModal } = useStore((state) => ({
+    hideModal: state.hideModal,
+  }));
   const getErrorMsg = (type: modalType): string | undefined => {
     let errorMsg;
     switch (type) {
@@ -39,12 +45,16 @@ function AlertModal({ type }: Props) {
     return errorMsg;
   };
 
-  const handleButtonClick = () => {};
+  const handleButtonClick = (type: string) => {
+    if (type === 'customAlert') {
+      hideModal(type);
+    }
+  };
 
   return (
-    <ModalFrame type={type} title={''} height="High" btnFnc={handleButtonClick}>
+    <ModalFrame type={type} title={''} height="High" btnFnc={() => handleButtonClick(type)}>
       <ErrorMsgBox>
-        <ErrorMsg>{getErrorMsg(type)}</ErrorMsg>
+        <ErrorMsg>{type === 'customAlert' ? children : getErrorMsg(type)}</ErrorMsg>
       </ErrorMsgBox>
     </ModalFrame>
   );
@@ -53,7 +63,7 @@ function AlertModal({ type }: Props) {
 export default AlertModal;
 
 const ErrorMsgBox = styled.div`
-  padding: 20px 0;
+  padding: 32px 0 16px;
 `;
 
 const ErrorMsg = styled.h1`

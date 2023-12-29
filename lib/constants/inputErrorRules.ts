@@ -28,7 +28,6 @@ export const signUpPasswordRules = {
   },
 };
 
-export const signUpPasswordCheckRules = (getValues: any) => ({
-  required: ERROR_MSG.notEqualPassword,
-  validate: (value: any) => value === getValues('password') || ERROR_MSG.notEqualPassword,
+export const signUpPasswordCheckRules = (target: any) => ({
+  validate: (value: any) => value === target || ERROR_MSG.notEqualPassword,
 });

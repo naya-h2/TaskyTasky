@@ -1,20 +1,18 @@
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import ProfileCard from '@/components/pages/mypage/ProfileCard';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_16 } from '@/styles/FontStyles';
-import styled from 'styled-components';
-import BackwordIcon from '@/public/icon/arrow_backward.svg';
-import { USER1 } from '@/lib/constants/mockup';
 import PasswordCard from '@/components/pages/mypage/PasswordCard';
-import dashboardData from '@/components/common/SideMenu/mock';
-import { useEffect, useState } from 'react';
 import { getUserInfo } from '@/api/users/getUserInfo';
 import { UserType } from '@/lib/types/users';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { FONT_16 } from '@/styles/FontStyles';
+import BackwordIcon from '@/public/icon/arrow_backward.svg';
+import dashboardData from '@/components/common/SideMenu/mock';
 
 function MyPage() {
   const [userData, setUserData] = useState<UserType>();
-  //const data = USER1;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -25,8 +23,6 @@ function MyPage() {
     fetchUser();
   }, []);
 
-  console.log(userData);
-
   return (
     <>
       <Header page="myboard">계정관리</Header>
@@ -35,12 +31,8 @@ function MyPage() {
         <StyledContainer>
           <BackButton />
           <StyledCardWrapper>
-            {userData && (
-              <>
-                <ProfileCard data={userData} />
-                <PasswordCard />
-              </>
-            )}
+            {userData && <ProfileCard data={userData} />}
+            <PasswordCard />
           </StyledCardWrapper>
         </StyledContainer>
       </StyledBody>
