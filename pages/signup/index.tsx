@@ -11,6 +11,8 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useForm } from 'react-hook-form';
 import { createUser } from '@/api/users/createUser';
 import { emailRules, nicknameRules, signUpPasswordRules, signUpPasswordCheckRules } from '@/lib/constants/inputErrorRules';
+import { ERROR_MSG } from '@/lib/constants/inputErrorMsg';
+import { PostSignUpRequestType } from '@/lib/types/users';
 
 function SignUp() {
   const [isChecked, setIsChecked] = useState(false);
@@ -25,12 +27,11 @@ function SignUp() {
 
   const onSubmit = async (data: any) => {
     try {
-      // 유저 생성 API 호출
+      // 회원 생성 API 호출
       const result = await createUser(data);
       alert('회원가입에 성공했습니다!');
-      router.push('/'); 
+      router.push('/myboard'); 
     } catch (error: any) {
-      // 에러 처리: error.message를 사용하여 에러를 확인합니다.
       alert(error.message);
     }
   };
