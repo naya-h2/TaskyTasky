@@ -7,10 +7,10 @@ import { FONT_14_B, FONT_18 } from '@/styles/FontStyles';
 
 interface Props {
   type: 'card' | 'myPage';
-  profileImgUrl: string | undefined;
+  profileImgUrl: string | undefined | null;
 }
 
-function AddProfileImg({ type, profileImgUrl }: Props) {
+function AddProfileImg({ type = 'myPage', profileImgUrl }: Props) {
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
 

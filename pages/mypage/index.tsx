@@ -8,9 +8,24 @@ import BackwordIcon from '@/public/icon/arrow_backward.svg';
 import { USER1 } from '@/lib/constants/mockup';
 import PasswordCard from '@/components/pages/mypage/PasswordCard';
 import dashboardData from '@/components/common/SideMenu/mock';
+import { useEffect, useState } from 'react';
+import { getUserInfo } from '@/api/users/getUserInfo';
+import { UserType } from '@/lib/types/users';
 
 function MyPage() {
-  const data = USER1;
+  const [userData, setUserData] = useState<UserType>();
+  //const data = USER1;
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const data = await getUserInfo();
+      setUserData(data);
+    };
+
+    fetchUser();
+  }, []);
+
+  console.log(userData);
 
   return (
     <>
@@ -20,8 +35,12 @@ function MyPage() {
         <StyledContainer>
           <BackButton />
           <StyledCardWrapper>
-            <ProfileCard data={data} />
-            <PasswordCard />
+            {userData && (
+              <>
+                <ProfileCard data={userData} />
+                <PasswordCard />
+              </>
+            )}
           </StyledCardWrapper>
         </StyledContainer>
       </StyledBody>

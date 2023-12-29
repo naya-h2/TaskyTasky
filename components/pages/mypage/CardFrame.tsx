@@ -8,17 +8,19 @@ import styled from 'styled-components';
 interface Props {
   children: ReactNode;
   title: string;
+  buttonDisabled: boolean;
   buttonText: string;
+  handleClickFunc?: () => void;
 }
 
-function CardFrame({ children, title, buttonText }: Props) {
+function CardFrame({ children, title, buttonDisabled, buttonText, handleClickFunc }: Props) {
   return (
     <StyledBody>
       <StyledTitle>{title}</StyledTitle>
       <StyledInfoSection>{children}</StyledInfoSection>
       <StyledButtonSection>
         <StyledButtonWrapper>
-          <Button.Plain style="primary" roundSize="S">
+          <Button.Plain style="primary" roundSize="S" onClick={handleClickFunc} isNotActive={buttonDisabled}>
             {buttonText}
           </Button.Plain>
         </StyledButtonWrapper>
@@ -48,6 +50,8 @@ const StyledTitle = styled.div`
 `;
 
 const StyledInfoSection = styled.div`
+  min-height: 227px;
+
   display: flex;
   align-items: center;
   gap: 16px;

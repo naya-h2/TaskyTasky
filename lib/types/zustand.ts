@@ -30,3 +30,8 @@ export interface myboardPageState {
   decreasePage: (prev: number) => void;
   setDashboardSearch: (word: string) => void;
 }
+
+export interface profileImgState {
+  profileUrl: string;
+  setProfileUrl: (src: string) => void;
+}

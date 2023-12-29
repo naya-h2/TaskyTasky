@@ -11,7 +11,7 @@ export interface InviteeType {
 
 export interface InvitationType {
   id: number;
-  inviterUserId: number;
+  inviter: InviteeType;
   teamId: string;
   dashboard: DashboardSimpleType;
   invitee: InviteeType;

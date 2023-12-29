@@ -11,7 +11,7 @@ export const emailRules = {
 export const nicknameRules = {
   required: ERROR_MSG.emptyNickname,
   pattern: {
-    value: /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/,
+    value: /^(?=.*[a-zA-Z0-9가-힣])[a-zA-Z0-9가-힣]{2,16}$/,
     message: ERROR_MSG.invalidNickname,
   },
 };
@@ -30,5 +30,5 @@ export const signUpPasswordRules = {
 
 export const signUpPasswordCheckRules = (getValues: any) => ({
   required: ERROR_MSG.notEqualPassword,
-  validate: (value: any) => value === getValues('password') || ERROR_MSG.notEqualPassword
+  validate: (value: any) => value === getValues('password') || ERROR_MSG.notEqualPassword,
 });
