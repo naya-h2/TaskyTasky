@@ -1,10 +1,10 @@
 import { PostColumnRequestType } from '@/lib/types/columns';
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 칼럼 생성
  */
 export const createColumn = async (data: PostColumnRequestType) => {
-  const response = await axios.post('/api/columns', data);
+  const response = await instance.post('/api/columns', data);
   return response.data;
 };

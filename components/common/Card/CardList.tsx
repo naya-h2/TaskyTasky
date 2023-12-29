@@ -11,13 +11,14 @@ import CountChip from '../Chip/CountChip';
 interface Props {
   label: String;
   cardList: CheckCard;
+  onClickAddCard: () => void;
 }
 
 /**
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({ label, cardList }: Props) {
+function CardList({ label, cardList, onClickAddCard }: Props) {
   const { totalCount, cards } = cardList;
 
   return (
@@ -33,7 +34,7 @@ function CardList({ label, cardList }: Props) {
         </StyledSettingButton>
       </StyledTop>
       <StyledBtnWrapper>
-        <Button.Add roundSize="M"></Button.Add>
+        <Button.Add roundSize="M" onClick={onClickAddCard} />
       </StyledBtnWrapper>
       {cards.map((card) => (
         <Card key={card.id} card={card} />

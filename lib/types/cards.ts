@@ -24,7 +24,7 @@ export interface PostCardRequestType {
   description: string;
   dueDate: string;
   tags: string[];
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface PostCardResponseType extends CardType {}
