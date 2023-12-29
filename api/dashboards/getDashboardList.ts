@@ -16,7 +16,11 @@ export const getDashboardList = async (
   let query = '';
   if (cursorId) query += `cursorId=${cursorId}`;
   if (page) query += `page=${page}`;
+<<<<<<< HEAD
   const response = await authInstance.get(`/api/dashboards?navigationMethod=${navigationMethod}&size=${size}&${query}`);
+=======
+  const response = await instance.get(`/api/dashboards?navigationMethod=${navigationMethod}&size=${size}&${query}`);
+>>>>>>> 6398922 (Feat: 새컬럼추가 API 연결 완료)
 
   return response.data;
 };
