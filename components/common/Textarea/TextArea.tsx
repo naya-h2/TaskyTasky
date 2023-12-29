@@ -11,10 +11,11 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 interface Props {
   type: 'basic' | 'comment';
   isEditing?: boolean;
-  initialValue?: string | undefined;
+  initValue?: string | undefined;
 }
 
-function Textarea({ type, isEditing, initialValue }: Props) {
+function Textarea({ type, isEditing, initValue }: Props) {
+  const initialValue = initValue ? initValue : '';
   const [value, setValue] = useState(initialValue);
   const [violet, setViolet] = useState(false);
 
@@ -39,7 +40,9 @@ function Textarea({ type, isEditing, initialValue }: Props) {
           설명 <StyledSpan> *</StyledSpan>
         </StyledLabel>
       )}
-      {type === 'basic' && <StyledTextarea value={value} onChange={handleTextareaChange} id={type} />}
+      {type === 'basic' && (
+        <StyledTextarea value={value} onChange={handleTextareaChange} id={type} placeholder="내용을 입력해 주세요" />
+      )}
       {type === 'comment' && !isEditing && <StyledLabel $type={type}>댓글</StyledLabel>}
       {type === 'comment' && (
         <StyledReactQuill
@@ -96,9 +99,10 @@ const StyledTextarea = styled.textarea`
   ${FONT_16};
   font-weight: 400;
   resize: none;
+  outline: none;
 
   &:focus {
-    border: 1px solid ${VIOLET[1]};
+    border: 2px solid ${VIOLET[1]};
   }
 `;
 

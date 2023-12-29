@@ -27,7 +27,7 @@ export default function Test() {
       {modal.length > 0 && <CardModal type={'card'} cardInfo={cardInfo} columnTitle="To Do" teamId="tenten" />}
       {modal[modal.length - 1] === 'deleteCardAlert' && <AlertModal type={'deleteCardAlert'} />}
       {modal[modal.length - 1] === 'deleteCommentAlert' && <AlertModal type={'deleteCommentAlert'} />}
-      {modal[modal.length - 1] === 'createTodo' && <TodoModal type={'createTodo'} />}
+      {modal[modal.length - 1] === 'createTodo' && <TodoModal type={'createTodo'} memberLists={members} />}
       {modal.includes('editTodo') && (
         <TodoModal
           type={'editTodo'}

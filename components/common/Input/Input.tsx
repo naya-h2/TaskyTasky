@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { GRAY, VIOLET, RED, BLACK } from '@/styles/ColorStyles';
 import { FONT_16, FONT_14 } from '@/styles/FontStyles';
@@ -17,6 +17,7 @@ interface InputProps {
   isPassword?: boolean;
   register?: any;
   error?: any;
+  isHookForm?: boolean;
   initPlaceholder?: string;
   initLabel?: string;
   initValue?: string[] | string;
@@ -27,6 +28,7 @@ function Input({
   isPassword, // isPassword가 true라면 눈모양 아이콘이 보이도록
   register,
   error,
+  isHookForm,
   initPlaceholder,
   initLabel,
   initValue,
@@ -46,7 +48,7 @@ function Input({
     validateSignInput(type, value as string, setErrorMessage);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     setErrorMessage('');
   };
@@ -65,6 +67,19 @@ function Input({
           <Calendar placeholder={placeholder} initialValue={value as string} />
         ) : type === 'tag' ? (
           <TagPickerCreatable initialValue={value as string[]} />
+        ) : isHookForm ? (
+          <StyledInputBox
+            id={type}
+            placeholder={placeholder}
+            type={
+              type === 'password' || type === 'passwordConfirm' ? (passwordInvisible ? 'password' : 'text') : 'text'
+            }
+            // value={value}
+            // onChange={handleInputChange}
+            onBlur={handleInputFocusOut}
+            $error={error}
+            {...register}
+          />
         ) : (
           <StyledInputBox
             id={type}
@@ -75,8 +90,7 @@ function Input({
             value={value}
             onChange={handleInputChange}
             onBlur={handleInputFocusOut}
-            $error={error}
-            {...register}
+            $error={errorMessage}
           />
         )}
         {isPassword &&
@@ -85,7 +99,8 @@ function Input({
           ) : (
             <StyledEyeOnIcon alt="비밀번호 보이기 아이콘" onClick={togglePasswordIcon} />
           ))}
-        {error && <StyledErrorMessage>{error.message}</StyledErrorMessage>}
+        {isHookForm && error && <StyledErrorMessage>{error.message}</StyledErrorMessage>}
+        {isHookForm || (errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>)}
       </StyledContainer>
     </>
   );

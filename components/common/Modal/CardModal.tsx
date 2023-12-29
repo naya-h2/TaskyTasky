@@ -65,7 +65,7 @@ function ColumnModal({ type, columnTitle, cardInfo, teamId }: Props) {
           <StyledImgWrapper>
             <Image src={cardInfo.imageUrl as string} alt="할일 이미지" fill priority style={{ objectFit: 'cover' }} />
           </StyledImgWrapper>
-          <Textarea type="comment" isEditing={false} initialValue="" />
+          <Textarea type="comment" isEditing={false} initValue="" />
           <StyledCommentsArea>
             <CommentCollection teamId={teamId} cardId={cardInfo.id} />
           </StyledCommentsArea>
