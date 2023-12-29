@@ -15,7 +15,6 @@ function Login() {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
 
@@ -24,7 +23,7 @@ function Login() {
       // 로그인 API 호출
       await login({ email: data.email, password: data.password });
       alert('로그인에 성공했습니다!');
-      router.push('/');
+      router.push('/myboard');
     } catch (error: any) {
         alert(error.message);
       }
