@@ -17,20 +17,26 @@ function PasswordCard() {
   const {
     register,
     watch,
+    setValue,
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
   const pwValue = watch('password');
   const newPwValue = watch('newPassword');
   const newPwCheckValue = watch('newPwCheck');
   const isNotAllFilled = !pwValue || !newPwValue || !newPwCheckValue;
+  const hasError = errors.password || errors.newPassword || errors.newPwCheck;
 
   const validatePwEdit = async (password: string, newPassword: string) => {
     const body = { password, newPassword };
     const response = await editPassword(body);
-    if (response.status === 400) {
-      setErrorMsg(response.data.message);
-      showModal('customAlert');
+    if (response.status === 400) setErrorMsg(response.data.message);
+    else {
+      setErrorMsg('비밀번호 변경이 완료되었습니다!');
+      setValue('password', '');
+      setValue('newPassword', '');
+      setValue('newPwCheck', '');
     }
+    showModal('editPassword');
   };
 
   return (
@@ -38,7 +44,7 @@ function PasswordCard() {
       <CardFrame
         title="비밀번호 변경"
         buttonText="변경"
-        buttonDisabled={isNotAllFilled}
+        buttonDisabled={isNotAllFilled || hasError}
         handleClickFunc={() => validatePwEdit(pwValue, newPwValue)}
       >
         <StyledWrapper>
@@ -68,7 +74,7 @@ function PasswordCard() {
           />
         </StyledWrapper>
       </CardFrame>
-      {modals.length > 0 && <AlertModal type="customAlert">{errorMsg}</AlertModal>}
+      {modals[modals.length - 1] === 'editPassword' && <AlertModal type="customAlert">{errorMsg}</AlertModal>}
     </>
   );
 }

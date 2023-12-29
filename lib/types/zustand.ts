@@ -13,11 +13,13 @@ export type modalType =
   | 'duplicateEmailAlert'
   | 'signUpSuccessAlert'
   | 'signUpFailedAlert'
-  | 'customAlert';
+  | 'customAlert'
+  | 'profile'
+  | 'editPassword';
 
 export interface ModalState {
   modals: modalType[];
-  showModal: (type: modalType) => void;
+  showModal: (type: modalType | string) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;
 }

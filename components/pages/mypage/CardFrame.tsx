@@ -8,7 +8,7 @@ import styled from 'styled-components';
 interface Props {
   children: ReactNode;
   title: string;
-  buttonDisabled: boolean;
+  buttonDisabled: any;
   buttonText: string;
   handleClickFunc?: () => void;
 }

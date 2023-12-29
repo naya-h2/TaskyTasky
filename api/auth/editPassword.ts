@@ -8,7 +8,6 @@ import instance from '@/lib/axios';
 export const editPassword = async (data: PutPasswordRequestType) => {
   try {
     const response = await instance.put('/api/auth/password', data);
-    console.log(response);
     return response.data;
   } catch (error) {
     return error.response;

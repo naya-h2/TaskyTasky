@@ -12,8 +12,8 @@ interface Props {
 }
 
 function AlertModal({ type, children }: Props) {
-  const { hideModal } = useStore((state) => ({
-    hideModal: state.hideModal,
+  const { clearModal } = useStore((state) => ({
+    clearModal: state.clearModal,
   }));
   const getErrorMsg = (type: modalType): string | undefined => {
     let errorMsg;
@@ -47,7 +47,7 @@ function AlertModal({ type, children }: Props) {
 
   const handleButtonClick = (type: string) => {
     if (type === 'customAlert') {
-      hideModal(type);
+      clearModal();
     }
   };
 

@@ -25,9 +25,9 @@ function Login() {
       alert('로그인에 성공했습니다!');
       router.push('/myboard');
     } catch (error: any) {
-        alert(error.message);
-      }
+      alert(error.message);
     }
+  }
 
   return (
     <StyledRoot>
@@ -37,8 +37,14 @@ function Login() {
         </Link>
         <StyledWord>오늘도 만나서 반가워요!</StyledWord>
         <StyledForm onSubmit={handleSubmit(handleLogin)}>
-          <Input type="email" register={register('email', emailRules)} error={errors.email} />
-          <Input type="password" isPassword register={register('password', signInPwRules)} error={errors.password} />
+          <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm />
+          <Input
+            type="password"
+            isPassword
+            register={register('password', signInPwRules)}
+            error={errors.password}
+            isHookForm
+          />
           <StyledButtonWrapper>
             <Button.Plain style="primary" roundSize="L">
               로그인
