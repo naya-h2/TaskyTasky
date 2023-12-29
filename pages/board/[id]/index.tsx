@@ -46,8 +46,6 @@ const StyledContent = styled.div`
   display: flex;
   flex-direction: row;
 
-  background-color: ${GRAY[10]};
-
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     padding-top: 70px;
     padding-left: 160px;
