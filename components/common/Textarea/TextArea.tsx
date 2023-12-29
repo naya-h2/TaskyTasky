@@ -2,8 +2,8 @@ import dynamic from 'next/dynamic';
 import { ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
-import { FONT_12, FONT_16, FONT_18 } from '@/styles/FontStyles';
-import { BLACK, GRAY, VIOLET } from '@/styles/ColorStyles';
+import { FONT_12, FONT_14, FONT_16, FONT_18 } from '@/styles/FontStyles';
+import { BLACK, GRAY, VIOLET, RED } from '@/styles/ColorStyles';
 import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -18,6 +18,7 @@ function Textarea({ type, isEditing, initValue }: Props) {
   const initialValue = initValue ? initValue : '';
   const [value, setValue] = useState(initialValue);
   const [violet, setViolet] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleReactQuillFocus = () => {
     setViolet(!violet);
@@ -29,6 +30,13 @@ function Textarea({ type, isEditing, initValue }: Props) {
 
   const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
+    setErrorMessage('');
+  };
+
+  const handleTextareaFocusOut = () => {
+    if (value === '') {
+      setErrorMessage('내용을 입력해주세요.');
+    }
   };
 
   const handleButtonClick = () => {};
@@ -41,8 +49,16 @@ function Textarea({ type, isEditing, initValue }: Props) {
         </StyledLabel>
       )}
       {type === 'basic' && (
-        <StyledTextarea value={value} onChange={handleTextareaChange} id={type} placeholder="내용을 입력해 주세요" />
+        <StyledTextarea
+          value={value}
+          onChange={handleTextareaChange}
+          onBlur={handleTextareaFocusOut}
+          id={type}
+          placeholder="내용을 입력해 주세요"
+          $error={errorMessage}
+        />
       )}
+      {type === 'basic' && errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
       {type === 'comment' && !isEditing && <StyledLabel $type={type}>댓글</StyledLabel>}
       {type === 'comment' && (
         <StyledReactQuill
@@ -88,11 +104,11 @@ const StyledSpan = styled.span`
   font-weight: 500;
 `;
 
-const StyledTextarea = styled.textarea`
+const StyledTextarea = styled.textarea<{ $error: string }>`
   width: 100%;
   min-height: 96px;
   border-radius: 6px;
-  border: 1px solid ${GRAY[30]};
+  border: 1px solid ${({ $error }) => ($error ? `${RED}` : `${GRAY[30]}`)};
   background-color: white;
   padding: 15px;
   color: ${BLACK[2]};
@@ -102,7 +118,7 @@ const StyledTextarea = styled.textarea`
   outline: none;
 
   &:focus {
-    border: 2px solid ${VIOLET[1]};
+    border: 1px solid ${VIOLET[1]};
   }
 `;
 
@@ -137,4 +153,9 @@ const StyledButtonWrapper = styled.div`
 
 const StyledButtonText = styled.span`
   ${FONT_12};
+`;
+
+const StyledErrorMessage = styled.span`
+  ${FONT_14};
+  color: ${RED};
 `;

@@ -1,13 +1,13 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { BLACK, GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
+import { BLACK, GRAY, VIOLET, WHITE, RED } from '@/styles/ColorStyles';
 import ArrowDropDownIcon from '@/public/icon/arrow_drop_down.svg';
 import useModal from '@/hooks/useDropDown';
 import useOnClickOutside from '@/hooks/useOnClickOutSide';
 import DropDownList from './DropDownList';
 import ColumnNameChip from '../Chip/ColumnNameChip';
 import MoreIcon from '@/public/icon/more.svg';
-import { FONT_18 } from '@/styles/FontStyles';
+import { FONT_14, FONT_18 } from '@/styles/FontStyles';
 import { columnLists, memberLists } from '@/lib/types/type';
 import ProfileImg from '../Profile/ProfileImg';
 
@@ -43,6 +43,7 @@ function DropDown({
     memberImage: initialMemberImg ? initialMemberImg : '',
     memberId: initialMemberId ? initialMemberId : 0,
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const containerRef = useRef<HTMLDivElement>(null);
   const {
@@ -67,6 +68,13 @@ function DropDown({
       ...prev,
       member: e.target.value,
     }));
+    setErrorMessage('');
+  };
+
+  const handleInputFocusOut = () => {
+    if (value.member === '') {
+      setErrorMessage('담당자를 입력해주세요.');
+    }
   };
 
   const handleArrowIconClick = () => {
@@ -92,18 +100,24 @@ function DropDown({
         {(type === 'status' || type === 'member') && (
           <StyledMainWrapper>
             <StyledMainLabel>{type === 'status' ? '상태' : '담당자'}</StyledMainLabel>
-            <StyledMainBox $isOpen={isDropDownOpen} $type={type} onClick={handleAnchorRefClick}>
+            <StyledMainBox $isOpen={isDropDownOpen} $type={type} $error={errorMessage} onClick={handleAnchorRefClick}>
               {type === 'status' && value.status && <ColumnNameChip content={value.status} />}
               {type === 'member' && (
                 <ProfileImg url={value.memberImage} name={value.member} size={26} id={value.memberId} />
               )}
               {type === 'member' && (
-                <StyledInput value={value.member} onChange={handleInputChange} placeholder="이름을 입력해 주세요" />
+                <StyledInput
+                  value={value.member}
+                  onChange={handleInputChange}
+                  onBlur={handleInputFocusOut}
+                  placeholder="이름을 입력해 주세요"
+                />
               )}
               {type === 'member' && !value.member ? null : (
                 <StyledArrowIcon $type={type} onClick={handleArrowIconClick} />
               )}
             </StyledMainBox>
+            {errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
           </StyledMainWrapper>
         )}
         {type === 'kebab' && <StyledKebabIcon onClick={handleAnchorRefClick} />}
@@ -144,7 +158,7 @@ const StyledMainLabel = styled.h3`
   color: ${BLACK[2]};
 `;
 
-const StyledMainBox = styled.div<{ $isOpen: boolean; $type: string }>`
+const StyledMainBox = styled.div<{ $isOpen: boolean; $type: string; $error: string }>`
   width: 100%;
   height: 48px;
   padding: 10px 15px;
@@ -152,9 +166,13 @@ const StyledMainBox = styled.div<{ $isOpen: boolean; $type: string }>`
   justify-content: space-between;
   align-items: center;
   border-radius: 6px;
-  border: 1px solid ${({ $isOpen }) => ($isOpen ? `${VIOLET[1]}` : `${GRAY[30]}`)};
+  border: 1px solid ${({ $error, $isOpen }) => ($error ? `${RED}` : $isOpen ? `${VIOLET[1]}` : `${GRAY[30]}`)};
   background-color: ${WHITE};
   ${({ $type }) => $type === 'status' && `cursor: pointer`};
+
+  &:focus-within {
+    border: 1px solid ${VIOLET[1]};
+  }
 `;
 
 const StyledInput = styled.input`
@@ -174,4 +192,9 @@ const StyledArrowIcon = styled(ArrowDropDownIcon)<{ $type: string }>`
 
 const StyledKebabIcon = styled(MoreIcon)`
   cursor: pointer;
+`;
+
+const StyledErrorMessage = styled.span`
+  ${FONT_14};
+  color: ${RED};
 `;
