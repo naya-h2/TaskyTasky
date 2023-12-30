@@ -1,23 +1,23 @@
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
+import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button';
 import Spinner from '@/components/common/Spinner/Spinner';
+import AlertModal from '@/components/common/Modal/AlertModal';
 import { FONT_16, FONT_20 } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { login } from '@/api/auth/login';
 import { emailRules, signInPwRules } from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
-import AlertModal from '@/components/common/Modal/AlertModal';
-import { useState } from 'react';
 
 function Login() {
   const [message, setMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccess, setsSuccess] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -40,14 +40,14 @@ function Login() {
       setUser(data.user);
       setIsLoading(false);
       showModal('customAlert');
-      setIsSuccess(true);
+      setsSuccess(true);
     },
     onError: (error: any) => {
       setMessage(error.message);
       setError(error.message);
       setIsLoading(false);
       showModal('customAlert');
-      setIsSuccess(false);
+      setsSuccess(false);
     },
     onSettled: () => {
       setIsLoading(false);
