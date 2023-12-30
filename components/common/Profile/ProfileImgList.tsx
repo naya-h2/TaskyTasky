@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FONT_14, FONT_16 } from '@/styles/FontStyles';
+import { FONT_14, FONT_14_B, FONT_16, FONT_16_B } from '@/styles/FontStyles';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { PINK, WHITE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
@@ -42,8 +42,8 @@ function ProfileImgList({ memberCount, data }: Props) {
           </StyledProfileWrapper>
         )}
       </StyledWrapper>
-      <StyledPCRest $order={5}>+{PcRest <= 999 ? PcRest : '999'}</StyledPCRest>
-      <StyledTabletRest $order={3}>+{TabletRest <= 999 ? TabletRest : '999'}</StyledTabletRest>
+      {memberCount > 4 && <StyledPCRest $order={5}>+{PcRest <= 999 ? PcRest : '999'}</StyledPCRest>}
+      {memberCount > 2 && <StyledTabletRest $order={3}>+{TabletRest <= 999 ? TabletRest : '999'}</StyledTabletRest>}
     </StyledContainer>
   );
 }
@@ -51,41 +51,23 @@ function ProfileImgList({ memberCount, data }: Props) {
 export default ProfileImgList;
 
 const StyledContainer = styled.div`
-  min-width: 156px;
-
-  position: relative;
+  padding-left: 10px;
 
   display: flex;
   justify-content: flex-start;
   align-items: center;
-
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    min-width: 100px;
-  }
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    min-width: 95px;
-  }
 `;
 
 const StyledProfileWrapper = styled.div<{ $order: number }>`
-  position: absolute;
-  left: ${({ $order }) => `${29 * $order - 29}px`};
-
+  margin-left: -10px;
   z-index: ${({ $order }) => $order};
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    left: ${({ $order }) => `${25 * $order - 25}px`};
-  }
 `;
 
 const StyledRest = styled.div<{ $order: number }>`
   min-width: 38px;
   height: 38px;
   padding: 0.6rem 0.5rem;
-
-  position: absolute;
-  left: ${({ $order }) => `${29 * $order - 29}px`};
+  margin-left: -10px;
 
   z-index: ${Z_INDEX.profileImgList_Rest};
 
@@ -98,17 +80,14 @@ const StyledRest = styled.div<{ $order: number }>`
 
   background-color: ${PINK[2]};
 
-  ${FONT_16}
+  ${FONT_16_B}
   color: ${PINK[3]};
-  text-align: center;
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     min-width: 34px;
     height: 34px;
 
-    left: ${({ $order }) => `${25 * $order - 25}px`};
-
-    ${FONT_14};
+    ${FONT_14_B};
   }
 `;
 
@@ -127,6 +106,7 @@ const StyledTabletRest = styled(StyledRest)`
 `;
 
 const StyledWrapper = styled(StyledContainer)`
+  margin-left: -10px;
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     display: none;
   }

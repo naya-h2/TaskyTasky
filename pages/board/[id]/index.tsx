@@ -60,7 +60,7 @@ function Board() {
       if (!currentDashboard) return;
 
       const resMemberList = await getMemberList(currentDashboard.id);
-      setMemberList(resMemberList.members);
+      setMemberList(resMemberList); //헤더에서 totalCount 데이터가 필요해서 이 부분 수정했어요!
     };
 
     fetchMemberData();
@@ -93,7 +93,7 @@ function Board() {
               id={Number(id)}
               isColumnChanged={isColumnChanged}
               setIsColumnChanged={setIsColumnChanged}
-              memberList={memberList}
+              memberList={memberList.members}
             />
           )}
           <StyledBtnWrapper>

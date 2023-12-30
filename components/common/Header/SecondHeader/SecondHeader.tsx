@@ -1,29 +1,27 @@
 import styled from 'styled-components';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ReactNode, useEffect, useState } from 'react';
 import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
 import Button from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
 import ProfileImgList from '@/components/common/Profile/ProfileImgList';
-import { USER1 } from '@/lib/constants/mockup';
-import { MEMBERS1 } from '@/lib/constants/mockup';
+import { getUserInfo } from '@/api/users/getUserInfo';
+import { UserType } from '@/lib/types/users';
+import { GetMemberListResponseType } from '@/lib/types/members';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
 import { useStore } from '@/context/stores';
-import { useQuery } from '@tanstack/react-query';
-import { getUserInfo } from '@/api/users/getUserInfo';
-import { UserType } from '@/lib/types/users';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 interface Props {
   page: 'myboard' | 'others';
   children: ReactNode;
   crown?: boolean;
-  membersData?: any;
+  membersData?: GetMemberListResponseType;
 }
 
 function Header({ page, children, crown, membersData }: Props) {
@@ -38,8 +36,6 @@ function Header({ page, children, crown, membersData }: Props) {
     fetchUser();
   }, []);
 
-  console.log(membersData);
-
   return (
     <StyledBody>
       <StyledContainer $page={page}>
@@ -51,7 +47,7 @@ function Header({ page, children, crown, membersData }: Props) {
           {page !== 'myboard' && (
             <>
               <HeaderButtons createdByMe={crown} />
-              <ProfileImgList memberCount={MEMBERS1.totalCount} data={MEMBERS1.members} />
+              {membersData && <ProfileImgList memberCount={membersData.totalCount} data={membersData.members} />}
               <StyledDividingLine />
             </>
           )}
@@ -69,6 +65,7 @@ interface HeaderButtonsProps {
 }
 
 function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
+  const { modals, showModal } = useStore((state) => ({ modals: state.modals, showModal: state.showModal }));
   const router = useRouter();
   const { id } = router.query;
 
@@ -146,7 +143,7 @@ const StyledContainer = styled.div<{ $page: string }>`
 
 const StyledRight = styled.div`
   display: flex;
-  gap: 40px;
+  gap: 32px;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     gap: 24px;
