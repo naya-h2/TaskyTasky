@@ -1,35 +1,104 @@
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
-import CardList from '@/components/common/Card/CardList';
 import Button from '@/components/common/Button';
+import ColumnModal from '@/components/common/Modal/ColumnModal';
+import ColumnLists from '@/components/pages/Board/ColumnLists';
 import { GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_18_B } from '@/styles/FontStyles';
 
-import mockData from '@/components/common/Card/mock.json';
-import boardMockData from '@/components/common/SideMenu/mock';
+import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
+import { getDashboardList } from '@/api/dashboards/getDashboardList';
+import { getColumnList } from '@/api/columns/getColumnList';
+import { getMemberList } from '@/api/members/getMemberList';
+import { DashboardType } from '@/lib/types/dashboards';
+import { MemberListType } from '@/lib/types/members';
+import { ColumnType } from '@/lib/types/columns';
+import { useStore } from '@/context/stores';
 
 function Board() {
+  const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
+  const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
+  const [columnList, setColumnList] = useState<ColumnType[]>([]);
+  const [memberList, setMemberList] = useState<MemberListType[]>([]);
+  const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
+
+  const modal = useStore((state) => state.modals);
+  const showModal = useStore((state) => state.showModal);
+
   const router = useRouter();
   const { id } = router.query;
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) {
+        return;
+      }
+
+      const [resCurrentDashboard, resColumnList, resDashboardList] = await axios.all([
+        getDashboardInfo(Number(id)),
+        getColumnList(Number(id)),
+        getDashboardList('infiniteScroll', 10),
+      ]);
+
+      setCurrentDashboard(resCurrentDashboard);
+      setDashboardList(resDashboardList.dashboards);
+      setColumnList(resColumnList.data);
+    };
+
+    fetchData();
+  }, [id, isColumnChanged]);
+
+  useEffect(() => {
+    const fetchMemberData = async () => {
+      if (!currentDashboard) return;
+
+      const resMemberList = await getMemberList(currentDashboard.id);
+      setMemberList(resMemberList.members);
+    };
+
+    fetchMemberData();
+  }, [currentDashboard]);
+
+  const handleAddColumnBtn = async () => {
+    if (!id) {
+      return;
+    }
+    showModal('createColumn');
+  };
+
   return (
     <StyledRoot>
-      <Header page="others" children="제목" />
-      <SideMenu dashboards={boardMockData.dashboards} />
+      <Header page="others" children={currentDashboard?.title} crown={currentDashboard?.createdByMe} />
+      <SideMenu dashboards={dashboardList} />
       <StyledContent>
-        <CardList label="To Do" cardList={mockData} />
-        <CardList label="On Progress" cardList={mockData} />
-        <CardList label="Done" cardList={mockData} />
+        {columnList.length > 0 && (
+          <ColumnLists
+            columnList={columnList}
+            id={Number(id)}
+            isColumnChanged={isColumnChanged}
+            setIsColumnChanged={setIsColumnChanged}
+            memberList={memberList}
+          />
+        )}
         <StyledBtnWrapper>
-          <Button.Add roundSize="L">
+          <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
             <StyledText>새로운 컬럼 추가하기</StyledText>
           </Button.Add>
         </StyledBtnWrapper>
       </StyledContent>
+      {modal[modal.length - 1] === 'createColumn' && (
+        <ColumnModal
+          type={'createColumn'}
+          dashboardID={Number(id)}
+          refreshColumn={() => setIsColumnChanged(!isColumnChanged)}
+        />
+      )}
     </StyledRoot>
   );
 }
@@ -45,6 +114,8 @@ const StyledContent = styled.div`
 
   display: flex;
   flex-direction: row;
+
+  background-color: ${GRAY[10]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     padding-top: 70px;

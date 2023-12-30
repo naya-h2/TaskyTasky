@@ -2,11 +2,10 @@ import CommentSingle from './CommentSingle';
 import { comments } from './Mockup';
 
 interface Props {
-  teamId: string;
   cardId: number;
 }
 
-function CommentCollection({ teamId, cardId }: Props) {
+function CommentCollection({ cardId }: Props) {
   return (
     <>
       {comments.comments.map((comment) => {

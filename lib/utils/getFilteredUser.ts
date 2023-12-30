@@ -1,4 +1,4 @@
-import { memberLists } from '../types/type';
+import { MemberListType } from '../types/members';
 
 type type = 'status' | 'member' | 'kebab';
 interface Value {
@@ -6,10 +6,10 @@ interface Value {
   member: string;
 }
 
-export const getFilteredUser = (type: type, memberLists: memberLists | undefined, value: Value) => {
+export const getFilteredUser = (type: type, memberLists: MemberListType[] | undefined, value: Value) => {
   let filteredUser;
   if (type === 'member' && memberLists) {
-    filteredUser = memberLists.members.filter((item) => item.nickname.includes(value.member));
+    filteredUser = memberLists.filter((item) => item.nickname.includes(value.member));
   }
   return filteredUser;
 };

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BLACK, GRAY, VIOLET, WHITE, RED } from '@/styles/ColorStyles';
 import ArrowDropDownIcon from '@/public/icon/arrow_drop_down.svg';
@@ -10,6 +10,9 @@ import MoreIcon from '@/public/icon/more.svg';
 import { FONT_14, FONT_18 } from '@/styles/FontStyles';
 import { columnLists, memberLists } from '@/lib/types/type';
 import ProfileImg from '../Profile/ProfileImg';
+import { MemberListType } from '@/lib/types/members';
+import { PostCardRequestType } from '@/lib/types/cards';
+import { getFilteredUser } from '@/lib/utils/getFilteredUser';
 
 interface Props {
   type: 'status' | 'member' | 'kebab';
@@ -18,7 +21,8 @@ interface Props {
   initialMemberImg?: string;
   initialMemberId?: number;
   columnLists?: columnLists;
-  memberLists?: memberLists;
+  memberLists?: MemberListType[];
+  setReqValue?: (value: SetStateAction<PostCardRequestType>) => void;
 }
 
 interface Value {
@@ -36,6 +40,7 @@ function DropDown({
   initialMemberId,
   columnLists,
   memberLists,
+  setReqValue,
 }: Props) {
   const [value, setValue] = useState<Value>({
     status: initialStatus ? initialStatus : '',
@@ -86,11 +91,24 @@ function DropDown({
     }
   };
 
+  const handleCheckMemberId = () => {
+    if (!memberLists) return;
+
+    const filteredMember = memberLists.filter((item) => item.nickname === value.member);
+    if (setReqValue && filteredMember) {
+      setReqValue((prev) => ({
+        ...prev,
+        assigneeUserId: filteredMember[0]?.id,
+      }));
+    }
+  };
+
   useEffect(() => {
     if (!value.member) {
       handleDropDownClose();
     } else if (value.member) {
       handleDropDownOpen();
+      handleCheckMemberId();
     }
   }, [value.member]);
 
@@ -130,7 +148,7 @@ function DropDown({
           type={type}
           handleDropDownClose={handleDropDownClose}
           columnLists={columnLists as columnLists}
-          memberLists={memberLists as memberLists}
+          memberLists={memberLists as MemberListType[]}
         />
       )}
     </>

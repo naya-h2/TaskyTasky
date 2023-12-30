@@ -11,6 +11,7 @@ import EyeOff from '@/public/icon/visibility_off.svg';
 import EyeOn from '@/public/icon/visibility.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import TagPickerCreatable from './TagPicker';
+import { stubFalse } from 'lodash';
 
 interface InputProps {
   type: InputType;
@@ -29,7 +30,7 @@ function Input({
   isPassword, // isPassword가 true라면 눈모양 아이콘이 보이도록
   register,
   error,
-  isHookForm,
+  isHookForm = false,
   initPlaceholder,
   initLabel,
   initValue,

@@ -10,11 +10,13 @@ import instance from '@/lib/axios';
 export const getDashboardList = async (
   navigationMethod: 'infiniteScroll' | 'pagination',
   size: number,
-  cursorId?: number,
+  cursorId?: number | null,
   page?: number,
 ) => {
-  const query = navigationMethod === 'infiniteScroll' ? `cursorId=${cursorId}` : `page=${page}`;
-  const response = await instance.get(`/api/dashboards?navigationMethod=${navigationMethod}&${query}&size=${size}`);
+  let query = '';
+  if (cursorId) query += `cursorId=${cursorId}`;
+  if (page) query += `page=${page}`;
+  const response = await instance.get(`/api/dashboards?navigationMethod=${navigationMethod}&size=${size}&${query}`);
 
   return response.data;
 };

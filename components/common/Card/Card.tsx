@@ -5,16 +5,27 @@ import { WHITE, BLACK, GRAY } from '@/styles/ColorStyles';
 import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
-
+import CardModal from '@/components/common/Modal/CardModal';
+import { useStore } from '@/context/stores';
+import { modalType } from '@/lib/types/zustand';
 import ChipColor from '../Chip/ChipColor';
 
 interface Props {
   card: CardType;
+  columnTitle: string;
 }
 
-function Card({ card }: Props) {
+function Card({ card, columnTitle }: Props) {
+  const modal = useStore((state) => state.modals);
+  const showModal = useStore((state) => state.showModal);
+
+  const handleButtonClick = (type: modalType) => {
+    if (modal.includes(type)) return;
+    showModal(type);
+  };
+
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={() => handleButtonClick('card')}>
       {card.imageUrl && <StyledThumbnail src={card.imageUrl} width={274} height={160} alt="" />}
       <StyledContent>
         <StyledTitle>{card.title}</StyledTitle>
@@ -35,6 +46,7 @@ function Card({ card }: Props) {
           )}
         </StyledDetail>
       </StyledContent>
+      {modal.includes('card') && <CardModal type={'card'} cardInfo={card} columnTitle={columnTitle} />}
     </StyledWrapper>
   );
 }

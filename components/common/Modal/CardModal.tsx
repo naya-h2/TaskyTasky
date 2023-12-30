@@ -16,10 +16,9 @@ interface Props {
   type: modalType;
   columnTitle: string;
   cardInfo: Card; // ServerSideRendering의 getServerSideProps로 받거나 안에서 CSR로 받거나 밖에서 받아오는 걸로
-  teamId: string;
 }
 
-function ColumnModal({ type, columnTitle, cardInfo, teamId }: Props) {
+function ColumnModal({ type, columnTitle, cardInfo }: Props) {
   const handleButtonClick = () => {};
 
   return (
@@ -67,7 +66,7 @@ function ColumnModal({ type, columnTitle, cardInfo, teamId }: Props) {
           </StyledImgWrapper>
           <Textarea type="comment" isEditing={false} initValue="" />
           <StyledCommentsArea>
-            <CommentCollection teamId={teamId} cardId={cardInfo.id} />
+            <CommentCollection cardId={cardInfo.id} />
           </StyledCommentsArea>
         </StyledLeftWrapper>
         <StyledRightWrapper>

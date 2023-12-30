@@ -1,43 +1,72 @@
+import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useStore } from '@/context/stores';
 import Card from './Card';
 import Button from '../Button';
-import { CheckCard } from '@/lib/types/type';
+import TodoModal from '@/components/common/Modal/TodoModal';
+import { getCardList } from '@/api/cards/getCardList';
+import SettingIcon from '@/public/icon/settings.svg';
+import CountChip from '../Chip/CountChip';
 import { BLACK, VIOLET, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_18_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import SettingIcon from '@/public/icon/settings.svg';
-import CountChip from '../Chip/CountChip';
+import { MemberListType } from '@/lib/types/members';
+import { ColumnType } from '@/lib/types/columns';
+import { GetCardListResponseType } from '@/lib/types/cards';
 
 interface Props {
-  label: String;
-  cardList: CheckCard;
+  column: ColumnType;
+  onClickAddCard: () => void;
+  memberList: MemberListType[];
+  dashboardId: number;
+  isColumnChanged: boolean;
+  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
 }
 
 /**
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({ label, cardList }: Props) {
-  const { totalCount, cards } = cardList;
+function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumnChanged, isColumnChanged }: Props) {
+  const [cardList, setCardList] = useState<GetCardListResponseType>();
+
+  useEffect(() => {
+    const fetchCardList = async () => {
+      const resCardList = await getCardList(column.id);
+      setCardList(resCardList);
+    };
+
+    fetchCardList();
+  }, [column]);
+
+  const modal = useStore((state) => state.modals);
 
   return (
     <StyledRoot>
       <StyledTop>
         <StyledLabelWrapper>
           <StyledEllipse />
-          <StyledLabel>{label}</StyledLabel>
-          <CountChip number={totalCount}></CountChip>
+          <StyledLabel>{column.title}</StyledLabel>
+          <CountChip number={cardList ? cardList.totalCount : 0}></CountChip>
         </StyledLabelWrapper>
         <StyledSettingButton>
           <SettingIcon />
         </StyledSettingButton>
       </StyledTop>
       <StyledBtnWrapper>
-        <Button.Add roundSize="M"></Button.Add>
+        <Button.Add roundSize="M" onClick={onClickAddCard} />
       </StyledBtnWrapper>
-      {cards.map((card) => (
-        <Card key={card.id} card={card} />
-      ))}
+      {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} columnTitle={column.title} />)}
+      {modal[modal.length - 1] === 'createTodo' && (
+        <TodoModal
+          type={'createTodo'}
+          memberLists={memberList}
+          dashboardId={dashboardId}
+          columnId={column.id}
+          setIsColumnChanged={setIsColumnChanged}
+          isColumnChanged={isColumnChanged}
+        />
+      )}
     </StyledRoot>
   );
 }
@@ -50,6 +79,7 @@ const StyledRoot = styled.div`
   padding: 22px 20px;
 
   border-right: 1px solid ${GRAY[20]};
+  overflow-y: auto;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 100%;

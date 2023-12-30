@@ -13,7 +13,12 @@ import { FONT_16, FONT_18, FONT_20 } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { createUser } from '@/api/users/createUser';
-import { emailRules, nicknameRules, signUpPasswordRules, signUpPasswordCheckRules } from '@/lib/constants/inputErrorRules';
+import {
+  emailRules,
+  nicknameRules,
+  signUpPasswordRules,
+  signUpPasswordCheckRules,
+} from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
 
 function SignUp() {
@@ -45,7 +50,7 @@ function SignUp() {
         setUser(result.user);
       }
       setIsLoading(false);
-      setMessage('회원가입이 성공적으로 완료되었습니다.')
+      setMessage('회원가입이 성공적으로 완료되었습니다.');
       showModal('customAlert');
       setIsSuccess(true);
     },
@@ -75,8 +80,19 @@ function SignUp() {
         <StyledWord>첫 방문을 환영합니다!</StyledWord>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm={true} />
-          <Input type="nickname" register={register('nickname', nicknameRules)} error={errors.nickname} isHookForm={true} />
-          <Input type="password" isPassword register={register('password', signUpPasswordRules)} error={errors.password} isHookForm={true} />
+          <Input
+            type="nickname"
+            register={register('nickname', nicknameRules)}
+            error={errors.nickname}
+            isHookForm={true}
+          />
+          <Input
+            type="password"
+            isPassword
+            register={register('password', signUpPasswordRules)}
+            error={errors.password}
+            isHookForm={true}
+          />
           <Input
             type="passwordConfirm"
             isPassword
@@ -86,11 +102,7 @@ function SignUp() {
           />
           <Checkbox label="이용약관에 동의합니다." onChange={() => setIsChecked(!isChecked)} />
           <StyledButtonWrapper>
-            <Button.Plain 
-              type="submit"
-              style="primary" 
-              roundSize="L" 
-              isNotActive={!isButtonActive || isLoading}>
+            <Button.Plain type="submit" style="primary" roundSize="L" isNotActive={!isButtonActive || isLoading}>
               가입하기
             </Button.Plain>
             {isLoading && <Spinner />}
@@ -98,8 +110,12 @@ function SignUp() {
           <StyledWrapper>
             이미 가입하셨나요? <Link href="/login">로그인하기</Link>
           </StyledWrapper>
-          </StyledForm>
-          {modals[modals.length - 1] === 'customAlert' && <AlertModal type="customAlert" isSuccess={isSuccess}>{message}</AlertModal>}
+        </StyledForm>
+        {modals[modals.length - 1] === 'customAlert' && (
+          <AlertModal type="customAlert" isSuccess={isSuccess}>
+            {message}
+          </AlertModal>
+        )}
       </StyledContainer>
     </StyledRoot>
   );
