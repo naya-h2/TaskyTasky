@@ -5,24 +5,15 @@ import { BLACK } from '@/styles/ColorStyles';
 import { FONT_18 } from '@/styles/FontStyles';
 import { ReactNode } from 'react';
 import { useStore } from '@/context/stores';
-<<<<<<< feature/GlobalState
 import { useRouter } from 'next/router';
-=======
->>>>>>> develop
 
 interface Props {
   type: modalType;
   children?: ReactNode;
-<<<<<<< feature/GlobalState
   isSuccess?: boolean;
 }
 
 function AlertModal({ type, children, isSuccess }: Props) {
-=======
-}
-
-function AlertModal({ type, children }: Props) {
->>>>>>> develop
   const { clearModal } = useStore((state) => ({
     clearModal: state.clearModal,
   }));
