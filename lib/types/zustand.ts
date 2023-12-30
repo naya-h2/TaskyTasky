@@ -1,3 +1,5 @@
+import { UserType } from "./users";
+
 export type modalType =
   | 'createColumn'
   | 'manageColumn'
@@ -37,4 +39,15 @@ export interface myboardPageState {
 export interface profileImgState {
   profileUrl: string;
   setProfileUrl: (src: string) => void;
+}
+
+export interface AuthState {
+  authToken: string;
+  isLoading: boolean;
+  error: null | string;
+  user: null | UserType;
+  setAuthToken: (token: string) => void;
+  setIsLoading: (loading: boolean) => void;
+  setError: (error: string) => void;
+  setUser: (user: UserType) => void;
 }

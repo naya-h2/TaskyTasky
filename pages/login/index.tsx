@@ -1,16 +1,23 @@
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
+import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button';
+import Spinner from '@/components/common/Spinner/Spinner';
+import AlertModal from '@/components/common/Modal/AlertModal';
 import { FONT_16, FONT_20 } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { useForm } from 'react-hook-form';
 import { login } from '@/api/auth/login';
 import { emailRules, signInPwRules } from '@/lib/constants/inputErrorRules';
-import { useRouter } from 'next/router';
+import { useStore } from '@/context/stores';
 
 function Login() {
+  const [message, setMessage] = useState('');
+  const [isSuccess, setsSuccess] = useState(false);
   const router = useRouter();
   const {
     register,
@@ -18,16 +25,39 @@ function Login() {
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
 
-  async function handleLogin(data: any) {
-    try {
-      // 로그인 API 호출
-      await login({ email: data.email, password: data.password });
-      alert('로그인에 성공했습니다!');
-      router.push('/myboard');
-    } catch (error: any) {
-      alert(error.message);
-    }
-  }
+  const { modals, showModal, hideModal } = useStore((state) => ({
+    modals: state.modals,
+    showModal: state.showModal,
+    hideModal: state.hideModal,
+  }));
+
+  const { isLoading, setAuthToken, setIsLoading, setError, setUser } = useStore();
+
+  const mutation = useMutation(login, {
+    onSuccess: (data) => {
+      setMessage('로그인에 성공했습니다.');
+      setAuthToken(data.token);
+      setUser(data.user);
+      setIsLoading(false);
+      showModal('customAlert');
+      setsSuccess(true);
+    },
+    onError: (error: any) => {
+      setMessage(error.message);
+      setError(error.message);
+      setIsLoading(false);
+      showModal('customAlert');
+      setsSuccess(false);
+    },
+    onSettled: () => {
+      setIsLoading(false);
+    },
+  });
+
+  const handleLogin = (data: any) => {
+    setIsLoading(true);
+    mutation.mutate({ email: data.email, password: data.password });
+  };
 
   return (
     <StyledRoot>
@@ -46,14 +76,16 @@ function Login() {
             isHookForm
           />
           <StyledButtonWrapper>
-            <Button.Plain style="primary" roundSize="L">
+            <Button.Plain style="primary" roundSize="L" isNotActive={isLoading}>
               로그인
             </Button.Plain>
+            {isLoading && <Spinner />}
           </StyledButtonWrapper>
           <StyledWrapper>
             회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
           </StyledWrapper>
         </StyledForm>
+        {modals[modals.length - 1] === 'customAlert' && <AlertModal type="customAlert" isSuccess={isSuccess}>{message}</AlertModal>}
       </StyledContainer>
     </StyledRoot>
   );

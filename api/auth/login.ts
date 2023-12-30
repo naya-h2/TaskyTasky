@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '@/lib/axios';
 import { Login } from '@/lib/types/type';
 
 export const login = async (data: Login) => {
@@ -22,4 +22,3 @@ export const login = async (data: Login) => {
     }
   }
 };
-
