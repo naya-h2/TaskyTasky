@@ -1,3 +1,5 @@
+import { UserType } from "./users";
+
 export type modalType =
   | 'createColumn'
   | 'manageColumn'
@@ -12,11 +14,14 @@ export type modalType =
   | 'imgUrl'
   | 'duplicateEmailAlert'
   | 'signUpSuccessAlert'
-  | 'signUpFailedAlert';
+  | 'signUpFailedAlert'
+  | 'customAlert'
+  | 'profile'
+  | 'editPassword';
 
 export interface ModalState {
   modals: modalType[];
-  showModal: (type: modalType) => void;
+  showModal: (type: modalType | string) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;
 }
@@ -29,4 +34,20 @@ export interface myboardPageState {
   increasePage: (prev: number) => void;
   decreasePage: (prev: number) => void;
   setDashboardSearch: (word: string) => void;
+}
+
+export interface profileImgState {
+  profileUrl: string;
+  setProfileUrl: (src: string) => void;
+}
+
+export interface AuthState {
+  authToken: string;
+  isLoading: boolean;
+  error: null | string;
+  user: null | UserType;
+  setAuthToken: (token: string) => void;
+  setIsLoading: (loading: boolean) => void;
+  setError: (error: string) => void;
+  setUser: (user: UserType) => void;
 }

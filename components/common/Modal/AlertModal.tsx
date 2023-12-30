@@ -3,12 +3,20 @@ import { modalType } from '@/lib/types/zustand';
 import ModalFrame from './ModalFrame';
 import { BLACK } from '@/styles/ColorStyles';
 import { FONT_18 } from '@/styles/FontStyles';
+import { ReactNode } from 'react';
+import { useStore } from '@/context/stores';
+import { useRouter } from 'next/router';
 
 interface Props {
   type: modalType;
+  children?: ReactNode;
+  isSuccess?: boolean;
 }
 
-function AlertModal({ type }: Props) {
+function AlertModal({ type, children, isSuccess }: Props) {
+  const { clearModal } = useStore((state) => ({
+    clearModal: state.clearModal,
+  }));
   const getErrorMsg = (type: modalType): string | undefined => {
     let errorMsg;
     switch (type) {
@@ -39,12 +47,21 @@ function AlertModal({ type }: Props) {
     return errorMsg;
   };
 
-  const handleButtonClick = () => {};
+  const router = useRouter();
+
+  const handleButtonClick = (type: string, status?: string) => {  // status 매개변수를 추가합니다.
+    if (type === 'customAlert') {
+      clearModal();
+      if ((router.pathname === '/login' || '/signup') && isSuccess) {  // 로그인 성공 시에만 페이지 이동합니다.
+        router.push('/myboard');
+      }
+    }
+  };
 
   return (
-    <ModalFrame type={type} title={''} height="High" btnFnc={handleButtonClick}>
+    <ModalFrame type={type} title={''} height="High" btnFnc={() => handleButtonClick(type)}>
       <ErrorMsgBox>
-        <ErrorMsg>{getErrorMsg(type)}</ErrorMsg>
+        <ErrorMsg>{type === 'customAlert' ? children : getErrorMsg(type)}</ErrorMsg>
       </ErrorMsgBox>
     </ModalFrame>
   );
@@ -53,7 +70,7 @@ function AlertModal({ type }: Props) {
 export default AlertModal;
 
 const ErrorMsgBox = styled.div`
-  padding: 20px 0;
+  padding: 32px 0 16px;
 `;
 
 const ErrorMsg = styled.h1`
