@@ -73,7 +73,7 @@ export const validateEtc = (type: string, value: string) => {
   } else if (type === 'imgUrl' && value === '') {
     errMsg = voidUrl;
     return errMsg;
-  } else {
+  } else if (type === 'etc' && value === '') {
     errMsg = voidEtc;
     return errMsg;
   }

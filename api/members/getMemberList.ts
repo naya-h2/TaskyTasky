@@ -1,4 +1,4 @@
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 내가 받은 초대 목록 조회
@@ -6,8 +6,7 @@ import axios from 'axios';
  * @param size
  * @param dashboardId
  */
-export const getMemberList = async (page: number, size: number, dashboardId: number) => {
-  const response = await axios.get(`/api/members?page=${page}&size=${size}&dashboardId=${dashboardId}`);
-  console.log(response);
+export const getMemberList = async (dashboardId: number, page: number = 1, size: number = 20) => {
+  const response = await instance.get(`/api/members?page=${page}&size=${size}&dashboardId=${dashboardId}`);
   return response.data;
 };

@@ -1,12 +1,15 @@
+export interface MemberListType {
+  id: number;
+  userId: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  isOwner: boolean;
+}
+
 export interface GetMemberListResponseType {
-  members: {
-    id: number;
-    userId: number;
-    email: string;
-    nickname: string;
-    profileImageUrl: string;
-    createdAt: string;
-    updatedAt: string;
-    isOwner: boolean;
-  }[];
+  members: MemberListType[];
+  totalCount: number;
 }

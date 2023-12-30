@@ -6,6 +6,5 @@ import { PostCardRequestType } from '@/lib/types/cards';
  */
 export const createCard = async (data: PostCardRequestType) => {
   const response = await instance.post('/api/cards', data);
-  console.log(response);
   return response.data;
 };

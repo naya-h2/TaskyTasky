@@ -10,7 +10,8 @@ import { Z_INDEX } from '@/styles/ZIndexStyles';
 import ColumnNameChip from '../Chip/ColumnNameChip';
 import Profile from '../Profile/Profile';
 import { getFilteredUser } from '@/lib/utils/getFilteredUser';
-import { columnLists, memberLists } from '@/lib/types/type';
+import { columnLists } from '@/lib/types/type';
+import { MemberListType } from '@/lib/types/members';
 
 interface Value {
   status: string;
@@ -26,7 +27,7 @@ interface Props {
   type: 'status' | 'member' | 'kebab';
   handleDropDownClose: () => void;
   columnLists?: columnLists;
-  memberLists?: memberLists;
+  memberLists?: MemberListType[];
 }
 
 function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose, columnLists, memberLists }: Props) {

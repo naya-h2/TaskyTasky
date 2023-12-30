@@ -85,7 +85,11 @@ function Login() {
             회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
           </StyledWrapper>
         </StyledForm>
-        {modals[modals.length - 1] === 'customAlert' && <AlertModal type="customAlert" isSuccess={isSuccess}>{message}</AlertModal>}
+        {modals[modals.length - 1] === 'customAlert' && (
+          <AlertModal type="customAlert" isSuccess={isSuccess}>
+            {message}
+          </AlertModal>
+        )}
       </StyledContainer>
     </StyledRoot>
   );

@@ -7,19 +7,40 @@ import { FONT_18_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import SettingIcon from '@/public/icon/settings.svg';
 import CountChip from '../Chip/CountChip';
+import { useStore } from '@/context/stores';
+import { modalType } from '@/lib/types/zustand';
+import TodoModal from '@/components/common/Modal/TodoModal';
+import { MemberListType } from '@/lib/types/members';
+import { SetStateAction } from 'react';
 
 interface Props {
-  label: String;
+  label: string;
   cardList: CheckCard;
   onClickAddCard: () => void;
+  memberList: MemberListType[];
+  dashboardId: number;
+  columnId: number;
+  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
+  isColumnChanged: boolean;
 }
 
 /**
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({ label, cardList, onClickAddCard }: Props) {
+function CardList({
+  label,
+  cardList,
+  onClickAddCard,
+  memberList,
+  dashboardId,
+  columnId,
+  setIsColumnChanged,
+  isColumnChanged,
+}: Props) {
   const { totalCount, cards } = cardList;
+
+  const modal = useStore((state) => state.modals);
 
   return (
     <StyledRoot>
@@ -37,8 +58,18 @@ function CardList({ label, cardList, onClickAddCard }: Props) {
         <Button.Add roundSize="M" onClick={onClickAddCard} />
       </StyledBtnWrapper>
       {cards.map((card) => (
-        <Card key={card.id} card={card} />
+        <Card key={card.id} card={card} columnTitle={label} />
       ))}
+      {modal[modal.length - 1] === 'createTodo' && (
+        <TodoModal
+          type={'createTodo'}
+          memberLists={memberList}
+          dashboardId={dashboardId}
+          columnId={columnId}
+          setIsColumnChanged={setIsColumnChanged}
+          isColumnChanged={isColumnChanged}
+        />
+      )}
     </StyledRoot>
   );
 }
@@ -51,6 +82,7 @@ const StyledRoot = styled.div`
   padding: 22px 20px;
 
   border-right: 1px solid ${GRAY[20]};
+  overflow-y: auto;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 100%;
