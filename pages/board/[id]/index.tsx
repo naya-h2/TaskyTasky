@@ -17,15 +17,16 @@ import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { getColumnList } from '@/api/columns/getColumnList';
 import { getMemberList } from '@/api/members/getMemberList';
 import { DashboardType } from '@/lib/types/dashboards';
-import { MemberListType } from '@/lib/types/members';
+import { GetMemberListResponseType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
+import Head from 'next/head';
 
 function Board() {
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [columnList, setColumnList] = useState<ColumnType[]>([]);
-  const [memberList, setMemberList] = useState<MemberListType[]>([]);
+  const [memberList, setMemberList] = useState<GetMemberListResponseType>();
   const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
 
   const modal = useStore((state) => state.modals);
@@ -59,7 +60,7 @@ function Board() {
       if (!currentDashboard) return;
 
       const resMemberList = await getMemberList(currentDashboard.id);
-      setMemberList(resMemberList.members);
+      setMemberList(resMemberList); //헤더에서 totalCount 데이터가 필요해서 이 부분 수정했어요!
     };
 
     fetchMemberData();
@@ -73,33 +74,43 @@ function Board() {
   };
 
   return (
-    <StyledRoot>
-      <Header page="others" children={currentDashboard?.title} crown={currentDashboard?.createdByMe} />
-      <SideMenu dashboards={dashboardList} />
-      <StyledContent>
-        {columnList.length > 0 && (
-          <ColumnLists
-            columnList={columnList}
-            id={Number(id)}
-            isColumnChanged={isColumnChanged}
-            setIsColumnChanged={setIsColumnChanged}
-            memberList={memberList}
+    <>
+      <Head>
+        <title>{`${currentDashboard?.title} | Taskify`}</title>
+      </Head>
+      <StyledRoot>
+        <Header
+          page="others"
+          children={currentDashboard?.title}
+          crown={currentDashboard?.createdByMe}
+          membersData={memberList}
+        />
+        <SideMenu dashboards={dashboardList} />
+        <StyledContent>
+          {columnList.length > 0 && (
+            <ColumnLists
+              columnList={columnList}
+              id={Number(id)}
+              isColumnChanged={isColumnChanged}
+              setIsColumnChanged={setIsColumnChanged}
+              memberList={memberList?.members}
+            />
+          )}
+          <StyledBtnWrapper>
+            <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
+              <StyledText>새로운 컬럼 추가하기</StyledText>
+            </Button.Add>
+          </StyledBtnWrapper>
+        </StyledContent>
+        {modal[modal.length - 1] === 'createColumn' && (
+          <ColumnModal
+            type={'createColumn'}
+            dashboardID={Number(id)}
+            refreshColumn={() => setIsColumnChanged(!isColumnChanged)}
           />
         )}
-        <StyledBtnWrapper>
-          <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
-            <StyledText>새로운 컬럼 추가하기</StyledText>
-          </Button.Add>
-        </StyledBtnWrapper>
-      </StyledContent>
-      {modal[modal.length - 1] === 'createColumn' && (
-        <ColumnModal
-          type={'createColumn'}
-          dashboardID={Number(id)}
-          refreshColumn={() => setIsColumnChanged(!isColumnChanged)}
-        />
-      )}
-    </StyledRoot>
+      </StyledRoot>
+    </>
   );
 }
 
@@ -114,8 +125,6 @@ const StyledContent = styled.div`
 
   display: flex;
   flex-direction: row;
-
-  background-color: ${GRAY[10]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     padding-top: 70px;

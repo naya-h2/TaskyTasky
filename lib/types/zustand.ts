@@ -17,7 +17,9 @@ export type modalType =
   | 'signUpFailedAlert'
   | 'customAlert'
   | 'profile'
-  | 'editPassword';
+  | 'editPassword'
+  | 'invite'
+  | 'inviteAlert';
 
 export interface ModalState {
   modals: modalType[];

@@ -14,6 +14,7 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { login } from '@/api/auth/login';
 import { emailRules, signInPwRules } from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
+import Head from 'next/head';
 
 function Login() {
   const [message, setMessage] = useState('');
@@ -60,38 +61,43 @@ function Login() {
   };
 
   return (
-    <StyledRoot>
-      <StyledContainer>
-        <Link href="/">
-          <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
-        </Link>
-        <StyledWord>오늘도 만나서 반가워요!</StyledWord>
-        <StyledForm onSubmit={handleSubmit(handleLogin)}>
-          <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm />
-          <Input
-            type="password"
-            isPassword
-            register={register('password', signInPwRules)}
-            error={errors.password}
-            isHookForm
-          />
-          <StyledButtonWrapper>
-            <Button.Plain style="primary" roundSize="L" isNotActive={isLoading}>
-              로그인
-            </Button.Plain>
-            {isLoading && <Spinner />}
-          </StyledButtonWrapper>
-          <StyledWrapper>
-            회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
-          </StyledWrapper>
-        </StyledForm>
-        {modals[modals.length - 1] === 'customAlert' && (
-          <AlertModal type="customAlert" isSuccess={isSuccess}>
-            {message}
-          </AlertModal>
-        )}
-      </StyledContainer>
-    </StyledRoot>
+    <>
+      <Head>
+        <title>로그인 | Taskify</title>
+      </Head>
+      <StyledRoot>
+        <StyledContainer>
+          <Link href="/">
+            <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
+          </Link>
+          <StyledWord>오늘도 만나서 반가워요!</StyledWord>
+          <StyledForm onSubmit={handleSubmit(handleLogin)}>
+            <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm />
+            <Input
+              type="password"
+              isPassword
+              register={register('password', signInPwRules)}
+              error={errors.password}
+              isHookForm
+            />
+            <StyledButtonWrapper>
+              <Button.Plain style="primary" roundSize="L" isNotActive={isLoading}>
+                로그인
+              </Button.Plain>
+              {isLoading && <Spinner />}
+            </StyledButtonWrapper>
+            <StyledWrapper>
+              회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
+            </StyledWrapper>
+          </StyledForm>
+          {modals[modals.length - 1] === 'customAlert' && (
+            <AlertModal type="customAlert" isSuccess={isSuccess}>
+              {message}
+            </AlertModal>
+          )}
+        </StyledContainer>
+      </StyledRoot>
+    </>
   );
 }
 

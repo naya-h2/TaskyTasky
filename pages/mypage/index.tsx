@@ -9,6 +9,7 @@ import { getUserInfo } from '@/api/users/getUserInfo';
 import { UserType } from '@/lib/types/users';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import dashboardData from '@/components/common/SideMenu/mock';
+import Head from 'next/head';
 
 function MyPage() {
   const [userData, setUserData] = useState<UserType>();
@@ -24,6 +25,9 @@ function MyPage() {
 
   return (
     <>
+      <Head>
+        <title>계정관리 | Taskify</title>
+      </Head>
       <Header page="myboard">계정관리</Header>
       <SideMenu data={dashboardData.dashboards} />
       <StyledBody>

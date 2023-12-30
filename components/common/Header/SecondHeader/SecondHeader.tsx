@@ -1,25 +1,42 @@
 import styled from 'styled-components';
-import { ReactNode } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect, useState } from 'react';
 import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
 import Button from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
 import ProfileImgList from '@/components/common/Profile/ProfileImgList';
-import { USER1 } from '@/lib/constants/mockup';
-import { MEMBERS1 } from '@/lib/constants/mockup';
+import { getUserInfo } from '@/api/users/getUserInfo';
+import { UserType } from '@/lib/types/users';
+import { GetMemberListResponseType } from '@/lib/types/members';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
+import { useStore } from '@/context/stores';
+import InviteModal from '../../Modal/InviteModal';
 
 interface Props {
   page: 'myboard' | 'others';
   children: ReactNode;
   crown?: boolean;
+  membersData?: GetMemberListResponseType;
 }
 
-function Header({ page, children, crown }: Props) {
+function Header({ page, children, crown, membersData }: Props) {
+  const [user, setUser] = useState<UserType>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await getUserInfo();
+      setUser(response);
+    };
+
+    fetchUser();
+  }, []);
+
   return (
     <StyledBody>
       <StyledContainer $page={page}>
@@ -30,12 +47,12 @@ function Header({ page, children, crown }: Props) {
         <StyledRight>
           {page !== 'myboard' && (
             <>
-              <HeaderButtons />
-              <ProfileImgList memberCount={MEMBERS1.totalCount} data={MEMBERS1.members} />
+              <HeaderButtons createdByMe={crown} />
+              {membersData && <ProfileImgList memberCount={membersData.totalCount} data={membersData.members} />}
               <StyledDividingLine />
             </>
           )}
-          <Profile type="header" name={USER1.nickname} profileImg={USER1.profileImageUrl} id={USER1.id} />
+          {user && <Profile type="header" name={user.nickname} profileImg={user.profileImageUrl} id={user.id} />}
         </StyledRight>
       </StyledContainer>
     </StyledBody>
@@ -44,26 +61,41 @@ function Header({ page, children, crown }: Props) {
 
 export default Header;
 
-function HeaderButtons() {
+interface HeaderButtonsProps {
+  createdByMe?: boolean;
+}
+
+function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
+  const { modal, showModal } = useStore((state) => ({ modal: state.modals, showModal: state.showModal }));
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
-    <StyledButtonSection>
-      <StyledSettingWrapper>
-        <Button.Plain style="outline" roundSize="L">
-          <StyledWrapper>
-            <StyledSettingIcon />
-            <StyledText>관리</StyledText>
-          </StyledWrapper>
-        </Button.Plain>
-      </StyledSettingWrapper>
-      <StyledInviteWrapper>
-        <Button.Plain style="outline" roundSize="L">
-          <StyledWrapper>
-            <StyledInviteIcon />
-            <StyledText>초대하기</StyledText>
-          </StyledWrapper>
-        </Button.Plain>
-      </StyledInviteWrapper>
-    </StyledButtonSection>
+    <>
+      <StyledButtonSection>
+        {createdByMe && (
+          <Link href={`/board/${id}/edit`}>
+            <StyledSettingWrapper>
+              <Button.Plain style="outline" roundSize="L">
+                <StyledWrapper>
+                  <StyledSettingIcon />
+                  <StyledText>관리</StyledText>
+                </StyledWrapper>
+              </Button.Plain>
+            </StyledSettingWrapper>
+          </Link>
+        )}
+        <StyledInviteWrapper>
+          <Button.Plain style="outline" roundSize="L" onClick={() => showModal('invite')}>
+            <StyledWrapper>
+              <StyledInviteIcon />
+              <StyledText>초대하기</StyledText>
+            </StyledWrapper>
+          </Button.Plain>
+        </StyledInviteWrapper>
+      </StyledButtonSection>
+      {modal.includes('invite') && <InviteModal dashboardId={Number(id)} />}
+    </>
   );
 }
 
@@ -115,7 +147,7 @@ const StyledContainer = styled.div<{ $page: string }>`
 
 const StyledRight = styled.div`
   display: flex;
-  gap: 40px;
+  gap: 32px;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     gap: 24px;

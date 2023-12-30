@@ -1,4 +1,4 @@
-import instance from '@/lib/axios';
+import authInstance from '@/lib/axios';
 import { PutDashboardRequestType } from '@/lib/types/users';
 
 /**
@@ -6,7 +6,7 @@ import { PutDashboardRequestType } from '@/lib/types/users';
  */
 export const editUserInfo = async (data: PutDashboardRequestType) => {
   try {
-    const response = await instance.put(`/api/users/me`, data);
+    const response = await authInstance.put(`/api/users/me`, data);
     return response.data;
   } catch (error) {
     return error.response;
