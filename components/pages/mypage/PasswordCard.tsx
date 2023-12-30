@@ -1,83 +1,90 @@
-import Input from '@/components/common/Input/Input';
-import { BLACK, WHITE } from '@/styles/ColorStyles';
-import { FONT_24_B } from '@/styles/FontStyles';
 import styled from 'styled-components';
-import Button from '@/components/common/Button';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import Input from '@/components/common/Input/Input';
+import CardFrame from './CardFrame';
+import { useForm } from 'react-hook-form';
+import { signUpPasswordCheckRules } from '@/lib/constants/inputErrorRules';
+import { editPassword } from '@/api/auth/editPassword';
+import { useStore } from '@/context/stores';
+import AlertModal from '@/components/common/Modal/AlertModal';
+import { useState } from 'react';
 
 function PasswordCard() {
+  const [errorMsg, setErrorMsg] = useState('');
+  const { modals, showModal } = useStore((state) => ({
+    modals: state.modals,
+    showModal: state.showModal,
+  }));
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
+  const pwValue = watch('password');
+  const newPwValue = watch('newPassword');
+  const newPwCheckValue = watch('newPwCheck');
+  const isNotAllFilled = !pwValue || !newPwValue || !newPwCheckValue;
+  const hasError = errors.password || errors.newPassword || errors.newPwCheck;
+
+  const validatePwEdit = async (password: string, newPassword: string) => {
+    const body = { password, newPassword };
+    const response = await editPassword(body);
+    if (response.status === 400) setErrorMsg(response.data.message);
+    else {
+      setErrorMsg('비밀번호 변경이 완료되었습니다!');
+      setValue('password', '');
+      setValue('newPassword', '');
+      setValue('newPwCheck', '');
+    }
+    showModal('editPassword');
+  };
+
   return (
-    <StyledBody>
-      <StyledTitle>비밀번호 변경</StyledTitle>
-      <StyledInfoSection>
+    <>
+      <CardFrame
+        title="비밀번호 변경"
+        buttonText="변경"
+        buttonDisabled={isNotAllFilled || hasError}
+        handleClickFunc={() => validatePwEdit(pwValue, newPwValue)}
+      >
         <StyledWrapper>
-          <Input type="password" />
-          <Input type="password" />
-          <Input type="password" />
+          <Input
+            type="etc"
+            register={register('password')}
+            error={errors.password}
+            initLabel="현재 비밀번호"
+            initPlaceholder="현재 비밀번호를 입력하세요"
+            isHookForm
+          />
+          <Input
+            type="etc"
+            register={register('newPassword')}
+            error={errors.newPassword}
+            initLabel="새 비밀번호"
+            initPlaceholder="새로운 비밀번호를 입력하세요"
+            isHookForm
+          />
+          <Input
+            type="etc"
+            register={register('newPwCheck', signUpPasswordCheckRules(newPwValue))}
+            error={errors.newPwCheck}
+            initLabel="새 비밀번호 확인"
+            initPlaceholder="새로운 비밀번호를 입력하세요"
+            isHookForm
+          />
         </StyledWrapper>
-      </StyledInfoSection>
-      <StyledButtonSection>
-        <StyledButtonWrapper>
-          <Button.Plain style="primary" roundSize="S">
-            변경
-          </Button.Plain>
-        </StyledButtonWrapper>
-      </StyledButtonSection>
-    </StyledBody>
+      </CardFrame>
+      {modals[modals.length - 1] === 'editPassword' && <AlertModal type="customAlert">{errorMsg}</AlertModal>}
+    </>
   );
 }
 
 export default PasswordCard;
-
-const StyledBody = styled.div`
-  width: 100%;
-  max-width: 620px;
-  padding: 32px 28px 28px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-
-  background-color: ${WHITE};
-  border-radius: 8px;
-`;
-
-const StyledTitle = styled.div`
-  color: ${BLACK[2]};
-  ${FONT_24_B};
-`;
-
-const StyledInfoSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    flex-direction: column;
-    align-items: normal;
-    gap: 24px;
-  }
-`;
 
 const StyledWrapper = styled.div`
   width: 100%;
 
   display: flex;
   flex-direction: column;
-`;
-
-const StyledButtonSection = styled.div`
-  width: 100%;
-
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const StyledButtonWrapper = styled.div`
-  width: 84px;
-  height: 32px;
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    height: 28px;
-  }
+  gap: 20px;
 `;

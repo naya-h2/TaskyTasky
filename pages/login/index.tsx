@@ -67,8 +67,14 @@ function Login() {
         </Link>
         <StyledWord>오늘도 만나서 반가워요!</StyledWord>
         <StyledForm onSubmit={handleSubmit(handleLogin)}>
-          <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm={true}/>
-          <Input type="password" isPassword register={register('password', signInPwRules)} error={errors.password} isHookForm={true}/>
+          <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm />
+          <Input
+            type="password"
+            isPassword
+            register={register('password', signInPwRules)}
+            error={errors.password}
+            isHookForm
+          />
           <StyledButtonWrapper>
             <Button.Plain style="primary" roundSize="L" isNotActive={isLoading}>
               로그인

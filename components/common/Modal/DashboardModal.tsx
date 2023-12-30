@@ -48,6 +48,7 @@ function DashboardModal({ type }: Props) {
             type="dashboard"
             register={register('newDashboard', { required: ERROR_MSG.emptyDashboardName })}
             error={errors.newDashboard}
+            isHookForm
           />
           <StyledColorWrapper>
             <DashBoardColor selectedColor={color} setSelectedColor={setColor} />

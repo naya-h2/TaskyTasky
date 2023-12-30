@@ -69,7 +69,7 @@ function SignUp() {
   return (
     <StyledRoot>
       <StyledContainer>
-        <Link href='/'>
+        <Link href="/">
           <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
         </Link>
         <StyledWord>첫 방문을 환영합니다!</StyledWord>

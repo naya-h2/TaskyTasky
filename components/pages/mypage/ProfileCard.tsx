@@ -1,86 +1,83 @@
-import Input from '@/components/common/Input/Input';
-import { BLACK, WHITE } from '@/styles/ColorStyles';
-import { FONT_24_B } from '@/styles/FontStyles';
 import styled from 'styled-components';
+import Input from '@/components/common/Input/Input';
 import AddProfileImg from './AddProfileImg';
-import Button from '@/components/common/Button';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import CardFrame from './CardFrame';
+import { useForm } from 'react-hook-form';
+import { UserType } from '@/lib/types/users';
+import { nicknameRules } from '@/lib/constants/inputErrorRules';
+import { useEffect, useState } from 'react';
+import { editUserInfo } from '@/api/users/editUserInfo';
+import { useStore } from '@/context/stores';
+import AlertModal from '@/components/common/Modal/AlertModal';
 
-/**
- * Todo: data type 추가 (12/22 추가 예정)
- */
-function ProfileCard({ data }) {
+interface Props {
+  data: UserType;
+}
+
+function ProfileCard({ data }: Props) {
+  const [nickname, setNickname] = useState(data.nickname);
+  const [alertMsg, setAlertMsg] = useState('');
+  const { modals, showModal } = useStore((state) => ({
+    modals: state.modals,
+    showModal: state.showModal,
+  }));
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({ mode: 'onBlur' });
+  const newNickname = watch('nickname');
+  const isNotValid = newNickname === nickname || errors.nickname;
+
+  const handleUserInfoEdit = async () => {
+    const body = {
+      nickname: newNickname,
+      profileImageUrl: null,
+    };
+    const response = await editUserInfo(body);
+
+    if (response.status === 400) setAlertMsg(response.data.message);
+    else {
+      setAlertMsg('프로필 정보 변경이 완료되었습니다!');
+      setNickname(newNickname);
+    }
+
+    showModal('profile');
+  };
+
+  useEffect(() => {
+    setValue('nickname', nickname);
+  }, [nickname]);
+
   return (
-    <StyledBody>
-      <StyledTitle>프로필</StyledTitle>
-      <StyledInfoSection>
-        <AddProfileImg profileImgUrl={data.profileImageUrl} />
+    <>
+      <CardFrame title="프로필" buttonText="저장" buttonDisabled={isNotValid} handleClickFunc={handleUserInfoEdit}>
+        <AddProfileImg type="myPage" profileImgUrl={data.profileImageUrl} />
         <StyledWrapper>
-          <Input type="email" />
-          <Input type="nickname" />
+          <Input type="etc" initPlaceholder={data.email} initLabel="이메일" isHookForm disabled />
+          <Input
+            type="etc"
+            initPlaceholder="새로운 닉네임을 입력하세요"
+            initLabel="닉네임"
+            isHookForm
+            register={register('nickname', nicknameRules)}
+            error={errors.nickname}
+          />
         </StyledWrapper>
-      </StyledInfoSection>
-      <StyledButtonSection>
-        <StyledButtonWrapper>
-          <Button.Plain style="primary" roundSize="S">
-            저장
-          </Button.Plain>
-        </StyledButtonWrapper>
-      </StyledButtonSection>
-    </StyledBody>
+      </CardFrame>
+      {modals[modals.length - 1] === 'profile' && <AlertModal type="customAlert">{alertMsg}</AlertModal>}
+    </>
   );
 }
 
 export default ProfileCard;
 
-const StyledBody = styled.div`
-  width: 100%;
-  max-width: 620px;
-  padding: 32px 28px 28px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-
-  background-color: ${WHITE};
-  border-radius: 8px;
-`;
-
-const StyledTitle = styled.div`
-  color: ${BLACK[2]};
-  ${FONT_24_B};
-`;
-
-const StyledInfoSection = styled.div`
-  display: flex;
-  gap: 16px;
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    flex-direction: column;
-    align-items: normal;
-    gap: 24px;
-  }
-`;
-
 const StyledWrapper = styled.div`
-  width: 336px;
+  width: 100%;
+  max-width: 366px;
 
   display: flex;
   flex-direction: column;
-`;
-
-const StyledButtonSection = styled.div`
-  width: 100%;
-
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const StyledButtonWrapper = styled.div`
-  width: 84px;
-  height: 32px;
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    height: 28px;
-  }
+  gap: 20px;
 `;

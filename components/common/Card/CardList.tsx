@@ -49,8 +49,6 @@ const StyledRoot = styled.div`
   height: 100vh;
   padding: 22px 20px;
 
-  background-color: ${GRAY[10]};
-
   border-right: 1px solid ${GRAY[20]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
