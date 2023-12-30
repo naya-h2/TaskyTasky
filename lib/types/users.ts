@@ -19,7 +19,7 @@ export interface GetUserInfoResponseType extends UserType {}
 
 export interface PutDashboardRequestType {
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
 }
 
 export interface PutDashboardResponseType extends UserType {}

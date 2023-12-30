@@ -45,13 +45,14 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
         <StyledContainer>{children}</StyledContainer>
         {type === 'card' || (
           <StyledButtonBox>
-            {type === 'incorrectPWAlert' || (
-              <StyledButtonWrapper>
-                <Button.Plain style="outline" roundSize="L" onClick={() => hideModal(modal[modal.length - 1])}>
-                  <StyledButtonText>취소</StyledButtonText>
-                </Button.Plain>
-              </StyledButtonWrapper>
-            )}
+            {type === 'incorrectPWAlert' ||
+              (type !== 'customAlert' && (
+                <StyledButtonWrapper>
+                  <Button.Plain style="outline" roundSize="L" onClick={() => hideModal(modal[modal.length - 1])}>
+                    <StyledButtonText>취소</StyledButtonText>
+                  </Button.Plain>
+                </StyledButtonWrapper>
+              ))}
             <StyledButtonWrapper>
               <Button.Plain style="primary" roundSize="L" onClick={btnFnc} isNotActive={disabledBtn}>
                 <StyledButtonText>
@@ -59,7 +60,7 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
                   {(type === 'createColumn' || type === 'dashBoard' || type === 'createTodo') && '생성'}
                   {(type === 'deleteColumnAlert' || type === 'deleteCardAlert' || type === 'deleteCommentAlert') &&
                     '삭제'}
-                  {(type === 'incorrectPWAlert' || type === 'imgUrl') && '확인'}
+                  {(type === 'incorrectPWAlert' || type === 'imgUrl' || type === 'customAlert') && '확인'}
                   {type === 'editTodo' && '수정'}
                 </StyledButtonText>
               </Button.Plain>
@@ -120,7 +121,7 @@ const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High' | 'Top'; $type: 
   ${(props) => props.$height === 'High' && `z-index: ${Z_INDEX.modalFrame_Body_High}`};
   ${(props) => props.$height === 'Top' && `z-index: ${Z_INDEX.modalFrame_Body_Top}`};
 
-  border-radius: 8px;
+  border-radius: 12px;
   background: white;
 `;
 

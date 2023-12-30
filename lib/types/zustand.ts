@@ -12,11 +12,14 @@ export type modalType =
   | 'imgUrl'
   | 'duplicateEmailAlert'
   | 'signUpSuccessAlert'
-  | 'signUpFailedAlert';
+  | 'signUpFailedAlert'
+  | 'customAlert'
+  | 'profile'
+  | 'editPassword';
 
 export interface ModalState {
   modals: modalType[];
-  showModal: (type: modalType) => void;
+  showModal: (type: modalType | string) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;
 }
@@ -29,4 +32,9 @@ export interface myboardPageState {
   increasePage: (prev: number) => void;
   decreasePage: (prev: number) => void;
   setDashboardSearch: (word: string) => void;
+}
+
+export interface profileImgState {
+  profileUrl: string;
+  setProfileUrl: (src: string) => void;
 }

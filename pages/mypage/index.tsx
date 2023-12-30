@@ -1,26 +1,36 @@
+import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import ProfileCard from '@/components/pages/mypage/ProfileCard';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_16 } from '@/styles/FontStyles';
-import styled from 'styled-components';
-import BackwordIcon from '@/public/icon/arrow_backward.svg';
-import { USER1 } from '@/lib/constants/mockup';
 import PasswordCard from '@/components/pages/mypage/PasswordCard';
+import BackButton from '@/components/pages/mypage/BackButton';
+import { getUserInfo } from '@/api/users/getUserInfo';
+import { UserType } from '@/lib/types/users';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import dashboardData from '@/components/common/SideMenu/mock';
 
 function MyPage() {
-  const data = USER1;
+  const [userData, setUserData] = useState<UserType>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const data = await getUserInfo();
+      setUserData(data);
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <>
-      <Header page="others">계정관리</Header>
+      <Header page="myboard">계정관리</Header>
       <SideMenu data={dashboardData.dashboards} />
       <StyledBody>
         <StyledContainer>
           <BackButton />
           <StyledCardWrapper>
-            <ProfileCard data={data} />
+            {userData && <ProfileCard data={userData} />}
             <PasswordCard />
           </StyledCardWrapper>
         </StyledContainer>
@@ -30,15 +40,6 @@ function MyPage() {
 }
 
 export default MyPage;
-
-function BackButton() {
-  return (
-    <StyledBackWrapper>
-      <BackwordIcon />
-      <StyledBackText>돌아가기</StyledBackText>
-    </StyledBackWrapper>
-  );
-}
 
 const StyledBody = styled.div`
   padding-top: 70px;
@@ -65,18 +66,8 @@ const StyledContainer = styled.div`
   }
 `;
 
-const StyledBackWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`;
-
-const StyledBackText = styled.div`
-  ${FONT_16};
-`;
-
 const StyledCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
 `;

@@ -21,6 +21,7 @@ interface InputProps {
   initPlaceholder?: string;
   initLabel?: string;
   initValue?: string[] | string;
+  disabled?: boolean;
 }
 
 function Input({
@@ -32,6 +33,7 @@ function Input({
   initPlaceholder,
   initLabel,
   initValue,
+  disabled = false,
 }: InputProps) {
   const initialValue = initValue ? initValue : '';
   const [passwordInvisible, setPasswordInvisible] = useState(true);
@@ -74,8 +76,7 @@ function Input({
             type={
               type === 'password' || type === 'passwordConfirm' ? (passwordInvisible ? 'password' : 'text') : 'text'
             }
-            // value={value}
-            // onChange={handleInputChange}
+            disabled={disabled}
             onBlur={handleInputFocusOut}
             $error={error}
             {...register}

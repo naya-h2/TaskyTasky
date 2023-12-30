@@ -33,7 +33,7 @@ function InviteList({ invite }: Props) {
         </InviteDashLayout>
         <InviterName>
           <InviteInformation>초대자</InviteInformation>
-          <InviteData>{invite.invitee.nickname}</InviteData>
+          <InviteData>{invite.inviter.nickname}</InviteData>
         </InviterName>
         <ButtonGroup>
           <ButtonLayout>
