@@ -56,20 +56,14 @@ function AlertModal({ type, children }: Props) {
     return errorMsg;
   };
 
-<<<<<<< feature/GlobalState
   const router = useRouter();
 
-  const handleButtonClick = (type: string, status?: string) => {  // status 매개변수를 추가합니다.
+  const handleButtonClick = (type: string, status?: string) => { 
     if (type === 'customAlert') {
       clearModal();
-      if ((router.pathname === '/login' || '/signup') && isSuccess) {  // 로그인 성공 시에만 페이지 이동합니다.
+      if ((router.pathname === '/login' || '/signup') && isSuccess) {
         router.push('/myboard');
       }
-=======
-  const handleButtonClick = (type: string) => {
-    if (type === 'customAlert') {
-      clearModal();
->>>>>>> develop
     }
   };
 
