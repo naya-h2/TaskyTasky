@@ -17,7 +17,7 @@ import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { getColumnList } from '@/api/columns/getColumnList';
 import { getMemberList } from '@/api/members/getMemberList';
 import { DashboardType } from '@/lib/types/dashboards';
-import { MemberListType } from '@/lib/types/members';
+import { GetMemberListResponseType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
 import Head from 'next/head';
@@ -26,7 +26,7 @@ function Board() {
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [columnList, setColumnList] = useState<ColumnType[]>([]);
-  const [memberList, setMemberList] = useState<MemberListType[]>([]);
+  const [memberList, setMemberList] = useState<GetMemberListResponseType>();
   const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
 
   const modal = useStore((state) => state.modals);
@@ -93,7 +93,7 @@ function Board() {
               id={Number(id)}
               isColumnChanged={isColumnChanged}
               setIsColumnChanged={setIsColumnChanged}
-              memberList={memberList.members}
+              memberList={memberList?.members}
             />
           )}
           <StyledBtnWrapper>

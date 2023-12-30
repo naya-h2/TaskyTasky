@@ -7,11 +7,9 @@ import { PostDashboardInvitationRequestType } from '@/lib/types/dashboards';
 export const inviteDashboard = async (dashboardId: number, data: PostDashboardInvitationRequestType) => {
   try {
     const response = await authInstance.post(`/api/dashboards/${dashboardId}/invitations`, data);
-    alert('초대 성공 ><!');
-    return response.data;
+    alert('초대에 성공했어요!');
+    return response;
   } catch (error: any) {
-    const errorMsg = error.response.data.message;
-    console.log(errorMsg);
-    return errorMsg;
+    return error.response;
   }
 };

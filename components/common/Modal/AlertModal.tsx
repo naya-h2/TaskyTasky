@@ -6,16 +6,20 @@ import { FONT_18 } from '@/styles/FontStyles';
 import { ReactNode } from 'react';
 import { useStore } from '@/context/stores';
 import { useRouter } from 'next/router';
+import { is } from 'date-fns/locale';
 
 interface Props {
   type: modalType;
+  customName?: string;
   children?: ReactNode;
   isSuccess?: boolean;
 }
 
-function AlertModal({ type, children, isSuccess }: Props) {
-  const { clearModal } = useStore((state) => ({
+function AlertModal({ type, children, isSuccess, customName }: Props) {
+  const router = useRouter();
+  const { clearModal, hideModal } = useStore((state) => ({
     clearModal: state.clearModal,
+    hideModal: state.hideModal,
   }));
   const getErrorMsg = (type: modalType): string | undefined => {
     let errorMsg;
@@ -47,9 +51,8 @@ function AlertModal({ type, children, isSuccess }: Props) {
     return errorMsg;
   };
 
-  const router = useRouter();
-
-  const handleButtonClick = (type: string, status?: string) => { 
+  const handleButtonClick = () => {
+    if (customName) return hideModal(customName);
     if (type === 'customAlert') {
       clearModal();
       if ((router.pathname === '/login' || '/signup') && isSuccess) {
@@ -59,7 +62,7 @@ function AlertModal({ type, children, isSuccess }: Props) {
   };
 
   return (
-    <ModalFrame type={type} title={''} height="High" btnFnc={() => handleButtonClick(type)}>
+    <ModalFrame type={type} title={''} height="High" btnFnc={handleButtonClick}>
       <ErrorMsgBox>
         <ErrorMsg>{type === 'customAlert' ? children : getErrorMsg(type)}</ErrorMsg>
       </ErrorMsgBox>

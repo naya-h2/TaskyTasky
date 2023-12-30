@@ -7,9 +7,10 @@ import ModalPortal from './ModalPortal';
 import Button from '../Button';
 import DropDown from '@/components/common/DropDown/DropDown';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
-import { FONT_14, FONT_24_B } from '@/styles/FontStyles';
+import { FONT_14, FONT_16, FONT_24_B } from '@/styles/FontStyles';
 import { BLACK } from '@/styles/ColorStyles';
 import { modalType } from '@/lib/types/zustand';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   height: 'Low' | 'Mid' | 'High' | 'Top';
@@ -62,6 +63,7 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
                     '삭제'}
                   {(type === 'incorrectPWAlert' || type === 'imgUrl' || type === 'customAlert') && '확인'}
                   {type === 'editTodo' && '수정'}
+                  {type === 'invite' && '초대'}
                 </StyledButtonText>
               </Button.Plain>
             </StyledButtonWrapper>
@@ -167,5 +169,9 @@ const StyledButtonWrapper = styled.div`
 `;
 
 const StyledButtonText = styled.span`
-  ${FONT_14};
+  ${FONT_16};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${FONT_14};
+  }
 `;

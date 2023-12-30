@@ -16,6 +16,7 @@ import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
 import { useStore } from '@/context/stores';
+import InviteModal from '../../Modal/InviteModal';
 
 interface Props {
   page: 'myboard' | 'others';
@@ -65,33 +66,36 @@ interface HeaderButtonsProps {
 }
 
 function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
-  const { modals, showModal } = useStore((state) => ({ modals: state.modals, showModal: state.showModal }));
+  const { modal, showModal } = useStore((state) => ({ modal: state.modals, showModal: state.showModal }));
   const router = useRouter();
   const { id } = router.query;
 
   return (
-    <StyledButtonSection>
-      {createdByMe && (
-        <Link href={`/board/${id}/edit`}>
-          <StyledSettingWrapper>
-            <Button.Plain style="outline" roundSize="L">
-              <StyledWrapper>
-                <StyledSettingIcon />
-                <StyledText>관리</StyledText>
-              </StyledWrapper>
-            </Button.Plain>
-          </StyledSettingWrapper>
-        </Link>
-      )}
-      <StyledInviteWrapper>
-        <Button.Plain style="outline" roundSize="L">
-          <StyledWrapper>
-            <StyledInviteIcon />
-            <StyledText>초대하기</StyledText>
-          </StyledWrapper>
-        </Button.Plain>
-      </StyledInviteWrapper>
-    </StyledButtonSection>
+    <>
+      <StyledButtonSection>
+        {createdByMe && (
+          <Link href={`/board/${id}/edit`}>
+            <StyledSettingWrapper>
+              <Button.Plain style="outline" roundSize="L">
+                <StyledWrapper>
+                  <StyledSettingIcon />
+                  <StyledText>관리</StyledText>
+                </StyledWrapper>
+              </Button.Plain>
+            </StyledSettingWrapper>
+          </Link>
+        )}
+        <StyledInviteWrapper>
+          <Button.Plain style="outline" roundSize="L" onClick={() => showModal('invite')}>
+            <StyledWrapper>
+              <StyledInviteIcon />
+              <StyledText>초대하기</StyledText>
+            </StyledWrapper>
+          </Button.Plain>
+        </StyledInviteWrapper>
+      </StyledButtonSection>
+      {modal.includes('invite') && <InviteModal dashboardId={Number(id)} />}
+    </>
   );
 }
 

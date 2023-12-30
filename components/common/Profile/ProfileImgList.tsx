@@ -18,6 +18,8 @@ function ProfileImgList({ memberCount, data }: Props) {
   const PcRest = memberCount - 4;
   const TabletRest = memberCount - 2;
 
+  if (!memberCount) return;
+
   return (
     <StyledContainer>
       {data[0] && (
