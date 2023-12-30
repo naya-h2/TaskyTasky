@@ -1,4 +1,4 @@
-import { UserType } from "./users";
+import { UserType } from './users';
 
 export type modalType =
   | 'createColumn'
@@ -21,7 +21,7 @@ export type modalType =
 
 export interface ModalState {
   modals: modalType[];
-  showModal: (type: modalType | string) => void;
+  showModal: (type: modalType) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;
 }

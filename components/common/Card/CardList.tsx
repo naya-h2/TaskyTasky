@@ -1,44 +1,43 @@
+import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useStore } from '@/context/stores';
 import Card from './Card';
 import Button from '../Button';
-import { CheckCard } from '@/lib/types/type';
+import TodoModal from '@/components/common/Modal/TodoModal';
+import { getCardList } from '@/api/cards/getCardList';
+import SettingIcon from '@/public/icon/settings.svg';
+import CountChip from '../Chip/CountChip';
 import { BLACK, VIOLET, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_18_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import SettingIcon from '@/public/icon/settings.svg';
-import CountChip from '../Chip/CountChip';
-import { useStore } from '@/context/stores';
-import { modalType } from '@/lib/types/zustand';
-import TodoModal from '@/components/common/Modal/TodoModal';
 import { MemberListType } from '@/lib/types/members';
-import { SetStateAction } from 'react';
+import { ColumnType } from '@/lib/types/columns';
+import { GetCardListResponseType } from '@/lib/types/cards';
 
 interface Props {
-  label: string;
-  cardList: CheckCard;
+  column: ColumnType;
   onClickAddCard: () => void;
   memberList: MemberListType[];
   dashboardId: number;
-  columnId: number;
-  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
   isColumnChanged: boolean;
+  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
 }
 
 /**
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({
-  label,
-  cardList,
-  onClickAddCard,
-  memberList,
-  dashboardId,
-  columnId,
-  setIsColumnChanged,
-  isColumnChanged,
-}: Props) {
-  const { totalCount, cards } = cardList;
+function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumnChanged, isColumnChanged }: Props) {
+  const [cardList, setCardList] = useState<GetCardListResponseType>();
+
+  useEffect(() => {
+    const fetchCardList = async () => {
+      const resCardList = await getCardList(column.id);
+      setCardList(resCardList);
+    };
+
+    fetchCardList();
+  }, [column]);
 
   const modal = useStore((state) => state.modals);
 
@@ -47,8 +46,8 @@ function CardList({
       <StyledTop>
         <StyledLabelWrapper>
           <StyledEllipse />
-          <StyledLabel>{label}</StyledLabel>
-          <CountChip number={totalCount}></CountChip>
+          <StyledLabel>{column.title}</StyledLabel>
+          <CountChip number={cardList ? cardList.totalCount : 0}></CountChip>
         </StyledLabelWrapper>
         <StyledSettingButton>
           <SettingIcon />
@@ -57,15 +56,13 @@ function CardList({
       <StyledBtnWrapper>
         <Button.Add roundSize="M" onClick={onClickAddCard} />
       </StyledBtnWrapper>
-      {cards.map((card) => (
-        <Card key={card.id} card={card} columnTitle={label} />
-      ))}
+      {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} columnTitle={column.title} />)}
       {modal[modal.length - 1] === 'createTodo' && (
         <TodoModal
           type={'createTodo'}
           memberLists={memberList}
           dashboardId={dashboardId}
-          columnId={columnId}
+          columnId={column.id}
           setIsColumnChanged={setIsColumnChanged}
           isColumnChanged={isColumnChanged}
         />

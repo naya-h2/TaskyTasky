@@ -1,15 +1,15 @@
+import { SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import ModalFrame from './ModalFrame';
 import { modalType } from '@/lib/types/zustand';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Card, columnLists } from '@/lib/types/type';
 import AddProfileImg from '@/components/pages/mypage/AddProfileImg';
+import { MemberListType } from '@/lib/types/members';
+import { PostCardRequestType } from '@/lib/types/cards';
 import DropDown from '../DropDown/DropDown';
 import Input from '../Input/Input';
 import Textarea from '../Textarea/Textarea';
-import { MemberListType } from '@/lib/types/members';
-import { SetStateAction, useState } from 'react';
-import { PostCardRequestType } from '@/lib/types/cards';
 
 interface Props {
   type: modalType;
@@ -44,6 +44,8 @@ function TodoModal({
     tags: [],
     imageUrl: '',
   });
+
+  console.log(reqValue);
 
   const handleButtonClick = async () => {
     if (type === 'createTodo') {
