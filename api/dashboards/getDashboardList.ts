@@ -1,4 +1,4 @@
-import instance from '@/lib/axios';
+import authInstance from '@/lib/axios';
 
 /**
  * 대시보드 목록 조회
