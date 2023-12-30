@@ -1,6 +1,6 @@
 import { BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, WHITE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_16 } from '@/styles/FontStyles';
+import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import Image from 'next/image';
 import styled from 'styled-components';
 
@@ -78,6 +78,8 @@ const StyledNickName = styled.div`
   opacity: 60%;
   background-color: ${GRAY[50]};
 
+  ${FONT_12};
+  color: ${WHITE};
   border-radius: 30px;
   word-break: keep-all;
 `;
