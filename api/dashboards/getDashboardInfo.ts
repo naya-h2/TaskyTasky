@@ -5,6 +5,5 @@ import authInstance from '@/lib/axios';
  */
 export const getDashboardInfo = async (dashboardId: number) => {
   const response = await authInstance.get(`/api/dashboards/${dashboardId}`);
-  console.log(response);
   return response.data;
 };

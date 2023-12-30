@@ -20,6 +20,7 @@ import {
   signUpPasswordCheckRules,
 } from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
+import Head from 'next/head';
 
 function SignUp() {
   const [message, setMessage] = useState('');
@@ -72,52 +73,57 @@ function SignUp() {
   };
 
   return (
-    <StyledRoot>
-      <StyledContainer>
-        <Link href="/">
-          <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
-        </Link>
-        <StyledWord>첫 방문을 환영합니다!</StyledWord>
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm={true} />
-          <Input
-            type="nickname"
-            register={register('nickname', nicknameRules)}
-            error={errors.nickname}
-            isHookForm={true}
-          />
-          <Input
-            type="password"
-            isPassword
-            register={register('password', signUpPasswordRules)}
-            error={errors.password}
-            isHookForm={true}
-          />
-          <Input
-            type="passwordConfirm"
-            isPassword
-            register={register('passwordCheck', signUpPasswordCheckRules(passwordValue))}
-            error={errors.passwordCheck}
-            isHookForm={true}
-          />
-          <Checkbox label="이용약관에 동의합니다." onChange={() => setIsChecked(!isChecked)} />
-          <StyledButtonWrapper>
-            <Button.Plain type="submit" style="primary" roundSize="L" isNotActive={!isButtonActive || isLoading}>
-              가입하기
-            </Button.Plain>
-            {isLoading && <Spinner />}
-          </StyledButtonWrapper>
-          <StyledWrapper>
-            이미 가입하셨나요? <Link href="/login">로그인하기</Link>
-          </StyledWrapper>
-        </StyledForm>
-        {modals[modals.length - 1] === 'customAlert' && (
-          <AlertModal type="customAlert" isSuccess={isSuccess}>
-            {message}
-          </AlertModal>
-        )}
-      </StyledContainer>
-    </StyledRoot>
+    <>
+      <Head>
+        <title>회원가입 | Taskify</title>
+      </Head>
+      <StyledRoot>
+        <StyledContainer>
+          <Link href="/">
+            <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
+          </Link>
+          <StyledWord>첫 방문을 환영합니다!</StyledWord>
+          <StyledForm onSubmit={handleSubmit(onSubmit)}>
+            <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm={true} />
+            <Input
+              type="nickname"
+              register={register('nickname', nicknameRules)}
+              error={errors.nickname}
+              isHookForm={true}
+            />
+            <Input
+              type="password"
+              isPassword
+              register={register('password', signUpPasswordRules)}
+              error={errors.password}
+              isHookForm={true}
+            />
+            <Input
+              type="passwordConfirm"
+              isPassword
+              register={register('passwordCheck', signUpPasswordCheckRules(passwordValue))}
+              error={errors.passwordCheck}
+              isHookForm={true}
+            />
+            <Checkbox label="이용약관에 동의합니다." onChange={() => setIsChecked(!isChecked)} />
+            <StyledButtonWrapper>
+              <Button.Plain type="submit" style="primary" roundSize="L" isNotActive={!isButtonActive || isLoading}>
+                가입하기
+              </Button.Plain>
+              {isLoading && <Spinner />}
+            </StyledButtonWrapper>
+            <StyledWrapper>
+              이미 가입하셨나요? <Link href="/login">로그인하기</Link>
+            </StyledWrapper>
+          </StyledForm>
+          {modals[modals.length - 1] === 'customAlert' && (
+            <AlertModal type="customAlert" isSuccess={isSuccess}>
+              {message}
+            </AlertModal>
+          )}
+        </StyledContainer>
+      </StyledRoot>
+    </>
   );
 }
 

@@ -20,6 +20,7 @@ import { DashboardType } from '@/lib/types/dashboards';
 import { MemberListType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
+import Head from 'next/head';
 
 function Board() {
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
@@ -73,33 +74,43 @@ function Board() {
   };
 
   return (
-    <StyledRoot>
-      <Header page="others" children={currentDashboard?.title} crown={currentDashboard?.createdByMe} />
-      <SideMenu dashboards={dashboardList} />
-      <StyledContent>
-        {columnList.length > 0 && (
-          <ColumnLists
-            columnList={columnList}
-            id={Number(id)}
-            isColumnChanged={isColumnChanged}
-            setIsColumnChanged={setIsColumnChanged}
-            memberList={memberList}
+    <>
+      <Head>
+        <title>{`${currentDashboard?.title} | Taskify`}</title>
+      </Head>
+      <StyledRoot>
+        <Header
+          page="others"
+          children={currentDashboard?.title}
+          crown={currentDashboard?.createdByMe}
+          membersData={memberList}
+        />
+        <SideMenu dashboards={dashboardList} />
+        <StyledContent>
+          {columnList.length > 0 && (
+            <ColumnLists
+              columnList={columnList}
+              id={Number(id)}
+              isColumnChanged={isColumnChanged}
+              setIsColumnChanged={setIsColumnChanged}
+              memberList={memberList}
+            />
+          )}
+          <StyledBtnWrapper>
+            <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
+              <StyledText>새로운 컬럼 추가하기</StyledText>
+            </Button.Add>
+          </StyledBtnWrapper>
+        </StyledContent>
+        {modal[modal.length - 1] === 'createColumn' && (
+          <ColumnModal
+            type={'createColumn'}
+            dashboardID={Number(id)}
+            refreshColumn={() => setIsColumnChanged(!isColumnChanged)}
           />
         )}
-        <StyledBtnWrapper>
-          <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
-            <StyledText>새로운 컬럼 추가하기</StyledText>
-          </Button.Add>
-        </StyledBtnWrapper>
-      </StyledContent>
-      {modal[modal.length - 1] === 'createColumn' && (
-        <ColumnModal
-          type={'createColumn'}
-          dashboardID={Number(id)}
-          refreshColumn={() => setIsColumnChanged(!isColumnChanged)}
-        />
-      )}
-    </StyledRoot>
+      </StyledRoot>
+    </>
   );
 }
 
@@ -114,8 +125,6 @@ const StyledContent = styled.div`
 
   display: flex;
   flex-direction: row;
-
-  background-color: ${GRAY[10]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     padding-top: 70px;

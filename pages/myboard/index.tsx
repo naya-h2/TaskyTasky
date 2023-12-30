@@ -11,6 +11,7 @@ import { useStore } from '@/context/stores';
 import { getInvitationList } from '@/api/invitations/getInvitationList';
 import { inviteDashboard } from '@/api/dashboards/inviteDashboard';
 import { GetInvitationResponseType } from '@/lib/types/invitations';
+import Head from 'next/head';
 
 function Myboard() {
   const { page, setTotal, search } = useStore((state) => ({
@@ -52,6 +53,9 @@ function Myboard() {
 
   return (
     <>
+      <Head>
+        <title>내 대시보드 | Taskify</title>
+      </Head>
       <Header page="myboard">내 대시보드</Header>
       <SideMenu dashboards={dashboardList} />
       <StyledBody>

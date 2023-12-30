@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
 import Button from '@/components/common/Button';
@@ -12,14 +12,34 @@ import { Z_INDEX } from '@/styles/ZIndexStyles';
 import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
+import { useStore } from '@/context/stores';
+import { useQuery } from '@tanstack/react-query';
+import { getUserInfo } from '@/api/users/getUserInfo';
+import { UserType } from '@/lib/types/users';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   page: 'myboard' | 'others';
   children: ReactNode;
   crown?: boolean;
+  membersData?: any;
 }
 
-function Header({ page, children, crown }: Props) {
+function Header({ page, children, crown, membersData }: Props) {
+  const [user, setUser] = useState<UserType>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await getUserInfo();
+      setUser(response);
+    };
+
+    fetchUser();
+  }, []);
+
+  console.log(membersData);
+
   return (
     <StyledBody>
       <StyledContainer $page={page}>
@@ -30,12 +50,12 @@ function Header({ page, children, crown }: Props) {
         <StyledRight>
           {page !== 'myboard' && (
             <>
-              <HeaderButtons />
+              <HeaderButtons createdByMe={crown} />
               <ProfileImgList memberCount={MEMBERS1.totalCount} data={MEMBERS1.members} />
               <StyledDividingLine />
             </>
           )}
-          <Profile type="header" name={USER1.nickname} profileImg={USER1.profileImageUrl} id={USER1.id} />
+          {user && <Profile type="header" name={user.nickname} profileImg={user.profileImageUrl} id={user.id} />}
         </StyledRight>
       </StyledContainer>
     </StyledBody>
@@ -44,17 +64,28 @@ function Header({ page, children, crown }: Props) {
 
 export default Header;
 
-function HeaderButtons() {
+interface HeaderButtonsProps {
+  createdByMe?: boolean;
+}
+
+function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <StyledButtonSection>
-      <StyledSettingWrapper>
-        <Button.Plain style="outline" roundSize="L">
-          <StyledWrapper>
-            <StyledSettingIcon />
-            <StyledText>관리</StyledText>
-          </StyledWrapper>
-        </Button.Plain>
-      </StyledSettingWrapper>
+      {createdByMe && (
+        <Link href={`/board/${id}/edit`}>
+          <StyledSettingWrapper>
+            <Button.Plain style="outline" roundSize="L">
+              <StyledWrapper>
+                <StyledSettingIcon />
+                <StyledText>관리</StyledText>
+              </StyledWrapper>
+            </Button.Plain>
+          </StyledSettingWrapper>
+        </Link>
+      )}
       <StyledInviteWrapper>
         <Button.Plain style="outline" roundSize="L">
           <StyledWrapper>

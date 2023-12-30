@@ -16,7 +16,7 @@ export const getDashboardList = async (
   let query = '';
   if (cursorId) query += `cursorId=${cursorId}`;
   if (page) query += `page=${page}`;
-  const response = await instance.get(`/api/dashboards?navigationMethod=${navigationMethod}&size=${size}&${query}`);
+  const response = await authInstance.get(`/api/dashboards?navigationMethod=${navigationMethod}&size=${size}&${query}`);
 
   return response.data;
 };
