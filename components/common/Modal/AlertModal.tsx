@@ -5,24 +5,15 @@ import { BLACK } from '@/styles/ColorStyles';
 import { FONT_18 } from '@/styles/FontStyles';
 import { ReactNode } from 'react';
 import { useStore } from '@/context/stores';
-<<<<<<< feature/GlobalState
 import { useRouter } from 'next/router';
-=======
->>>>>>> develop
 
 interface Props {
   type: modalType;
   children?: ReactNode;
-<<<<<<< feature/GlobalState
   isSuccess?: boolean;
 }
 
 function AlertModal({ type, children, isSuccess }: Props) {
-=======
-}
-
-function AlertModal({ type, children }: Props) {
->>>>>>> develop
   const { clearModal } = useStore((state) => ({
     clearModal: state.clearModal,
   }));
@@ -56,7 +47,6 @@ function AlertModal({ type, children }: Props) {
     return errorMsg;
   };
 
-<<<<<<< feature/GlobalState
   const router = useRouter();
 
   const handleButtonClick = (type: string, status?: string) => {  // status 매개변수를 추가합니다.
@@ -65,11 +55,6 @@ function AlertModal({ type, children }: Props) {
       if ((router.pathname === '/login' || '/signup') && isSuccess) {  // 로그인 성공 시에만 페이지 이동합니다.
         router.push('/myboard');
       }
-=======
-  const handleButtonClick = (type: string) => {
-    if (type === 'customAlert') {
-      clearModal();
->>>>>>> develop
     }
   };
 
