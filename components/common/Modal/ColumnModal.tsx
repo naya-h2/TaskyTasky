@@ -30,6 +30,7 @@ function ColumnModal({ type, dashboardID, refreshColumn }: Props) {
   };
 
   const addNewColumn = async (data: FieldValues) => {
+    if (!data.newColumn) return;
     const body: PostColumnRequestType = { title: data.newColumn, dashboardId: dashboardID };
     const response = await createColumn(body);
     refreshColumn();
@@ -47,7 +48,7 @@ function ColumnModal({ type, dashboardID, refreshColumn }: Props) {
         <StyledDeleteButton onClick={() => handleDeleteClick('deleteColumnAlert')}>삭제하기</StyledDeleteButton>
       )}
       <form onSubmit={handleSubmit((data) => addNewColumn(data))}>
-        <Input type="name" register={register('newColumn')} />
+        <Input type="name" register={register('newColumn')} isHookForm />
       </form>
     </ModalFrame>
   );
