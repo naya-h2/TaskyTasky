@@ -26,7 +26,7 @@ interface Props {
 }
 
 function Header({ page, children, crown, membersData }: Props) {
-  const [user, setUser] = useState<UserType>();
+  const { user, setUser } = useStore((state) => ({ user: state.user, setUser: state.setUser }));
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -66,7 +66,12 @@ interface HeaderButtonsProps {
 }
 
 function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
-  const { modal, showModal } = useStore((state) => ({ modal: state.modals, showModal: state.showModal }));
+  const { modal, showModal, user, setUser } = useStore((state) => ({
+    modal: state.modals,
+    showModal: state.showModal,
+    user: state.user,
+    setUser: state.setUser,
+  }));
   const router = useRouter();
   const { id } = router.query;
 
