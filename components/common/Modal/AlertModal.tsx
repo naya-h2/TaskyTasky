@@ -6,7 +6,6 @@ import { FONT_18 } from '@/styles/FontStyles';
 import { ReactNode } from 'react';
 import { useStore } from '@/context/stores';
 import { useRouter } from 'next/router';
-import { is } from 'date-fns/locale';
 
 interface Props {
   type: modalType;
