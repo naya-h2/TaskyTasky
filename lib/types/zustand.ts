@@ -51,5 +51,5 @@ export interface AuthState {
   setAuthToken: (token: string) => void;
   setIsLoading: (loading: boolean) => void;
   setError: (error: string) => void;
-  setUser: (user: UserType) => void;
+  setUser: (user: UserType | null) => void;
 }

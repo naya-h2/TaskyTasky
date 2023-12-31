@@ -1,9 +1,11 @@
-import { FONT_16 } from '@/styles/FontStyles';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import ProfileImg from './ProfileImg';
+import { FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import Link from 'next/link';
-import { BLACK } from '@/styles/ColorStyles';
+import UpIcon from '@/public/icon/small-up.svg';
+import DownIcon from '@/public/icon/small-down.svg';
+import HeaderDropDown from '../DropDown/HeaderDropDown';
 
 interface Props {
   type: 'header' | 'card';
@@ -13,17 +15,28 @@ interface Props {
 }
 
 function Profile({ type, id, name, profileImg }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleDropdownClick = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <StyledContainer $type={type}>
-      <ProfileImg url={profileImg} size={38} name={name} id={id} />
-      {type === 'header' ? (
-        <StyledLink href="/mypage">
+    <>
+      {isOpen && <StyledMask onClick={() => setIsOpen(false)} />}
+      <StyledContainer $type={type}>
+        <ProfileImg url={profileImg} size={38} name={name} id={id} />
+        <StyledNameWrapper $type={type} onClick={handleDropdownClick}>
           <StyledName $type={type}>{name}</StyledName>
-        </StyledLink>
-      ) : (
-        <StyledName $type={type}>{name}</StyledName>
-      )}
-    </StyledContainer>
+          {type === 'header' && isOpen ? <StyledUpIcon /> : <StyledDownIcon />}
+          {type === 'header' && isOpen && (
+            <StyledDropDownWrapper>
+              <HeaderDropDown />
+            </StyledDropDownWrapper>
+          )}
+        </StyledNameWrapper>
+      </StyledContainer>
+    </>
   );
 }
 
@@ -40,6 +53,10 @@ const StyledContainer = styled.div<{ $type: 'header' | 'card' }>`
   align-items: center;
   justify-content: ${(props) => (props.$type === 'header' ? 'space-between' : 'flex-start')};
   gap: 12px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    gap: 6px;
+  }
 `;
 
 const StyledName = styled.div<{ $type: string }>`
@@ -48,7 +65,39 @@ const StyledName = styled.div<{ $type: string }>`
   ${(props) => (props.$type === 'header' ? invisibleMobile : null)};
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: ${BLACK[2]};
+const StyledNameWrapper = styled.div<{ $type: string }>`
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    ${(props) => (props.$type === 'header' ? 'cursor:pointer;' : null)};
+  }
+`;
+
+const StyledDownIcon = styled(DownIcon)`
+  width: 18px;
+  height: 18px;
+`;
+
+const StyledUpIcon = styled(UpIcon)`
+  width: 18px;
+  height: 18px;
+`;
+
+const StyledDropDownWrapper = styled.div`
+  position: absolute;
+  top: 38px;
+  right: 3px;
+`;
+
+const StyledMask = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  position: fixed;
+  top: 0;
+  right: 0;
 `;

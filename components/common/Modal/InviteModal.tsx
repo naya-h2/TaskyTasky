@@ -13,16 +13,17 @@ interface Props {
 
 function InviteModal({ dashboardId }: Props) {
   const [errorMsg, setErrorMsg] = useState();
-  const { modals, showModal } = useStore((state) => ({
+  const { modals, showModal, clearModal } = useStore((state) => ({
     modals: state.modals,
     showModal: state.showModal,
+    clearModal: state.clearModal,
   }));
   const {
     register,
-    getValues,
+    watch,
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
-  const email = getValues('email');
+  const email = watch('email');
 
   const handleInviteClick = async (event: FormEvent) => {
     event.preventDefault();
@@ -30,12 +31,18 @@ function InviteModal({ dashboardId }: Props) {
     if (response.status !== 201) {
       setErrorMsg(response.data?.message);
       showModal('inviteAlert');
-    }
+    } else clearModal();
   };
 
   return (
     <>
-      <ModalFrame type="invite" title="초대하기" height="Mid" disabledBtn={errors.email} btnFnc={handleInviteClick}>
+      <ModalFrame
+        type="invite"
+        title="초대하기"
+        height="Mid"
+        disabledBtn={errors.email ? true : false}
+        btnFnc={handleInviteClick}
+      >
         <form onSubmit={handleInviteClick}>
           <Input
             type="etc"

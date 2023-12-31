@@ -10,7 +10,7 @@ import { is } from 'date-fns/locale';
 
 interface Props {
   type: modalType;
-  customName?: string;
+  customName?: modalType;
   children?: ReactNode;
   isSuccess?: boolean;
 }

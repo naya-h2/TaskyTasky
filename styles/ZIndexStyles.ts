@@ -14,6 +14,7 @@ export const Z_INDEX = {
   profileImgList_Img: [1, 2, 3, 4],
   profileImgList_Rest: 5,
   secondHeader_Body: 100,
+  secondHeader_ButtonSection: 5,
   SideMenu_Wrapper: 200,
   AddProfileImg_AddButton: 10,
 };
