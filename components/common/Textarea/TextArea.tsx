@@ -1,22 +1,24 @@
 import dynamic from 'next/dynamic';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import { FONT_12, FONT_14, FONT_16, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, GRAY, VIOLET, RED } from '@/styles/ColorStyles';
+import { PostCardRequestType } from '@/lib/types/cards';
 import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
+type Value = PostCardRequestType;
+
 interface Props {
   type: 'basic' | 'comment';
   isEditing?: boolean;
-  initValue?: string | undefined;
+  value: string;
+  setValue: (value: SetStateAction<Value>) => void;
 }
 
-function Textarea({ type, isEditing, initValue }: Props) {
-  const initialValue = initValue ? initValue : '';
-  const [value, setValue] = useState(initialValue);
+function Textarea({ type, isEditing, value, setValue }: Props) {
   const [violet, setViolet] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -29,7 +31,12 @@ function Textarea({ type, isEditing, initValue }: Props) {
   };
 
   const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value);
+    if (type === 'basic') {
+      setValue((prev) => ({
+        ...prev,
+        description: e.target.value,
+      }));
+    }
     setErrorMessage('');
   };
 
@@ -64,7 +71,7 @@ function Textarea({ type, isEditing, initValue }: Props) {
         <StyledReactQuill
           theme="snow"
           value={value}
-          onChange={setValue}
+          // onChange={setValue}
           onFocus={handleReactQuillFocus}
           onBlur={handleReactQuillBlur}
           $violet={violet}

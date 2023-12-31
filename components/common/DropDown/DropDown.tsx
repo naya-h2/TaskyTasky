@@ -109,6 +109,7 @@ function DropDown({
     } else if (value.member) {
       handleDropDownOpen();
       handleCheckMemberId();
+      setErrorMessage('');
     }
   }, [value.member]);
 
@@ -117,7 +118,9 @@ function DropDown({
       <StyledWrapper ref={containerRef} $type={type}>
         {(type === 'status' || type === 'member') && (
           <StyledMainWrapper>
-            <StyledMainLabel>{type === 'status' ? '상태' : '담당자'}</StyledMainLabel>
+            <StyledMainLabel>
+              {type === 'status' ? '상태' : '담당자'} {type === 'member' && <StyledSpan> *</StyledSpan>}
+            </StyledMainLabel>
             <StyledMainBox $isOpen={isDropDownOpen} $type={type} $error={errorMessage} onClick={handleAnchorRefClick}>
               {type === 'status' && value.status && <ColumnNameChip content={value.status} />}
               {type === 'member' && (
@@ -131,9 +134,7 @@ function DropDown({
                   placeholder="이름을 입력해 주세요"
                 />
               )}
-              {type === 'member' && !value.member ? null : (
-                <StyledArrowIcon $type={type} onClick={handleArrowIconClick} />
-              )}
+              {type === 'member' && <StyledArrowIcon $type={type} onClick={handleArrowIconClick} />}
             </StyledMainBox>
             {errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
           </StyledMainWrapper>
@@ -191,6 +192,12 @@ const StyledMainBox = styled.div<{ $isOpen: boolean; $type: string; $error: stri
   &:focus-within {
     border: 1px solid ${VIOLET[1]};
   }
+`;
+
+const StyledSpan = styled.span`
+  color: ${VIOLET[1]};
+  font-size: 1.8rem;
+  font-weight: 500;
 `;
 
 const StyledInput = styled.input`

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, SetStateAction, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { GRAY, VIOLET, RED, BLACK } from '@/styles/ColorStyles';
 import { FONT_16, FONT_14 } from '@/styles/FontStyles';
@@ -11,7 +11,9 @@ import EyeOff from '@/public/icon/visibility_off.svg';
 import EyeOn from '@/public/icon/visibility.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import TagPickerCreatable from './TagPicker';
-import { stubFalse } from 'lodash';
+import { PostCardRequestType } from '@/lib/types/cards';
+
+type Value = PostCardRequestType;
 
 interface InputProps {
   type: InputType;
@@ -21,8 +23,9 @@ interface InputProps {
   isHookForm?: boolean;
   initPlaceholder?: string;
   initLabel?: string;
-  initValue?: string[] | string;
   disabled?: boolean;
+  value?: string | string[];
+  setValue?: (value: SetStateAction<Value>) => void;
 }
 
 function Input({
@@ -33,12 +36,11 @@ function Input({
   isHookForm = false,
   initPlaceholder,
   initLabel,
-  initValue,
   disabled = false,
+  value,
+  setValue,
 }: InputProps) {
-  const initialValue = initValue ? initValue : '';
   const [passwordInvisible, setPasswordInvisible] = useState(true);
-  const [value, setValue] = useState(initialValue);
   const [errorMessage, setErrorMessage] = useState('');
   const placeholder = initPlaceholder ? initPlaceholder : getPlaceholder(type);
   const label = initLabel ? initLabel : getInputLabel(type);
@@ -52,7 +54,14 @@ function Input({
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    if (!setValue) return;
+
+    if (type === 'title') {
+      setValue((prev) => ({
+        ...prev,
+        title: e.target.value,
+      }));
+    }
     setErrorMessage('');
   };
 
@@ -64,12 +73,19 @@ function Input({
         }
       >
         <StyledLabel $bold={type === 'dueDate' || type === 'title' || type === 'tag' ? true : false} htmlFor={type}>
-          {label} {type === 'title' && <StyledSpan> *</StyledSpan>}
+          {label} {(type === 'title' || type === 'dueDate') && <StyledSpan> *</StyledSpan>}
         </StyledLabel>
         {type === 'dueDate' ? (
-          <Calendar placeholder={placeholder} initialValue={value as string} />
+          <Calendar
+            placeholder={placeholder}
+            initialValue={value as string}
+            setValue={setValue as (value: SetStateAction<Value>) => void}
+          />
         ) : type === 'tag' ? (
-          <TagPickerCreatable initialValue={value as string[]} />
+          <TagPickerCreatable
+            initialValue={value as string[]}
+            setValue={setValue as (value: SetStateAction<Value>) => void}
+          />
         ) : isHookForm ? (
           <StyledInputBox
             id={type}

@@ -7,16 +7,17 @@ import TodoModal from '@/components/common/Modal/TodoModal';
 import { getCardList } from '@/api/cards/getCardList';
 import SettingIcon from '@/public/icon/settings.svg';
 import CountChip from '../Chip/CountChip';
-import { BLACK, VIOLET, GRAY, WHITE } from '@/styles/ColorStyles';
+import { BLACK, VIOLET, GRAY } from '@/styles/ColorStyles';
 import { FONT_18_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { MemberListType } from '@/lib/types/members';
+import { modalType } from '@/lib/types/zustand';
 import { ColumnType } from '@/lib/types/columns';
 import { GetCardListResponseType } from '@/lib/types/cards';
+import ImgUrlModal from '../Modal/ImgUrlModal';
 
 interface Props {
   column: ColumnType;
-  onClickAddCard: () => void;
   memberList: MemberListType[];
   dashboardId: number;
   isColumnChanged: boolean;
@@ -27,8 +28,16 @@ interface Props {
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumnChanged, isColumnChanged }: Props) {
+function CardList({ column, memberList, dashboardId, setIsColumnChanged, isColumnChanged }: Props) {
   const [cardList, setCardList] = useState<GetCardListResponseType>();
+
+  const modal = useStore((state) => state.modals);
+  const showModal = useStore((state) => state.showModal);
+
+  const handleButtonClick = (type: modalType) => {
+    if (modal.includes(type)) return;
+    showModal(type);
+  };
 
   useEffect(() => {
     const fetchCardList = async () => {
@@ -38,8 +47,6 @@ function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumn
 
     fetchCardList();
   }, [column]);
-
-  const modal = useStore((state) => state.modals);
 
   return (
     <StyledRoot>
@@ -54,10 +61,10 @@ function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumn
         </StyledSettingButton>
       </StyledTop>
       <StyledBtnWrapper>
-        <Button.Add roundSize="M" onClick={onClickAddCard} />
+        <Button.Add roundSize="M" onClick={() => handleButtonClick('createTodo')} />
       </StyledBtnWrapper>
       {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} columnTitle={column.title} />)}
-      {modal[modal.length - 1] === 'createTodo' && (
+      {modal.includes('createTodo') && (
         <TodoModal
           type={'createTodo'}
           memberLists={memberList}
@@ -67,6 +74,7 @@ function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumn
           isColumnChanged={isColumnChanged}
         />
       )}
+      {modal[modal.length - 1] === 'imgUrl' && <ImgUrlModal type="imgUrl" />}
     </StyledRoot>
   );
 }

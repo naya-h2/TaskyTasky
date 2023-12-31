@@ -4,13 +4,22 @@ import { modalType } from '@/lib/types/zustand';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_14_B, FONT_18 } from '@/styles/FontStyles';
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
+import { PostCardRequestType } from '@/lib/types/cards';
+import { uploadCardImg } from '@/api/cards/uploadCardImg';
+
+type Value = PostCardRequestType;
 
 interface Props {
   type: 'card' | 'myPage';
   profileImgUrl: string | undefined | null;
+  setValue: (value: SetStateAction<Value>) => void;
+  columnId?: number;
 }
 
-function AddProfileImg({ type = 'myPage', profileImgUrl }: Props) {
+function AddProfileImg({ type = 'myPage', profileImgUrl, setValue, columnId }: Props) {
+  const [image, setImage] = useState<string | undefined | null>(profileImgUrl);
+  const inputRef = useRef<HTMLInputElement>(null);
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
 
@@ -19,16 +28,46 @@ function AddProfileImg({ type = 'myPage', profileImgUrl }: Props) {
     showModal(type);
   };
 
+  const handleClearImage = () => {
+    const inputNode = inputRef.current;
+    if (!inputNode) return;
+
+    inputNode.value = '';
+    setImage(null);
+  };
+
+  const postCardImg = async (imgFile: File) => {
+    if (!imgFile) return;
+    if (!columnId) return;
+    const resImgUrl = await uploadCardImg(columnId, imgFile);
+    setValue((prev) => ({
+      ...prev,
+      imageUrl: resImgUrl.imageUrl,
+    }));
+    setImage(resImgUrl.imageUrl);
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files !== null) {
+      const nextValue = e.target.files[0];
+      if (nextValue && nextValue.type.substring(0, 5) === 'image') {
+        handleClearImage();
+        postCardImg(nextValue);
+      }
+    }
+  };
+  console.log(image);
+
   return (
     <StyledContainer>
       {type === 'card' && <StyledLabel>이미지</StyledLabel>}
-      <StyledProfileImgBox $url={profileImgUrl}>
+      <StyledProfileImgBox $image={image}>
         <StyledButtonWrapper>
           <StyledFileBox>
             <StyledFileLabel htmlFor="img_file">
               로컬 이미지 <br /> 사용하기
             </StyledFileLabel>
-            <StyledFileInput type="file" id="img_file" />
+            <StyledFileInput type="file" id="img_file" accept="image/*" onChange={handleInputChange} ref={inputRef} />
           </StyledFileBox>
           <StyledImgButton onClick={() => handleButtonClick('imgUrl')}>
             외부 이미지 <br /> 사용하기
@@ -64,13 +103,13 @@ const StyledContainer = styled.div`
   gap: 5px;
 `;
 
-const StyledProfileImgBox = styled.div<{ $url: string | undefined }>`
+const StyledProfileImgBox = styled.div<{ $image: string | null | undefined }>`
   width: 182px;
   height: 182px;
 
   border-radius: 6px;
 
-  ${(props) => (props.$url ? `background-image: url(${props.$url})` : noProfileImg)};
+  ${(props) => (props.$image ? `background-image: url(${props.$image})` : noProfileImg)};
   background-position: center;
   background-size: cover;
 
