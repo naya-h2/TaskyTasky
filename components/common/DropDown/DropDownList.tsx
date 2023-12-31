@@ -80,20 +80,30 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose, c
               </StyledWrapperLi>
             );
           })}
-        {type === 'member' &&
-          value.member &&
-          filteredUser &&
-          filteredUser.map((item) => {
-            return (
-              <StyledWrapperLi
-                key={item.id}
-                onClick={() => handleClickOption(item.nickname, item.profileImageUrl, String(item.id))}
-              >
-                {value.member === item.nickname ? <CheckIcon /> : <StyledTransparentBox />}
-                <Profile type="card" id={item.id} name={item.nickname} profileImg={item.profileImageUrl} />
-              </StyledWrapperLi>
-            );
-          })}
+        {type === 'member' && value.member
+          ? filteredUser &&
+            filteredUser.map((item) => {
+              return (
+                <StyledWrapperLi
+                  key={item.id}
+                  onClick={() => handleClickOption(item.nickname, item.profileImageUrl, String(item.id))}
+                >
+                  {value.member === item.nickname ? <CheckIcon /> : <StyledTransparentBox />}
+                  <Profile type="card" id={item.id} name={item.nickname} profileImg={item.profileImageUrl} />
+                </StyledWrapperLi>
+              );
+            })
+          : memberLists?.map((item) => {
+              return (
+                <StyledWrapperLi
+                  key={item.id}
+                  onClick={() => handleClickOption(item.nickname, item.profileImageUrl, String(item.id))}
+                >
+                  {value.member === item.nickname ? <CheckIcon /> : <StyledTransparentBox />}
+                  <Profile type="card" id={item.id} name={item.nickname} profileImg={item.profileImageUrl} />
+                </StyledWrapperLi>
+              );
+            })}
         {type === 'kebab' && (
           <>
             <StyledModalPopLi onClick={() => handleButtonClick('editTodo')}>수정하기</StyledModalPopLi>

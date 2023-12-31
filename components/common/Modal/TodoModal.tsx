@@ -10,14 +10,16 @@ import { PostCardRequestType } from '@/lib/types/cards';
 import DropDown from '../DropDown/DropDown';
 import Input from '../Input/Input';
 import Textarea from '../Textarea/Textarea';
+import { useStore } from '@/context/stores';
+import { createCard } from '@/api/cards/createCard';
 
 interface Props {
   type: modalType;
   memberLists: MemberListType[];
   dashboardId: number;
   columnId: number;
-  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
   isColumnChanged: boolean;
+  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
   cardInfo?: Card;
   columnLists?: columnLists;
   initialStatus?: string;
@@ -42,15 +44,18 @@ function TodoModal({
     description: '',
     dueDate: '',
     tags: [],
-    imageUrl: '',
+    imageUrl: null,
   });
-
-  console.log(reqValue);
+  const hideModal = useStore((state) => state.hideModal);
 
   const handleButtonClick = async () => {
     if (type === 'createTodo') {
+      await createCard(reqValue);
     }
+    hideModal('createTodo');
   };
+
+  console.log(reqValue);
 
   return (
     <ModalFrame
@@ -58,6 +63,13 @@ function TodoModal({
       title={type === 'createTodo' ? '할 일 생성' : '할 일 수정'}
       height="High"
       btnFnc={handleButtonClick}
+      disabledBtn={
+        (reqValue.assigneeUserId === 0 ||
+          reqValue.description === '' ||
+          reqValue.dueDate === '' ||
+          reqValue.title === '') &&
+        true
+      }
     >
       <StyledContainer>
         <StyledDropDownBox>
@@ -73,11 +85,11 @@ function TodoModal({
             setReqValue={setReqValue}
           />
         </StyledDropDownBox>
-        <Input type="title" initValue={cardInfo?.title} />
-        <Textarea type="basic" initValue={cardInfo?.description} />
-        <Input type="dueDate" initValue={cardInfo?.dueDate} />
-        <Input type="tag" initValue={cardInfo?.tags} />
-        <AddProfileImg type="card" profileImgUrl={cardInfo?.imageUrl} />
+        <Input type="title" value={reqValue.title} setValue={setReqValue} />
+        <Textarea type="basic" value={reqValue.description} setValue={setReqValue} />
+        <Input type="dueDate" value={reqValue.dueDate} setValue={setReqValue} />
+        <Input type="tag" value={reqValue.tags} setValue={setReqValue} />
+        <AddProfileImg type="card" profileImgUrl={reqValue.imageUrl} setValue={setReqValue} columnId={columnId} />
       </StyledContainer>
     </ModalFrame>
   );

@@ -8,7 +8,6 @@ import SideMenu from '@/components/common/SideMenu/SideMenu';
 import Button from '@/components/common/Button';
 import ColumnModal from '@/components/common/Modal/ColumnModal';
 import ColumnLists from '@/components/pages/Board/ColumnLists';
-import { GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_18_B } from '@/styles/FontStyles';
 
@@ -17,7 +16,7 @@ import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { getColumnList } from '@/api/columns/getColumnList';
 import { getMemberList } from '@/api/members/getMemberList';
 import { DashboardType } from '@/lib/types/dashboards';
-import { GetMemberListResponseType } from '@/lib/types/members';
+import { GetMemberListResponseType, MemberListType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
 import Head from 'next/head';
@@ -93,7 +92,7 @@ function Board() {
               id={Number(id)}
               isColumnChanged={isColumnChanged}
               setIsColumnChanged={setIsColumnChanged}
-              memberList={memberList?.members}
+              memberList={memberList?.members as MemberListType[]}
             />
           )}
           <StyledBtnWrapper>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ReactDatePicker, { registerLocale } from 'react-datepicker'; // ReactDatePicker 컴포넌트 가져오기
 import 'react-datepicker/dist/react-datepicker.css';
@@ -9,16 +9,19 @@ import CalendarIcon from '@/public/icon/calendar.svg';
 import ko from 'date-fns/locale/ko'; // 한국어로
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { FONT_12 } from '@/styles/FontStyles';
+import { PostCardRequestType } from '@/lib/types/cards';
 registerLocale('ko', ko); // 한국어로
 const _ = require('lodash'); // _.range를 표현하기 위하여 사용
 //  출처: https://blog.naver.com/PostList.naver?blogId=marsdo
 
+type Value = PostCardRequestType;
 interface Props {
   placeholder: string;
   initialValue?: string;
+  setValue: (value: SetStateAction<Value>) => void;
 }
 
-function Calendar({ placeholder, initialValue }: Props) {
+function Calendar({ placeholder, initialValue, setValue }: Props) {
   const [selectDate, setSelectDate] = useState<Date | null>(initialValue ? new Date(initialValue) : null);
 
   const filterPassedTime = (time: Date) => {
@@ -28,6 +31,33 @@ function Calendar({ placeholder, initialValue }: Props) {
     return currentDate.getTime() < selectedDate.getTime();
   };
 
+  const handleDatePickerChange = () => {
+    if (!selectDate) return;
+
+    // const options: Intl.DateTimeFormatOptions = {
+    //   dateStyle: 'short',
+    //   timeStyle: 'short',
+    // };
+
+    // const time = selectDate.toLocaleString('ko-KR', options);
+    function timestamp(selectDate: Date) {
+      const aliasDate = new Date(selectDate);
+      aliasDate.setHours(aliasDate.getHours() + 9);
+      return aliasDate.toISOString().replace('T', ' ').substring(0, 16);
+    }
+
+    const time = timestamp(selectDate);
+
+    setValue((prev) => ({
+      ...prev,
+      dueDate: time,
+    }));
+  };
+
+  useEffect(() => {
+    handleDatePickerChange();
+  }, [selectDate]);
+
   return (
     <StyledCalendarBox>
       <CalendarIcon />
@@ -35,7 +65,7 @@ function Calendar({ placeholder, initialValue }: Props) {
         <StyledDatePicker
           selected={selectDate}
           onChange={(date: Date) => setSelectDate(date)}
-          dateFormat={'yyyy.MM.dd aa h:mm'}
+          dateFormat={'yyyy년 MM월 dd일 aa h:mm'}
           locale={'ko'}
           minDate={new Date()}
           filterTime={filterPassedTime}
@@ -105,6 +135,7 @@ const StyledDatePickerWrapper = styled.div`
 `;
 
 const StyledDatePicker = styled(ReactDatePicker)`
+  width: 300px;
   border: none;
   font-weight: 400;
   font-size: 1.6rem;
