@@ -15,14 +15,6 @@ interface Props {
 }
 
 function DashboardModal({ type }: Props) {
-<<<<<<< HEAD
-=======
-  const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
-  const initialColor = colors[0];
-  const [color, setColor] = useState(initialColor);
-  const hideModal = useStore((state) => state.hideModal);
-  const { register, handleSubmit } = useForm();
->>>>>>> 6398922 (Feat: 새컬럼추가 API 연결 완료)
   const { push } = useRouter();
   const [color, setColor] = useState('');
   const { hideModal } = useStore((state) => ({ hideModal: state.hideModal }));

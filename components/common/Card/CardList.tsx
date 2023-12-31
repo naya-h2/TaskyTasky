@@ -15,25 +15,18 @@ import { ColumnType } from '@/lib/types/columns';
 import { GetCardListResponseType } from '@/lib/types/cards';
 
 interface Props {
-<<<<<<< HEAD
   column: ColumnType;
   onClickAddCard: () => void;
   memberList: MemberListType[];
   dashboardId: number;
   isColumnChanged: boolean;
   setIsColumnChanged: (value: SetStateAction<boolean>) => void;
-=======
-  label: String;
-  cardList: CheckCard;
-  onClickAddCard: () => void;
->>>>>>> 6398922 (Feat: 새컬럼추가 API 연결 완료)
 }
 
 /**
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-<<<<<<< HEAD
 function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumnChanged, isColumnChanged }: Props) {
   const [cardList, setCardList] = useState<GetCardListResponseType>();
 
@@ -47,10 +40,6 @@ function CardList({ column, onClickAddCard, memberList, dashboardId, setIsColumn
   }, [column]);
 
   const modal = useStore((state) => state.modals);
-=======
-function CardList({ label, cardList, onClickAddCard }: Props) {
-  const { totalCount, cards } = cardList;
->>>>>>> 6398922 (Feat: 새컬럼추가 API 연결 완료)
 
   return (
     <StyledRoot>
