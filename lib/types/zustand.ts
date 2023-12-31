@@ -41,6 +41,8 @@ export interface myboardPageState {
 export interface profileImgState {
   profileUrl: string | null;
   setProfileUrl: (src: string | null) => void;
+  cardUrl: string | null;
+  setCardUrl: (src: string | null) => void;
 }
 
 export interface AuthState {

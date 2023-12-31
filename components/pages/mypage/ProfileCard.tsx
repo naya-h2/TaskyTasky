@@ -57,7 +57,7 @@ function ProfileCard({ data }: Props) {
   return (
     <>
       <CardFrame title="프로필" buttonText="저장" buttonDisabled={isNotValid} handleClickFunc={handleUserInfoEdit}>
-        <AddProfileImg type="myPage" profileImgUrl={data.profileImageUrl} />
+        <AddProfileImg type="myPage" initialUrl={data.profileImageUrl} />
         <StyledWrapper>
           <Input type="etc" initPlaceholder={data.email} initLabel="이메일" isHookForm disabled />
           <Input

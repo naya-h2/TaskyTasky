@@ -89,7 +89,7 @@ function TodoModal({
         <Textarea type="basic" value={reqValue.description} setValue={setReqValue} />
         <Input type="dueDate" value={reqValue.dueDate} setValue={setReqValue} />
         <Input type="tag" value={reqValue.tags} setValue={setReqValue} />
-        <AddProfileImg type="card" profileImgUrl={null} columnId={columnId} />
+        <AddProfileImg type="card" initialUrl={null} columnId={columnId} />
       </StyledContainer>
     </ModalFrame>
   );

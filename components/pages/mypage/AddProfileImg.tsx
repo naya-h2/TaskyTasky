@@ -13,17 +13,23 @@ type Value = PostCardRequestType;
 
 interface Props {
   type: 'card' | 'myPage';
-  profileImgUrl: string | null;
+  initialUrl: string | null;
   setValue?: (value: SetStateAction<Value>) => void;
   columnId?: number;
 }
 
-function AddProfileImg({ type = 'myPage', profileImgUrl, setValue, columnId }: Props) {
+function AddProfileImg({ type = 'myPage', initialUrl, setValue, columnId }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { profileUrl, setProfileUrl } = useStore((state) => ({
+  const { profileUrl, setProfileUrl, cardUrl, setCardUrl } = useStore((state) => ({
     profileUrl: state.profileUrl,
     setProfileUrl: state.setProfileUrl,
+    cardUrl: state.cardUrl,
+    setCardUrl: state.setCardUrl,
   }));
+
+  const handleImgDelete = () => {
+    type === 'card' ? setCardUrl(null) : setProfileUrl(null);
+  };
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -31,18 +37,18 @@ function AddProfileImg({ type = 'myPage', profileImgUrl, setValue, columnId }: P
     if (imgFile && imgFile.type.substring(0, 5) === 'image') {
       const imgUrl =
         type === 'card' && columnId ? await uploadCardImg(columnId, imgFile) : await createUserImage(imgFile);
-      setProfileUrl(imgUrl);
+      type === 'card' ? setCardUrl(imgUrl) : setProfileUrl(imgUrl);
     }
   };
 
   useEffect(() => {
-    setProfileUrl(profileImgUrl);
+    type === 'card' ? setCardUrl(initialUrl) : setProfileUrl(initialUrl);
   }, []);
 
   return (
     <StyledContainer>
       {type === 'card' && <StyledLabel>이미지</StyledLabel>}
-      <StyledProfileImgBox $image={profileUrl}>
+      <StyledProfileImgBox $image={type === 'card' ? cardUrl : profileUrl}>
         <StyledButtonWrapper>
           <StyledFileBox>
             <StyledFileLabel htmlFor="img_file">
@@ -50,7 +56,7 @@ function AddProfileImg({ type = 'myPage', profileImgUrl, setValue, columnId }: P
             </StyledFileLabel>
             <StyledFileInput type="file" id="img_file" accept="image/*" onChange={handleInputChange} ref={inputRef} />
           </StyledFileBox>
-          <StyledImgButton onClick={() => setProfileUrl(null)}>
+          <StyledImgButton onClick={handleImgDelete}>
             이미지 <br /> 삭제하기
           </StyledImgButton>
         </StyledButtonWrapper>
