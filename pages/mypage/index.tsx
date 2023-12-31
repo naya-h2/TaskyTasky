@@ -1,27 +1,16 @@
+import Head from 'next/head';
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import ProfileCard from '@/components/pages/mypage/ProfileCard';
 import PasswordCard from '@/components/pages/mypage/PasswordCard';
 import BackButton from '@/components/pages/mypage/BackButton';
-import { getUserInfo } from '@/api/users/getUserInfo';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import dashboardData from '@/components/common/SideMenu/mock';
-import Head from 'next/head';
-import { useStore } from '@/context/stores';
+import { useGetUser } from '@/hooks/useGetUser';
+import dashboardData from '@/components/common/SideMenu/mock'; // 사이드메뉴 되면 목업데이터 삭제 예정
 
 function MyPage() {
-  const { user, setUser } = useStore((state) => ({ user: state.user, setUser: state.setUser }));
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const data = await getUserInfo();
-      setUser(data);
-    };
-
-    fetchUser();
-  }, []);
+  const user = useGetUser();
 
   return (
     <>

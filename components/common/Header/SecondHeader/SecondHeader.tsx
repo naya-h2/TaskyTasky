@@ -1,22 +1,21 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode, useEffect, useState } from 'react';
-import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
-import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
+import { ReactNode } from 'react';
+import { useStore } from '@/context/stores';
+import { useGetUser } from '@/hooks/useGetUser';
 import Button from '@/components/common/Button';
 import Profile from '@/components/common/Profile/Profile';
 import ProfileImgList from '@/components/common/Profile/ProfileImgList';
-import { getUserInfo } from '@/api/users/getUserInfo';
-import { UserType } from '@/lib/types/users';
+import InviteModal from '@/components/common/Modal/InviteModal';
 import { GetMemberListResponseType } from '@/lib/types/members';
+import { BLACK, GRAY, WHITE } from '@/styles/ColorStyles';
+import { FONT_14, FONT_16, FONT_20_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import Setting from '@/public/icon/settings.svg';
 import Invite from '@/public/icon/add_box.svg';
 import Crown from '@/public/icon/crown.svg';
-import { useStore } from '@/context/stores';
-import InviteModal from '../../Modal/InviteModal';
 
 interface Props {
   page: 'myboard' | 'others';
@@ -26,16 +25,7 @@ interface Props {
 }
 
 function Header({ page, children, crown, membersData }: Props) {
-  const { user, setUser } = useStore((state) => ({ user: state.user, setUser: state.setUser }));
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const response = await getUserInfo();
-      setUser(response);
-    };
-
-    fetchUser();
-  }, []);
+  const user = useGetUser();
 
   return (
     <StyledBody>
@@ -66,11 +56,9 @@ interface HeaderButtonsProps {
 }
 
 function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
-  const { modal, showModal, user, setUser } = useStore((state) => ({
+  const { modal, showModal } = useStore((state) => ({
     modal: state.modals,
     showModal: state.showModal,
-    user: state.user,
-    setUser: state.setUser,
   }));
   const router = useRouter();
   const { id } = router.query;

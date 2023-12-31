@@ -20,10 +20,10 @@ function InviteModal({ dashboardId }: Props) {
   }));
   const {
     register,
-    getValues,
+    watch,
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
-  const email = getValues('email');
+  const email = watch('email');
 
   const handleInviteClick = async (event: FormEvent) => {
     event.preventDefault();
