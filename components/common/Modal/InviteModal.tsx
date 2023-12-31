@@ -35,7 +35,13 @@ function InviteModal({ dashboardId }: Props) {
 
   return (
     <>
-      <ModalFrame type="invite" title="초대하기" height="Mid" disabledBtn={errors.email} btnFnc={handleInviteClick}>
+      <ModalFrame
+        type="invite"
+        title="초대하기"
+        height="Mid"
+        disabledBtn={errors.email ? true : false}
+        btnFnc={() => handleInviteClick}
+      >
         <form onSubmit={handleInviteClick}>
           <Input
             type="etc"
