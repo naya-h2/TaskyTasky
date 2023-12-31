@@ -39,8 +39,8 @@ export interface myboardPageState {
 }
 
 export interface profileImgState {
-  profileUrl: string;
-  setProfileUrl: (src: string) => void;
+  profileUrl: string | null;
+  setProfileUrl: (src: string | null) => void;
 }
 
 export interface AuthState {

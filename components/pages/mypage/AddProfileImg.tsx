@@ -7,70 +7,51 @@ import { FONT_14_B, FONT_18 } from '@/styles/FontStyles';
 import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
 import { PostCardRequestType } from '@/lib/types/cards';
 import { uploadCardImg } from '@/api/cards/uploadCardImg';
+import { createUserImage } from '@/api/users/createUserImage';
 
 type Value = PostCardRequestType;
 
 interface Props {
   type: 'card' | 'myPage';
-  profileImgUrl: string | undefined | null;
-  setValue: (value: SetStateAction<Value>) => void;
+  profileImgUrl: string | null;
+  setValue?: (value: SetStateAction<Value>) => void;
   columnId?: number;
 }
 
 function AddProfileImg({ type = 'myPage', profileImgUrl, setValue, columnId }: Props) {
-  const [image, setImage] = useState<string | undefined | null>(profileImgUrl);
   const inputRef = useRef<HTMLInputElement>(null);
-  const modal = useStore((state) => state.modals);
-  const showModal = useStore((state) => state.showModal);
+  const { profileUrl, setProfileUrl } = useStore((state) => ({
+    profileUrl: state.profileUrl,
+    setProfileUrl: state.setProfileUrl,
+  }));
 
-  const handleButtonClick = (type: modalType) => {
-    if (modal.includes(type)) return;
-    showModal(type);
-  };
-
-  const handleClearImage = () => {
-    const inputNode = inputRef.current;
-    if (!inputNode) return;
-
-    inputNode.value = '';
-    setImage(null);
-  };
-
-  const postCardImg = async (imgFile: File) => {
-    if (!imgFile) return;
-    if (!columnId) return;
-    const resImgUrl = await uploadCardImg(columnId, imgFile);
-    setValue((prev) => ({
-      ...prev,
-      imageUrl: resImgUrl.imageUrl,
-    }));
-    setImage(resImgUrl.imageUrl);
-  };
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files !== null) {
-      const nextValue = e.target.files[0];
-      if (nextValue && nextValue.type.substring(0, 5) === 'image') {
-        handleClearImage();
-        postCardImg(nextValue);
-      }
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const imgFile = e.target.files[0];
+    if (imgFile && imgFile.type.substring(0, 5) === 'image') {
+      const imgUrl =
+        type === 'card' && columnId ? await uploadCardImg(columnId, imgFile) : await createUserImage(imgFile);
+      setProfileUrl(imgUrl);
     }
   };
-  console.log(image);
+
+  useEffect(() => {
+    setProfileUrl(profileImgUrl);
+  }, []);
 
   return (
     <StyledContainer>
       {type === 'card' && <StyledLabel>이미지</StyledLabel>}
-      <StyledProfileImgBox $image={image}>
+      <StyledProfileImgBox $image={profileUrl}>
         <StyledButtonWrapper>
           <StyledFileBox>
             <StyledFileLabel htmlFor="img_file">
-              로컬 이미지 <br /> 사용하기
+              이미지 <br /> 변경하기
             </StyledFileLabel>
             <StyledFileInput type="file" id="img_file" accept="image/*" onChange={handleInputChange} ref={inputRef} />
           </StyledFileBox>
-          <StyledImgButton onClick={() => handleButtonClick('imgUrl')}>
-            외부 이미지 <br /> 사용하기
+          <StyledImgButton onClick={() => setProfileUrl(null)}>
+            이미지 <br /> 삭제하기
           </StyledImgButton>
         </StyledButtonWrapper>
       </StyledProfileImgBox>
