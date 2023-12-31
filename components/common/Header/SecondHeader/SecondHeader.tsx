@@ -178,6 +178,8 @@ const StyledButtonSection = styled.div`
   align-items: center;
   gap: 16px;
 
+  z-index: ${Z_INDEX.secondHeader_ButtonSection};
+
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     gap: 12px;
   }
