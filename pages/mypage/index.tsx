@@ -15,7 +15,7 @@ function MyPage() {
   return (
     <>
       <Head>
-        <title>계정관리 | Taskify</title>
+        <title>내 정보 | Taskify</title>
       </Head>
       <Header page="myboard">계정관리</Header>
       <SideMenu data={dashboardData.dashboards} />

@@ -1,10 +1,10 @@
-import instance from '@/lib/axios';
+import authInstance from '@/lib/axios';
 
 /**
  * 카드 이미지 업로드
  */
 export const uploadCardImg = async (columnId: number, data: File) => {
-  const response = await instance.post(
+  const response = await authInstance.post(
     `/api/columns/${columnId}/card-image`,
     { image: data },
     {
@@ -13,5 +13,5 @@ export const uploadCardImg = async (columnId: number, data: File) => {
       },
     },
   );
-  return response.data;
+  return response.data.imageUrl;
 };
