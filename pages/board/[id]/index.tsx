@@ -23,6 +23,7 @@ import { useStore } from '@/context/stores';
 
 import PlusIcon from '@/public/icon/add_no_background.svg';
 import AddChip from '@/components/common/Chip/AddChip';
+import BackButton from '@/components/pages/mypage/BackButton';
 
 function Board() {
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
@@ -88,25 +89,28 @@ function Board() {
           membersData={memberList}
         />
         <SideMenu dashboards={dashboardList} />
-        <StyledContent>
-          {columnList.length > 0 && (
-            <ColumnLists
-              columnList={columnList}
-              id={Number(id)}
-              isColumnChanged={isColumnChanged}
-              setIsColumnChanged={setIsColumnChanged}
-              memberList={memberList?.members as MemberListType[]}
-            />
-          )}
-          <StyledButton onClick={handleAddColumnBtn}>
-            <StyledAddChip />
-          </StyledButton>
-          <StyledBtnWrapper>
-            <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
-              <StyledText>새로운 컬럼 추가하기</StyledText>
-            </Button.Add>
-          </StyledBtnWrapper>
-        </StyledContent>
+        <StyledBody>
+          <BackButton>마이보드</BackButton>
+          <StyledContent>
+            {columnList.length > 0 && (
+              <ColumnLists
+                columnList={columnList}
+                id={Number(id)}
+                isColumnChanged={isColumnChanged}
+                setIsColumnChanged={setIsColumnChanged}
+                memberList={memberList?.members as MemberListType[]}
+              />
+            )}
+            <StyledButton onClick={handleAddColumnBtn}>
+              <StyledAddChip />
+            </StyledButton>
+            <StyledBtnWrapper>
+              <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
+                <StyledText>새로운 컬럼 추가하기</StyledText>
+              </Button.Add>
+            </StyledBtnWrapper>
+          </StyledContent>
+        </StyledBody>
         {modal[modal.length - 1] === 'createColumn' && (
           <ColumnModal
             type={'createColumn'}
@@ -125,24 +129,31 @@ const StyledRoot = styled.div`
   position: relative;
 `;
 
+const StyledBody = styled.div`
+  width: 100%;
+  padding: 90px 80px 0 320px;
+
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    padding: 90px 10px 0 175px;
+
+    flex-direction: column;
+  }
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    padding: 80px 10px 0 80px;
+  }
+`;
+
 const StyledContent = styled.div`
   width: 100%;
-  padding-top: 70px;
-  padding-left: 300px;
-  padding-right: 80px;
 
   display: flex;
   flex-direction: row;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    padding-top: 70px;
-    padding-left: 160px;
-
     flex-direction: column;
-  }
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding-top: 70px;
-    padding-left: 67px;
   }
 `;
 
@@ -172,8 +183,8 @@ const StyledText = styled.div`
 
 const StyledButton = styled.button`
   position: absolute;
-  top: 70px;
-  right: 0px;
+  top: 110px;
+  right: 5px;
 
   background: none;
 
@@ -183,7 +194,7 @@ const StyledButton = styled.button`
 `;
 
 const StyledAddChip = styled(PlusIcon)`
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   margin: 20px;
 `;
