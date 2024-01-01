@@ -20,7 +20,7 @@ function Edit() {
   return (
     <>
       <Head>
-        <title>대시보드 관리 | Taskify</title>
+        <title>대시보드 관리 | TaskyTasky</title>
       </Head>
       <Root>
         <Second page="others" children="제목" />

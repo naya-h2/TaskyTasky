@@ -64,7 +64,7 @@ function Login() {
   return (
     <>
       <Head>
-        <title>로그인 | Taskify</title>
+        <title>로그인 | TaskyTasky</title>
       </Head>
       <StyledRoot>
         <StyledContainer>

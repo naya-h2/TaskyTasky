@@ -1,10 +1,14 @@
 import Logo from '@/components/common/Logo/Logo';
 import { FONT_16 } from '@/styles/FontStyles';
+import Head from 'next/head';
 import styled from 'styled-components';
 
 function NotFound() {
   return (
     <>
+      <Head>
+        <title>NotFound | TaskyTasky</title>
+      </Head>
       <Wrapper>
         <Logo type="large" />
         <Text>

@@ -75,7 +75,7 @@ function SignUp() {
   return (
     <>
       <Head>
-        <title>회원가입 | Taskify</title>
+        <title>회원가입 | TaskyTasky</title>
       </Head>
       <StyledRoot>
         <StyledContainer>

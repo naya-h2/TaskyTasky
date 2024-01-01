@@ -75,7 +75,7 @@ function Board() {
   return (
     <>
       <Head>
-        <title>{`${currentDashboard?.title} | Taskify`}</title>
+        <title>{`${currentDashboard?.title} | TaskyTasky`}</title>
       </Head>
       <StyledRoot>
         <Header
