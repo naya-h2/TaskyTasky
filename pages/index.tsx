@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '@/components/pages/home/Layout';
 import Button from '@/components/common/Button';
-import mainImage from '@/public/images/resource/desktop/main_image_pc.png';
 import landing1 from '@/public/images/resource/desktop/landging1.png';
 import landing2 from '@/public/images/resource/desktop/landging2.png';
 import landing3 from '@/public/images/resource/desktop/landging3.png';
@@ -11,19 +10,12 @@ import landing4 from '@/public/images/resource/desktop/landging4.png';
 import landing5 from '@/public/images/resource/desktop/landging5.png';
 import { BLACK, WHITE, GRAY, VIOLET } from '@/styles/ColorStyles';
 import { FONT_16, FONT_18, FONT_18_B, FONT_22, FONT_28_B } from '@/styles/FontStyles';
-import { login } from '@/api/auth/login';
-import { editPassword } from '@/api/auth/editPassword';
-import { getCard } from '@/api/cards/getCardInfo';
 
 function Home() {
-  // login({ email: 'test@codeit.com', password: '1234asdf' });
-  //editPassword({ password: '1234asdf', newPassword: '1234asdf!' });
-  //getCard(1);
-
   return (
     <Layout>
       <Container>
-        <Image src={mainImage} alt="메인 이미지" />
+        <Image src="/images/tasky_home_main.png" alt="메인 이미지" width={722} height={423} />
         <TitleContainer>
           <Title>새로운 일정 관리</Title>
           <TaskifyTitle>Taskify</TaskifyTitle>

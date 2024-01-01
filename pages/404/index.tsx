@@ -6,7 +6,7 @@ function NotFound() {
   return (
     <>
       <Wrapper>
-        <Logo type="main" />
+        <Logo type="large" />
         <Text>
           접근 권한이 없거나 존재하지 않는 페이지입니다.
           <br /> The page does not have access or does not exist.
@@ -19,12 +19,12 @@ function NotFound() {
 export default NotFound;
 
 const Wrapper = styled.div`
-  padding-top: 20vh;
+  padding-top: 30vh;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 30px;
 `;
 
 const Text = styled.div`

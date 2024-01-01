@@ -1,18 +1,19 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import Logo from '@/public/images/logo_small.svg';
-import Taskify from '@/public/images/Taskify_small.svg';
 import { FONT_14, FONT_16 } from '@/styles/FontStyles';
 import { WHITE, BLACK } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import Logo from '../Logo/Logo';
 
 function MainHeader() {
   return (
     <Wrapper>
-      <Left href="/">
-        <Logo />
-        <StyledTaskify />
-      </Left>
+      <StyledPcWrapper>
+        <Logo type="main" />
+      </StyledPcWrapper>
+      <StyledMobileWrapper>
+        <Logo type="small" />
+      </StyledMobileWrapper>
       <Right>
         <StyledLink href="/login">로그인</StyledLink>
         <StyledLink href="/signup">회원가입</StyledLink>
@@ -22,6 +23,20 @@ function MainHeader() {
 }
 
 export default MainHeader;
+
+const StyledPcWrapper = styled.div`
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    display: none;
+  }
+`;
+
+const StyledMobileWrapper = styled.div`
+  display: none;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    display: block;
+  }
+`;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -65,12 +80,5 @@ const StyledLink = styled(Link)`
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     ${FONT_14};
-  }
-`;
-
-const StyledTaskify = styled(Taskify)`
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    height: 60px;
-    display: none;
   }
 `;
