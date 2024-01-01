@@ -54,7 +54,7 @@ function CardList({ column, memberList, dashboardId, setIsColumnChanged, isColum
         <StyledLabelWrapper>
           <StyledEllipse />
           <StyledLabel>{column.title}</StyledLabel>
-          <CountChip number={cardList ? cardList.totalCount : 0}></CountChip>
+          <StyledCountChip number={cardList ? cardList.totalCount : 0}></StyledCountChip>
         </StyledLabelWrapper>
         <StyledSettingButton>
           <SettingIcon />
@@ -142,9 +142,18 @@ const StyledLabel = styled.div`
   text-overflow: ellipsis;
 `;
 
+const StyledCountChip = styled(CountChip)`
+  width: 24px;
+  height: 24px;
+`;
+
 const StyledSettingButton = styled.button`
   width: 24px;
   height: 24px;
+  margin-left: 2px;
+
+  display: flex;
+  align-items: center;
 
   background: none;
 

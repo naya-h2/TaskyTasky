@@ -183,8 +183,8 @@ const StyledText = styled.div`
 
 const StyledButton = styled.button`
   position: absolute;
-  top: 110px;
-  right: 5px;
+  top: 65px;
+  right: 0;
 
   background: none;
 
