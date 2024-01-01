@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import axios from 'axios';
+import Head from 'next/head';
 
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
@@ -19,7 +20,9 @@ import { DashboardType } from '@/lib/types/dashboards';
 import { GetMemberListResponseType, MemberListType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
-import Head from 'next/head';
+
+import PlusIcon from '@/public/icon/add_no_background.svg';
+import AddChip from '@/components/common/Chip/AddChip';
 
 function Board() {
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
@@ -95,6 +98,9 @@ function Board() {
               memberList={memberList?.members as MemberListType[]}
             />
           )}
+          <StyledButton onClick={handleAddColumnBtn}>
+            <StyledAddChip />
+          </StyledButton>
           <StyledBtnWrapper>
             <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
               <StyledText>새로운 컬럼 추가하기</StyledText>
@@ -115,12 +121,15 @@ function Board() {
 
 export default Board;
 
-const StyledRoot = styled.div``;
+const StyledRoot = styled.div`
+  position: relative;
+`;
 
 const StyledContent = styled.div`
   width: 100%;
   padding-top: 70px;
   padding-left: 300px;
+  padding-right: 80px;
 
   display: flex;
   flex-direction: row;
@@ -138,23 +147,43 @@ const StyledContent = styled.div`
 `;
 
 const StyledBtnWrapper = styled.div`
-  width: 100%;
-  max-width: 354px;
-  height: 70px;
-  margin: 68px 20px;
+  display: none;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    max-width: none;
+    height: 70px;
     margin: 20px 0;
     padding: 0 20px;
+
+    display: flex;
   }
+
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     height: 60px;
     margin: 12px 0;
     padding: 0 15px;
+
+    display: flex;
   }
 `;
 
 const StyledText = styled.div`
   ${FONT_18_B}
+`;
+
+const StyledButton = styled.button`
+  position: absolute;
+  top: 70px;
+  right: 0px;
+
+  background: none;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    display: none;
+  }
+`;
+
+const StyledAddChip = styled(PlusIcon)`
+  width: 40px;
+  height: 40px;
+  margin: 20px;
 `;

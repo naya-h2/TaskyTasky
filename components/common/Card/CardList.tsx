@@ -113,6 +113,10 @@ const StyledLabelWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const StyledEllipse = styled.div`
@@ -120,16 +124,22 @@ const StyledEllipse = styled.div`
   height: 8px;
   margin-right: 8px;
 
+  flex-shrink: 0;
+
   background-color: ${VIOLET[1]};
 
   border-radius: 50%;
 `;
 
 const StyledLabel = styled.div`
+  width: 100%;
   margin-right: 12px;
 
   color: ${BLACK[2]};
   ${FONT_18_B};
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const StyledSettingButton = styled.button`
