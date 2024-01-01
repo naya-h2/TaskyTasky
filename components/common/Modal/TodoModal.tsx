@@ -86,9 +86,9 @@ function TodoModal({ type, columnList, memberLists, dashboardId, columnId }: Pro
           )}
           <DropDown
             type="member"
-            initialMember={modalCard?.assignee.nickname}
-            initialMemberImg={modalCard?.assignee.profileImageUrl}
-            initialMemberId={modalCard?.assignee.id}
+            initialMember={type === 'editTodo' ? modalCard?.assignee.nickname : ''}
+            initialMemberImg={type === 'editTodo' ? modalCard?.assignee.profileImageUrl : ''}
+            initialMemberId={type === 'editTodo' ? modalCard?.assignee.id : 0}
             memberLists={memberLists as MemberListType[]}
             setReqValue={setReqValue}
           />
