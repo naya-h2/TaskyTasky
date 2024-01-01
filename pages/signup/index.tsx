@@ -10,7 +10,7 @@ import Checkbox from '@/components/common/Checkbox/Checkbox';
 import Spinner from '@/components/common/Spinner/Spinner';
 import AlertModal from '@/components/common/Modal/AlertModal';
 import { FONT_16, FONT_18, FONT_20 } from '@/styles/FontStyles';
-import { BLACK } from '@/styles/ColorStyles';
+import { BLACK, VIOLET } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { createUser } from '@/api/users/createUser';
 import {
@@ -80,9 +80,9 @@ function SignUp() {
       <StyledRoot>
         <StyledContainer>
           <Link href="/">
-            <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
+            <StyledLogo src="/images/logo_big.svg" alt="Main logo" />
           </Link>
-          <StyledWord>첫 방문을 환영합니다!</StyledWord>
+          <StyledWord>첫 방문을 환영해요!</StyledWord>
           <StyledForm onSubmit={handleSubmit(onSubmit)}>
             <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm={true} />
             <Input
@@ -113,7 +113,7 @@ function SignUp() {
               {isLoading && <Spinner />}
             </StyledButtonWrapper>
             <StyledWrapper>
-              이미 가입하셨나요? <Link href="/login">로그인하기</Link>
+              이미 가입하셨나요? <StyledLink href="/login">로그인하기</StyledLink>
             </StyledWrapper>
           </StyledForm>
           {modals[modals.length - 1] === 'customAlert' && (
@@ -130,7 +130,8 @@ function SignUp() {
 export default SignUp;
 
 const StyledRoot = styled.div`
-  height: 100vh;
+  padding: 30px 30px;
+  min-height: 100vh;
 `;
 
 const StyledContainer = styled.div`
@@ -147,19 +148,22 @@ const StyledContainer = styled.div`
 
 const StyledLogo = styled.img`
   width: 200px;
-  height: 279px;
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 120px;
-    height: 167px;
+    width: 150px;
   }
 `;
 
 const StyledWord = styled.span`
   width: 189px;
   height: 24px;
-  margin: 10px auto 38px;
+  margin: 10px auto 20px;
   text-align: center;
   ${FONT_20};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    margin-bottom: 20px;
+    ${FONT_16};
+  }
 `;
 
 const StyledForm = styled.form`
@@ -177,4 +181,9 @@ const StyledButtonWrapper = styled.div`
   width: 100%;
   height: 50px;
   ${FONT_18};
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: underline;
+  color: ${VIOLET[1]};
 `;
