@@ -3,40 +3,36 @@ import styled from 'styled-components';
 import { useStore } from '@/context/stores';
 import Card from './Card';
 import Button from '../Button';
-import TodoModal from '@/components/common/Modal/TodoModal';
+import ImgUrlModal from '../Modal/ImgUrlModal';
 import { getCardList } from '@/api/cards/getCardList';
 import SettingIcon from '@/public/icon/settings.svg';
 import CountChip from '../Chip/CountChip';
 import { BLACK, VIOLET, GRAY } from '@/styles/ColorStyles';
 import { FONT_18_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { MemberListType } from '@/lib/types/members';
 import { modalType } from '@/lib/types/zustand';
 import { ColumnType } from '@/lib/types/columns';
 import { GetCardListResponseType } from '@/lib/types/cards';
-import ImgUrlModal from '../Modal/ImgUrlModal';
 
 interface Props {
   column: ColumnType;
-  memberList: MemberListType[];
-  dashboardId: number;
-  isColumnChanged: boolean;
-  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
+  setModalColumnId: (value: SetStateAction<number>) => void;
 }
 
 /**
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({ column, memberList, dashboardId, setIsColumnChanged, isColumnChanged }: Props) {
+function CardList({ column, setModalColumnId }: Props) {
   const [cardList, setCardList] = useState<GetCardListResponseType>();
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
 
-  const handleButtonClick = (type: modalType) => {
+  const handleButtonClick = (type: modalType, columnId: number) => {
     if (modal.includes(type)) return;
     showModal(type);
+    setModalColumnId(columnId);
   };
 
   useEffect(() => {
@@ -61,19 +57,9 @@ function CardList({ column, memberList, dashboardId, setIsColumnChanged, isColum
         </StyledSettingButton>
       </StyledTop>
       <StyledBtnWrapper>
-        <Button.Add roundSize="M" onClick={() => handleButtonClick('createTodo')} />
+        <Button.Add roundSize="M" onClick={() => handleButtonClick('createTodo', column.id)} />
       </StyledBtnWrapper>
       {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} columnTitle={column.title} />)}
-      {modal.includes('createTodo') && (
-        <TodoModal
-          type={'createTodo'}
-          memberLists={memberList}
-          dashboardId={dashboardId}
-          columnId={column.id}
-          setIsColumnChanged={setIsColumnChanged}
-          isColumnChanged={isColumnChanged}
-        />
-      )}
       {modal[modal.length - 1] === 'imgUrl' && <ImgUrlModal type="imgUrl" />}
     </StyledRoot>
   );
@@ -88,6 +74,10 @@ const StyledRoot = styled.div`
 
   border-right: 1px solid ${GRAY[20]};
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 100%;

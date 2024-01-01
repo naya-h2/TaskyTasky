@@ -18,13 +18,13 @@ export interface CardType {
 
 export interface PostCardRequestType {
   assigneeUserId: number;
-  dashboardId: number;
+  dashboardId?: number;
   columnId: number;
   title: string;
   description: string;
   dueDate: string;
   tags: string[];
-  imageUrl?: string | null;
+  imageUrl?: string;
 }
 
 export interface PostCardResponseType extends CardType {}
@@ -37,11 +37,12 @@ export interface GetCardListResponseType {
 
 export interface PutCardRequestType {
   assigneeUserId: number;
+  columnId: number;
   title: string;
   description: string;
   dueDate: string;
   tags: string[];
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface PutCardResponseType extends CardType {}

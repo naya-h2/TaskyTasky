@@ -13,6 +13,7 @@ import ProfileImg from '../Profile/ProfileImg';
 import { MemberListType } from '@/lib/types/members';
 import { PostCardRequestType } from '@/lib/types/cards';
 import { getFilteredUser } from '@/lib/utils/getFilteredUser';
+import { ColumnType } from '@/lib/types/columns';
 
 interface Props {
   type: 'status' | 'member' | 'kebab';
@@ -20,7 +21,7 @@ interface Props {
   initialMember?: string;
   initialMemberImg?: string;
   initialMemberId?: number;
-  columnLists?: columnLists;
+  columnList?: ColumnType[];
   memberLists?: MemberListType[];
   setReqValue?: (value: SetStateAction<PostCardRequestType>) => void;
 }
@@ -38,7 +39,7 @@ function DropDown({
   initialMember,
   initialMemberImg,
   initialMemberId,
-  columnLists,
+  columnList,
   memberLists,
   setReqValue,
 }: Props) {
@@ -98,7 +99,19 @@ function DropDown({
     if (setReqValue && filteredMember) {
       setReqValue((prev) => ({
         ...prev,
-        assigneeUserId: filteredMember[0]?.id,
+        assigneeUserId: filteredMember[0]?.userId,
+      }));
+    }
+  };
+
+  const handleCheckColumnId = () => {
+    if (!columnList) return;
+
+    const filteredColumn = columnList.filter((item) => item.title === value.status);
+    if (setReqValue && filteredColumn) {
+      setReqValue((prev) => ({
+        ...prev,
+        columnId: filteredColumn[0]?.id,
       }));
     }
   };
@@ -111,7 +124,10 @@ function DropDown({
       handleCheckMemberId();
       setErrorMessage('');
     }
-  }, [value.member]);
+    if (value.status) {
+      handleCheckColumnId();
+    }
+  }, [value.member, value.status]);
 
   return (
     <>
@@ -148,7 +164,7 @@ function DropDown({
           value={value}
           type={type}
           handleDropDownClose={handleDropDownClose}
-          columnLists={columnLists as columnLists}
+          columnList={columnList as ColumnType[]}
           memberLists={memberLists as MemberListType[]}
         />
       )}

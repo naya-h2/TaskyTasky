@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -9,6 +9,9 @@ import SideMenu from '@/components/common/SideMenu/SideMenu';
 import Button from '@/components/common/Button';
 import ColumnModal from '@/components/common/Modal/ColumnModal';
 import ColumnLists from '@/components/pages/Board/ColumnLists';
+import TodoModal from '@/components/common/Modal/TodoModal';
+import BackButton from '@/components/pages/mypage/BackButton';
+import CardModal from '@/components/common/Modal/CardModal';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_18_B } from '@/styles/FontStyles';
 
@@ -20,20 +23,22 @@ import { DashboardType } from '@/lib/types/dashboards';
 import { GetMemberListResponseType, MemberListType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
-
 import PlusIcon from '@/public/icon/add_no_background.svg';
-import AddChip from '@/components/common/Chip/AddChip';
-import BackButton from '@/components/pages/mypage/BackButton';
+import AlertModal from '@/components/common/Modal/AlertModal';
 
 function Board() {
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [columnList, setColumnList] = useState<ColumnType[]>([]);
   const [memberList, setMemberList] = useState<GetMemberListResponseType>();
-  const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
+  const [modalColumnId, setModalColumnId] = useState<number>();
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
+  const modalCard = useStore((state) => state.modalCard);
+  const isColumnChanged = useStore((state) => state.isColumnChanged);
+  const modalCardColumnTitle = useStore((state) => state.modalCardColumnTitle);
+  const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
 
   const router = useRouter();
   const { id } = router.query;
@@ -95,10 +100,7 @@ function Board() {
             {columnList.length > 0 && (
               <ColumnLists
                 columnList={columnList}
-                id={Number(id)}
-                isColumnChanged={isColumnChanged}
-                setIsColumnChanged={setIsColumnChanged}
-                memberList={memberList?.members as MemberListType[]}
+                setModalColumnId={setModalColumnId as (value: SetStateAction<number>) => void}
               />
             )}
             <StyledButton onClick={handleAddColumnBtn}>
@@ -111,13 +113,28 @@ function Board() {
             </StyledBtnWrapper>
           </StyledContent>
         </StyledBody>
-        {modal[modal.length - 1] === 'createColumn' && (
-          <ColumnModal
-            type={'createColumn'}
-            dashboardID={Number(id)}
-            refreshColumn={() => setIsColumnChanged(!isColumnChanged)}
+        {modal.includes('createTodo') && (
+          <TodoModal
+            type={'createTodo'}
+            memberLists={memberList?.members as MemberListType[]}
+            dashboardId={Number(id)}
+            columnId={modalColumnId as number}
           />
         )}
+        {modal.includes('card') && <CardModal type={'card'} cardInfo={modalCard} columnTitle={modalCardColumnTitle} />}
+        {modal[modal.length - 1] === 'createColumn' && (
+          <ColumnModal type={'createColumn'} dashboardID={Number(id)} refreshColumn={() => setIsColumnChanged()} />
+        )}
+        {modal[modal.length - 1] === 'editTodo' && (
+          <TodoModal
+            type={'editTodo'}
+            memberLists={memberList?.members as MemberListType[]}
+            dashboardId={Number(id)}
+            columnId={modalCard.columnId as number}
+            columnList={columnList}
+          />
+        )}
+        {modal[modal.length - 1] === 'deleteCardAlert' && <AlertModal type={'deleteCardAlert'} cardId={modalCard.id} />}
       </StyledRoot>
     </>
   );

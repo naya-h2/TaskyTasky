@@ -28,7 +28,7 @@ function Profile({ type, id, name, profileImg }: Props) {
         <ProfileImg url={profileImg} size={38} name={name} id={id} />
         <StyledNameWrapper $type={type} onClick={handleDropdownClick}>
           <StyledName $type={type}>{name}</StyledName>
-          {type === 'header' && isOpen ? <StyledUpIcon /> : <StyledDownIcon />}
+          {type === 'header' && (isOpen ? <StyledUpIcon /> : <StyledDownIcon />)}
           {type === 'header' && isOpen && (
             <StyledDropDownWrapper>
               <HeaderDropDown />

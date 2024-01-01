@@ -6,21 +6,25 @@ import { FONT_18 } from '@/styles/FontStyles';
 import { ReactNode } from 'react';
 import { useStore } from '@/context/stores';
 import { useRouter } from 'next/router';
-import { is } from 'date-fns/locale';
+import { deleteCard } from '@/api/cards/deleteCard';
 
 interface Props {
   type: modalType;
   customName?: modalType;
   children?: ReactNode;
   isSuccess?: boolean;
+  cardId?: number;
 }
 
-function AlertModal({ type, children, isSuccess, customName }: Props) {
-  const router = useRouter();
+function AlertModal({ type, children, isSuccess, customName, cardId }: Props) {
   const { clearModal, hideModal } = useStore((state) => ({
     clearModal: state.clearModal,
     hideModal: state.hideModal,
   }));
+
+  const router = useRouter();
+  const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
+
   const getErrorMsg = (type: modalType): string | undefined => {
     let errorMsg;
     switch (type) {
@@ -51,13 +55,18 @@ function AlertModal({ type, children, isSuccess, customName }: Props) {
     return errorMsg;
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (customName) return hideModal(customName);
     if (type === 'customAlert') {
       clearModal();
       if ((router.pathname === '/login' || '/signup') && isSuccess) {
         router.push('/myboard');
       }
+    }
+    if (type === 'deleteCardAlert' && cardId) {
+      await deleteCard(cardId);
+      setIsColumnChanged();
+      clearModal();
     }
   };
 
