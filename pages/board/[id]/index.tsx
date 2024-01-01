@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import axios from 'axios';
+import Head from 'next/head';
 
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
@@ -19,7 +20,10 @@ import { DashboardType } from '@/lib/types/dashboards';
 import { GetMemberListResponseType, MemberListType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
-import Head from 'next/head';
+
+import PlusIcon from '@/public/icon/add_no_background.svg';
+import AddChip from '@/components/common/Chip/AddChip';
+import BackButton from '@/components/pages/mypage/BackButton';
 
 function Board() {
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
@@ -85,22 +89,28 @@ function Board() {
           membersData={memberList}
         />
         <SideMenu dashboards={dashboardList} />
-        <StyledContent>
-          {columnList.length > 0 && (
-            <ColumnLists
-              columnList={columnList}
-              id={Number(id)}
-              isColumnChanged={isColumnChanged}
-              setIsColumnChanged={setIsColumnChanged}
-              memberList={memberList?.members as MemberListType[]}
-            />
-          )}
-          <StyledBtnWrapper>
-            <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
-              <StyledText>새로운 컬럼 추가하기</StyledText>
-            </Button.Add>
-          </StyledBtnWrapper>
-        </StyledContent>
+        <StyledBody>
+          <BackButton>마이보드</BackButton>
+          <StyledContent>
+            {columnList.length > 0 && (
+              <ColumnLists
+                columnList={columnList}
+                id={Number(id)}
+                isColumnChanged={isColumnChanged}
+                setIsColumnChanged={setIsColumnChanged}
+                memberList={memberList?.members as MemberListType[]}
+              />
+            )}
+            <StyledButton onClick={handleAddColumnBtn}>
+              <StyledAddChip />
+            </StyledButton>
+            <StyledBtnWrapper>
+              <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
+                <StyledText>새로운 컬럼 추가하기</StyledText>
+              </Button.Add>
+            </StyledBtnWrapper>
+          </StyledContent>
+        </StyledBody>
         {modal[modal.length - 1] === 'createColumn' && (
           <ColumnModal
             type={'createColumn'}
@@ -115,46 +125,76 @@ function Board() {
 
 export default Board;
 
-const StyledRoot = styled.div``;
+const StyledRoot = styled.div`
+  position: relative;
+`;
+
+const StyledBody = styled.div`
+  width: 100%;
+  padding: 90px 80px 0 320px;
+
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    padding: 90px 10px 0 175px;
+
+    flex-direction: column;
+  }
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    padding: 80px 10px 0 80px;
+  }
+`;
 
 const StyledContent = styled.div`
   width: 100%;
-  padding-top: 70px;
-  padding-left: 300px;
 
   display: flex;
   flex-direction: row;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    padding-top: 70px;
-    padding-left: 160px;
-
     flex-direction: column;
-  }
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding-top: 70px;
-    padding-left: 67px;
   }
 `;
 
 const StyledBtnWrapper = styled.div`
-  width: 100%;
-  max-width: 354px;
-  height: 70px;
-  margin: 68px 20px;
+  display: none;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    max-width: none;
+    height: 70px;
     margin: 20px 0;
     padding: 0 20px;
+
+    display: flex;
   }
+
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     height: 60px;
     margin: 12px 0;
     padding: 0 15px;
+
+    display: flex;
   }
 `;
 
 const StyledText = styled.div`
   ${FONT_18_B}
+`;
+
+const StyledButton = styled.button`
+  position: absolute;
+  top: 65px;
+  right: 0;
+
+  background: none;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    display: none;
+  }
+`;
+
+const StyledAddChip = styled(PlusIcon)`
+  width: 35px;
+  height: 35px;
+  margin: 20px;
 `;
