@@ -59,8 +59,8 @@ function Board() {
       ]);
 
       setCurrentDashboard(resCurrentDashboard);
-      setDashboardList(resDashboardList.dashboards);
-      setColumnList(resColumnList.data);
+      setDashboardList(resDashboardList?.dashboards);
+      setColumnList(resColumnList?.data);
     };
 
     fetchData();
