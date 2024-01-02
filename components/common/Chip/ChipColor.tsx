@@ -15,7 +15,7 @@ interface Props {
  * @param text 텍스트를 prop으로 받아온다
  */
 
-function ChipColor({ backgroundColor, fontColor, text }: Props) {
+function ChipColor({ backgroundColor = '#E7F7DB', fontColor = '#86D549', text }: Props) {
   return (
     <StyledContainer $backgroundColor={backgroundColor} $fontColor={fontColor}>
       {text}

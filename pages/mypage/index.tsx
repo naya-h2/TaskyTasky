@@ -21,7 +21,7 @@ function MyPage() {
       <SideMenu data={dashboardData.dashboards} />
       <StyledBody>
         <StyledContainer>
-          <BackButton />
+          <BackButton>돌아가기</BackButton>
           <StyledCardWrapper>
             {user && <ProfileCard data={user} />}
             <PasswordCard />

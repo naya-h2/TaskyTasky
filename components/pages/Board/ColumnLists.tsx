@@ -1,30 +1,17 @@
 import { SetStateAction } from 'react';
 import CardList from '@/components/common/Card/CardList';
 import { ColumnType } from '@/lib/types/columns';
-import { MemberListType } from '@/lib/types/members';
 
 interface Props {
   columnList: ColumnType[];
-  id: number;
-  isColumnChanged: boolean;
-  setIsColumnChanged: (value: SetStateAction<boolean>) => void;
-  memberList: MemberListType[];
+  setModalColumnId: (value: SetStateAction<number>) => void;
 }
 
-function ColumnLists({ columnList, id, isColumnChanged, setIsColumnChanged, memberList }: Props) {
+function ColumnLists({ columnList, setModalColumnId }: Props) {
   return (
     <>
       {columnList.map((column) => {
-        return (
-          <CardList
-            key={column.id}
-            column={column}
-            memberList={memberList}
-            dashboardId={id}
-            isColumnChanged={isColumnChanged}
-            setIsColumnChanged={setIsColumnChanged}
-          />
-        );
+        return <CardList key={column.id} column={column} setModalColumnId={setModalColumnId} />;
       })}
     </>
   );

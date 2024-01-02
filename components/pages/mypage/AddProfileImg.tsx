@@ -1,10 +1,9 @@
 import styled, { css } from 'styled-components';
 import { useStore } from '@/context/stores';
-import { modalType } from '@/lib/types/zustand';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_12B, FONT_14_B, FONT_18 } from '@/styles/FontStyles';
 import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
+import { FONT_12B, FONT_14_B, FONT_18 } from '@/styles/FontStyles';
 import { PostCardRequestType } from '@/lib/types/cards';
 import { uploadCardImg } from '@/api/cards/uploadCardImg';
 import { createUserImage } from '@/api/users/createUserImage';
@@ -14,12 +13,11 @@ type Value = PostCardRequestType;
 
 interface Props {
   type: 'card' | 'myPage';
-  initialUrl: string | null;
-  setValue?: (value: SetStateAction<Value>) => void;
+  initialUrl: string | null | undefined;
   columnId?: number;
 }
 
-function AddProfileImg({ type = 'myPage', initialUrl, setValue, columnId }: Props) {
+function AddProfileImg({ type = 'myPage', initialUrl, columnId }: Props) {
   const [errMsg, setErrMsg] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const { profileUrl, setProfileUrl, cardUrl, setCardUrl, showModal, modals } = useStore((state) => ({
@@ -32,7 +30,7 @@ function AddProfileImg({ type = 'myPage', initialUrl, setValue, columnId }: Prop
   }));
 
   const handleImgDelete = () => {
-    type === 'card' ? setCardUrl(null) : setProfileUrl(null);
+    type === 'card' ? setCardUrl('') : setProfileUrl(null);
   };
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +49,7 @@ function AddProfileImg({ type = 'myPage', initialUrl, setValue, columnId }: Prop
   };
 
   useEffect(() => {
-    type === 'card' ? setCardUrl(initialUrl) : setProfileUrl(initialUrl);
+    type === 'card' ? setCardUrl(initialUrl as string) : setProfileUrl(initialUrl as string | null);
   }, []);
 
   return (
@@ -119,6 +117,7 @@ const StyledProfileImgBox = styled.div<{ $image: string | null | undefined }>`
   ${(props) => (props.$image ? `background-image: url(${props.$image})` : noProfileImg)};
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
 
   &:hover :only-child {
     display: flex;

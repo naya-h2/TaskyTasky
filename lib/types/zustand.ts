@@ -1,3 +1,4 @@
+import { CardType } from './cards';
 import { UserType } from './users';
 
 export type modalType =
@@ -24,6 +25,12 @@ export type modalType =
 
 export interface ModalState {
   modals: modalType[];
+  modalCard: CardType;
+  modalCardColumnTitle: string;
+  isColumnChanged: boolean;
+  setModalCard: (value: CardType) => void;
+  setModalCardColumnTitle: (value: string) => void;
+  setIsColumnChanged: () => void;
   showModal: (type: modalType) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;
@@ -42,8 +49,8 @@ export interface myboardPageState {
 export interface profileImgState {
   profileUrl: string | null;
   setProfileUrl: (src: string | null) => void;
-  cardUrl: string | null;
-  setCardUrl: (src: string | null) => void;
+  cardUrl: string | undefined;
+  setCardUrl: (src: string | undefined) => void;
 }
 
 export interface AuthState {
