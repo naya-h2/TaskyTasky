@@ -25,5 +25,9 @@ export const useGetDashboard = () => {
     fetchDashboardData();
   }, [page]);
 
+  useEffect(() => {
+    setPage(1);
+  }, []);
+
   return dashboardList;
 };
