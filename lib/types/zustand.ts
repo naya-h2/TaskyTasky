@@ -44,7 +44,7 @@ export interface myboardPageState {
   increasePage: (prev: number) => void;
   decreasePage: (prev: number) => void;
   setDashboardSearch: (word: string) => void;
-  resetPage: () => void;
+  setPage: (page: number) => void;
 }
 
 export interface profileImgState {

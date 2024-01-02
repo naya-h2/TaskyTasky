@@ -59,7 +59,7 @@ function InviteDash({ inviteList }: Props) {
       </InviteListHead>
       {!inviteList.length && search && <StyledNoSearch>검색 결과가 없습니다.</StyledNoSearch>}
       <InviteContent>
-        {inviteList.map((list, index) => (
+        {inviteList.map((list) => (
           <InviteList key={list.id} invite={list} />
         ))}
       </InviteContent>
