@@ -96,7 +96,7 @@ function Board() {
           crown={currentDashboard?.createdByMe}
           membersData={memberList}
         />
-        <SideMenu dashboards={dashboardList} />
+        <SideMenu />
         <StyledBody>
           <BackButton>마이보드</BackButton>
           <StyledContent>

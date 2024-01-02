@@ -21,7 +21,7 @@ function Myboard() {
         <title>내 대시보드 | TaskyTasky</title>
       </Head>
       <Header page="myboard">내 대시보드</Header>
-      <SideMenu dashboards={dashboardList} />
+      <SideMenu />
       <StyledBody>
         <StyledContainer>
           {dashboardList && <DashBoardList data={dashboardList} />}

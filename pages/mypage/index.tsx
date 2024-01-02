@@ -20,7 +20,7 @@ function MyPage() {
         <title>내 정보 | TaskyTasky</title>
       </Head>
       <Header page="myboard">계정관리</Header>
-      <SideMenu data={dashboardData.dashboards} />
+      <SideMenu />
       <StyledBody>
         <StyledContainer>
           <BackButton>돌아가기</BackButton>

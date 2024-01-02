@@ -51,7 +51,7 @@ function DashboardModal({ type }: Props) {
             isHookForm
           />
           <StyledColorWrapper>
-            <DashBoardColor selectedColor={color} setSelectedColor={setColor} />
+            <DashBoardColor selectedColor={color} setSelectedColor={setColor} isInModal={true} />
           </StyledColorWrapper>
         </form>
       </ModalFrame>

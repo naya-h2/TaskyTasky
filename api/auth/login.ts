@@ -1,7 +1,7 @@
 import axios from '@/lib/axios';
-import { Login } from '@/lib/types/type';
+import { PostLoginRequestType } from '@/lib/types/auth';
 
-export const login = async (data: Login) => {
+export const login = async (data: PostLoginRequestType) => {
   try {
     const response = await axios.post('/api/auth/login', data);
 

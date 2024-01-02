@@ -26,7 +26,7 @@ function Edit() {
       </Head>
       <Root>
         <Second page="others" children="제목" />
-        <SideMenu dashboards={boardMockData.dashboards} />
+        <SideMenu />
         <Content>
           <Wrapper>
             <ButtonLink href={`/board/${id}`}>
@@ -80,8 +80,8 @@ const ButtonLink = styled(Link)`
   cursor: pointer;
   text-decoration: none;
 
-  &: link, 
-  &: visited {
+  &:link,
+  &:visited {
     color: ${[BLACK[2]]};
   }
 `;

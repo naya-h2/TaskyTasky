@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import Crown from "@/public/icon/crown.svg";
+import styled from 'styled-components';
+import Crown from '@/public/icon/crown.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import {FONT_18, FONT_16} from '@/styles/FontStyles';
+import { FONT_18, FONT_16 } from '@/styles/FontStyles';
 import { GRAY } from '@/styles/ColorStyles';
 
 interface DashBoardProps {
@@ -30,6 +30,7 @@ const StyledContainer = styled.div`
   align-items: center;
   flex-direction: row;
   flex-shrink: 0;
+  border-radius: 4px;
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 134px;
     height: 43px;
@@ -45,6 +46,7 @@ const StyledColor = styled.div<{ color: string }>`
   width: 8px;
   height: 8px;
   margin-right: 16px;
+  margin-left: 12px;
   background-color: ${(props: { color: string }) => props.color};
   border-radius: 100%;
 `;

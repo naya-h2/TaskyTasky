@@ -1,38 +1,53 @@
 import styled from 'styled-components';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import AddDashBoard from './AddDashBoard';
 import DashBoard from './DashBoard';
 import LogoLink from './LogoLink';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { WHITE, GRAY } from '@/styles/ColorStyles';
+import { useStore } from '@/context/stores';
+import { getDashboardList } from '@/api/dashboards/getDashboardList';
+import { DashboardType } from '@/lib/types/dashboards';
 
-type Dashboard = {
-  id: number;
-  title: string;
-  color: string;
-  createdAt: string;
-  updatedAt: string;
-  createdByMe: boolean;
-  userId: number;
-};
+function SideMenu() {
+  const router = useRouter();
+  const { page, setTotal } = useStore((state) => ({
+    page: state.myboardPageNumber,
+    setTotal: state.calcTotalPage,
+  }));
+  const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
 
-type SideMenuProps = {
-  dashboards: Dashboard[];
-};
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const dashboardData = await getDashboardList('pagination', 10, undefined, page);
+      setDashboardList(dashboardData.dashboards);
+      setTotal(Math.ceil(dashboardData.totalCount / 5));
+    };
 
-function SideMenu({ dashboards }: SideMenuProps) {
+    fetchDashboardData();
+  }, [page]);
+
   return (
     <StyledWrapper>
-      <LogoLink />
-      <AddDashBoard />
+      <StyledLogoWrapper>
+        <LogoLink />
+      </StyledLogoWrapper>
+      <StyledAddDashBoardWrapper>
+        <AddDashBoard />
+      </StyledAddDashBoardWrapper>
       <StyledDashboardList>
-        {dashboards?.map((dashboard) => (
-          <DashBoard
-            key={dashboard.id}
-            color={dashboard.color}
-            title={dashboard.title}
-            createdByMe={dashboard.createdByMe}
-          />
+        {dashboardList?.map((dashboard) => (
+          <StyledLink href={`/board/${dashboard.id}`} key={dashboard.id}>
+            <DashBoard
+              key={dashboard.id}
+              color={dashboard.color}
+              title={dashboard.title}
+              createdByMe={dashboard.createdByMe}
+            />
+          </StyledLink>
         ))}
       </StyledDashboardList>
     </StyledWrapper>
@@ -44,13 +59,12 @@ export default SideMenu;
 const StyledWrapper = styled.div`
   width: 300px;
   height: 1550px;
-  padding: 20px 24px;
-  /* box-shadow: 15px 0 15px -15px ${GRAY[30]}; */ //사이드메뉴 접었다 열었다..하고싶다..
+  padding: 20px 12px;
   border-right: 1px solid ${GRAY[30]};
-  position: fixed;
   left: 0;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 
   position: fixed;
   left: 0;
@@ -68,6 +82,15 @@ const StyledWrapper = styled.div`
   }
 `;
 
+const StyledLogoWrapper = styled.div`
+  padding: 0 12px;
+`;
+
+const StyledAddDashBoardWrapper = styled.div`
+  width: 100%;
+  padding: 0 12px;
+`;
+
 const StyledDashboardList = styled.div`
   margin-top: 30px;
   display: flex;
@@ -77,5 +100,17 @@ const StyledDashboardList = styled.div`
   }
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     margin-top: 22px;
+  }
+`;
+
+const StyledLink = styled.a`
+  &:hover {
+    text-decoration: none;
+    background-color: #f1effd;
+  }
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
   }
 `;
