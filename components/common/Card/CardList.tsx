@@ -13,8 +13,10 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { modalType } from '@/lib/types/zustand';
 import { ColumnType } from '@/lib/types/columns';
 import { GetCardListResponseType } from '@/lib/types/cards';
+import ColumnModal from '../Modal/ColumnModal';
 
 interface Props {
+  key: number;
   column: ColumnType;
   setModalColumnId: (value: SetStateAction<number>) => void;
 }
@@ -23,16 +25,24 @@ interface Props {
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({ column, setModalColumnId }: Props) {
+function CardList({ key, column, setModalColumnId }: Props) {
+  const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
   const [cardList, setCardList] = useState<GetCardListResponseType>();
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
 
-  const handleButtonClick = (type: modalType, columnId: number) => {
+  const handleAddButtonClick = (type: modalType, columnId: number) => {
     if (modal.includes(type)) return;
     showModal(type);
     setModalColumnId(columnId);
+  };
+
+  const handleManageButtonClick = (type: modalType, columnID: number) => {
+    if (modal.includes(type)) return;
+    showModal(type);
+    setModalColumnId(columnID);
+    console.log(columnID);
   };
 
   useEffect(() => {
@@ -52,12 +62,12 @@ function CardList({ column, setModalColumnId }: Props) {
           <StyledLabel>{column.title}</StyledLabel>
           <StyledCountChip number={cardList ? cardList.totalCount : 0}></StyledCountChip>
         </StyledLabelWrapper>
-        <StyledSettingButton>
+        <StyledSettingButton onClick={() => handleManageButtonClick('manageColumn', column.id)}>
           <SettingIcon />
         </StyledSettingButton>
       </StyledTop>
       <StyledBtnWrapper>
-        <Button.Add roundSize="M" onClick={() => handleButtonClick('createTodo', column.id)} />
+        <Button.Add roundSize="M" onClick={() => handleAddButtonClick('createTodo', column.id)} />
       </StyledBtnWrapper>
       {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} columnTitle={column.title} />)}
       {modal[modal.length - 1] === 'imgUrl' && <ImgUrlModal type="imgUrl" />}
