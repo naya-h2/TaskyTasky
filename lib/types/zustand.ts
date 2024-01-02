@@ -1,4 +1,4 @@
-import { UserType } from "./users";
+import { UserType } from './users';
 
 export type modalType =
   | 'createColumn'

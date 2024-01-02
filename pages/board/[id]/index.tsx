@@ -19,7 +19,7 @@ function Board() {
   return (
     <StyledRoot>
       <Header page="others" children="제목" />
-      <SideMenu dashboards={boardMockData.dashboards} />
+      <SideMenu />
       <StyledContent>
         <CardList label="To Do" cardList={mockData} />
         <CardList label="On Progress" cardList={mockData} />

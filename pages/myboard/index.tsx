@@ -53,7 +53,7 @@ function Myboard() {
   return (
     <>
       <Header page="myboard">내 대시보드</Header>
-      <SideMenu dashboards={dashboardList} />
+      <SideMenu />
       <StyledBody>
         <StyledContainer>
           <DashBoardList data={dashboardList} />

@@ -1,10 +1,10 @@
 import axios from '@/lib/axios';
-import { Login } from '@/lib/types/type';
+import { PostLoginRequestType } from '@/lib/types/auth';
 
-export const login = async (data: Login) => {
+export const login = async (data: PostLoginRequestType) => {
   try {
     const response = await axios.post('/api/auth/login', data);
-    
+
     if (response.status === 201) {
       window.localStorage.setItem('login', response.data.accessToken);
       return response.data; // 여기서 성공 메시지를 반환하지 않습니다. 성공 알림은 handleLogin에서 처리합니다.

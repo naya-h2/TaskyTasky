@@ -25,7 +25,7 @@ function MyPage() {
   return (
     <>
       <Header page="myboard">계정관리</Header>
-      <SideMenu data={dashboardData.dashboards} />
+      <SideMenu />
       <StyledBody>
         <StyledContainer>
           <BackButton />
