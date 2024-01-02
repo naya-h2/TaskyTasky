@@ -68,6 +68,8 @@ function CardList({ column, setModalColumnId }: Props) {
 export default CardList;
 
 const StyledRoot = styled.div`
+  flex-shrink: 0;
+
   width: 354px;
   height: 100vh;
   padding: 22px 20px;
