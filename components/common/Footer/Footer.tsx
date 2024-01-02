@@ -47,7 +47,7 @@ const Body = styled.footer`
 
   position: relative;
 
-  background-color: ${VIOLET[1]};
+  background-color: ${VIOLET[2]};
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     height: 250px;

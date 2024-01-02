@@ -15,6 +15,8 @@ export const getCardList = async (columnId: number, size?: number, cursorId?: nu
       ? '&cursorId=${cursorId}'
       : '';
 
-  const response = await instance.get(`/api/cards?columnId=${columnId}${query}`);
-  return response.data;
+  try {
+    const response = await instance.get(`/api/cards?columnId=${columnId}${query}`);
+    return response.data;
+  } catch (error) {}
 };

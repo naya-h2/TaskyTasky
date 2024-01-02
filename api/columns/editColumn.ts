@@ -1,4 +1,4 @@
-import axios from 'axios';
+import authInstance from '@/lib/axios';
 import { PutColumnRequestType } from '@/lib/types/columns';
 
 /**
@@ -6,8 +6,8 @@ import { PutColumnRequestType } from '@/lib/types/columns';
  * @param columnId 수정하려는 column의 Id
  * @param data 수정하려는 column의 데이터
  */
-export const editCard = async (columnId: number, data: PutColumnRequestType) => {
-  const response = await axios.put(`/api/columns/${columnId}`, data);
-  console.log(response);
+export const editColumn = async (columnId: number, data: PutColumnRequestType) => {
+  const response = await authInstance.put(`/api/columns/${columnId}`, data);
+  console.log(columnId);
   return response.data;
 };

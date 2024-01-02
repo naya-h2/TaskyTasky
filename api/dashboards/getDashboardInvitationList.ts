@@ -5,6 +5,6 @@ import authInstance from '@/lib/axios';
  */
 export const getDashboardInvitationList = async (dashboardId: number, size: number, page: number) => {
   const response = await authInstance.get(`/api/dashboards/${dashboardId}/invitations?page=${page}&size=${size}`);
-  console.log(response);
   return response.data;
+
 };

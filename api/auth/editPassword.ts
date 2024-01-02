@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
  * 비밀번호 변경
  */
 export const editPassword = async (data: PutPasswordRequestType) => {
-  const router = useRouter();
   try {
     const response = await authInstance.put('/api/auth/password', data);
     return response.data;

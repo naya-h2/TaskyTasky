@@ -12,6 +12,7 @@ import DashMyMember from '@/components/common/Table/DashMyMember';
 import DashInviteList from '@/components/common/Table/DashInviteList';
 import { MEMBERS1 } from '@/lib/constants/mockup';
 import boardMockData from '@/components/common/SideMenu/mock';
+
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { MemberList } from '@/lib/types/type';
@@ -20,7 +21,9 @@ import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import BackButton from '@/components/pages/mypage/BackButton';
 import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
 
+
 function Edit() {
+  useCheckLogin();
   const router = useRouter();
   const { id } = router.query;
   const dashboardId = Number(id);
@@ -109,8 +112,8 @@ const ButtonLink = styled(Link)`
   cursor: pointer;
   text-decoration: none;
 
-  &: link, 
-  &: visited {
+  &:link,
+  &:visited {
     color: ${[BLACK[2]]};
   }
 `;

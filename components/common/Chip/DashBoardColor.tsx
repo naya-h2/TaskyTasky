@@ -7,6 +7,7 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 interface Props {
   selectedColor: string;
   setSelectedColor: (value: SetStateAction<string>) => void;
+  isInModal?: boolean;
 }
 
 /**
@@ -14,7 +15,7 @@ interface Props {
  * @param setSelectedColor 색상을 선택할 때 호출되는 함수. 선택된 색상을 인수로 받습니다.
  */
 
-function DashBoardColor({ selectedColor, setSelectedColor }: Props) {
+function DashBoardColor({ selectedColor, setSelectedColor, isInModal }: Props) {
   const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
 
   return (
@@ -25,6 +26,7 @@ function DashBoardColor({ selectedColor, setSelectedColor }: Props) {
           onClick={() => setSelectedColor(color)}
           $color={color}
           $isSelected={selectedColor === color}
+          style={isInModal ? { display: 'flex' } : {}}
         >
           {selectedColor === color && <DoneIcon />}
         </StyledColorBox>
