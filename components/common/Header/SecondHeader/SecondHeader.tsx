@@ -37,7 +37,7 @@ function Header({ page, children, crown, membersData }: Props) {
         <StyledRight>
           {page !== 'myboard' && (
             <>
-              <HeaderButtons createdByMe={crown} />
+              {crown && <HeaderButtons />}
               {membersData && <ProfileImgList memberCount={membersData.totalCount} data={membersData.members} />}
               <StyledDividingLine />
             </>
@@ -51,11 +51,7 @@ function Header({ page, children, crown, membersData }: Props) {
 
 export default Header;
 
-interface HeaderButtonsProps {
-  createdByMe?: boolean;
-}
-
-function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
+function HeaderButtons() {
   const { modal, showModal } = useStore((state) => ({
     modal: state.modals,
     showModal: state.showModal,
@@ -66,18 +62,16 @@ function HeaderButtons({ createdByMe }: HeaderButtonsProps) {
   return (
     <>
       <StyledButtonSection>
-        {createdByMe && (
-          <Link href={`/board/${id}/edit`}>
-            <StyledSettingWrapper>
-              <Button.Plain style="outline" roundSize="L">
-                <StyledWrapper>
-                  <StyledSettingIcon />
-                  <StyledText>관리</StyledText>
-                </StyledWrapper>
-              </Button.Plain>
-            </StyledSettingWrapper>
-          </Link>
-        )}
+        <Link href={`/board/${id}/edit`}>
+          <StyledSettingWrapper>
+            <Button.Plain style="outline" roundSize="L">
+              <StyledWrapper>
+                <StyledSettingIcon />
+                <StyledText>관리</StyledText>
+              </StyledWrapper>
+            </Button.Plain>
+          </StyledSettingWrapper>
+        </Link>
         <StyledInviteWrapper>
           <Button.Plain style="outline" roundSize="L" onClick={() => showModal('invite')}>
             <StyledWrapper>
@@ -119,7 +113,7 @@ const StyledBody = styled.div`
 
 const StyledContainer = styled.div<{ $page: string }>`
   width: 100%;
-  padding-left: 40px;
+  padding-left: 30px;
   padding-right: 60px;
 
   display: flex;
@@ -213,9 +207,15 @@ const StyledInviteWrapper = styled.div`
 `;
 
 const StyledTitle = styled.div`
+  min-width: 5vw;
+  max-width: 20vw;
+
   color: ${BLACK[2]};
   ${FONT_20_B};
+
+  white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const StyledWrapper = styled.div`

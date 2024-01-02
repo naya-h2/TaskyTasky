@@ -40,7 +40,7 @@ function InviteModal({ dashboardId }: Props) {
         type="invite"
         title="초대하기"
         height="Mid"
-        disabledBtn={errors.email ? true : false}
+        disabledBtn={errors.email || !email ? true : false}
         btnFnc={handleInviteClick}
       >
         <form onSubmit={handleInviteClick}>
