@@ -7,19 +7,13 @@ import DashBoardList from '@/components/pages/myboard/DashBoardList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useGetDashboard } from '@/hooks/useGetDashboard';
 import { useGetInvitationList } from '@/hooks/useGetInvitationList';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Myboard() {
-  const router = useRouter();
-  //if (window && !window.localStorage.getItem('login')) router.push('/404');
+  useCheckLogin();
 
   const dashboardList = useGetDashboard();
   const invitationList = useGetInvitationList();
-
-  useEffect(() => {
-    if (window && !window.localStorage.getItem('login')) router.push('/404');
-  }, []);
 
   return (
     <>
@@ -30,8 +24,8 @@ function Myboard() {
       <SideMenu dashboards={dashboardList} />
       <StyledBody>
         <StyledContainer>
-          <DashBoardList data={dashboardList} />
-          <InviteDash inviteList={invitationList} />
+          {dashboardList && <DashBoardList data={dashboardList} />}
+          {invitationList && <InviteDash inviteList={invitationList} />}
         </StyledContainer>
       </StyledBody>
     </>
