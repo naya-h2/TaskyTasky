@@ -1,12 +1,13 @@
 import { styled } from 'styled-components';
 import { BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_18, FONT_20_B } from '@/styles/FontStyles';
-import React, { useEffect, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import DashBoardColor from '../Chip/DashBoardColor';
 import Button from '../Button';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import { editDashboard } from '@/api/dashboards/editDashboard';
+import { tree } from 'next/dist/build/templates/app-page';
 
 interface Props {
   dashboardData: GetDashboardListDetailResponseType;
