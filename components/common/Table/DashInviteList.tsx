@@ -3,26 +3,51 @@ import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import ListHeader from './ListHeader';
 import { FONT_14, FONT_16 } from '@/styles/FontStyles';
-import { MemberList } from '@/lib/types/type';
 import Button from '../Button';
-import { useMediaQuery } from 'react-responsive';
+import { GetDashboardInvitationResponseType } from '@/lib/types/dashboards';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
 
-interface Props {
-  memberList: MemberList;
-}
+// interface Props {
+//   invitationsList: GetDashboardInvitationResponseType;
+// }
 
-function DashInviteList({ memberList }: Props) {
-  const { members, totalCount } = memberList;
+function DashInviteList() {
+  const router = useRouter();
+  const { id } = router.query;
+  const dashboardId = Number(id);
+  const [dashInvitation, setDashInvitation] = useState<GetDashboardInvitationResponseType>({
+    totalCount: 0,
+    invitations: [],
+  });
+  const { invitations, totalCount } = dashInvitation;
+  const [page, setPage] = useState(1);
+
+  const fetchDashboardData = async (page: number) => {
+    const dashInvitation = await getDashboardInvitationList(dashboardId, 5, page);
+    setDashInvitation(dashInvitation);
+  };
+  const getPage = (num: number) => {
+    setPage(num);
+    fetchDashboardData(num);
+  };
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    fetchDashboardData(page);
+  }, [router.isReady]);
+
   return (
     <Wrapper>
       <Container>
-        <ListHeader title="초대 내역" />
+        <ListHeader title="초대 내역" totalCount={totalCount} page={page} getPage={getPage} />
         <ListTitle>이메일</ListTitle>
         <ListLayout>
-          {members.map((member) => (
-            <InviterEmailWrapper key={member.id}>
+          {invitations.map((invitation) => (
+            <InviterEmailWrapper key={invitation.id}>
               <InviterEmailLayout>
-                <InviteEmail>{member.email}</InviteEmail>
+                <InviteEmail>{invitation.invitee.email}</InviteEmail>
                 <InviteCancelButton>
                   <Button.Plain style="outline" roundSize="S">
                     <ButtonText>취소</ButtonText>
