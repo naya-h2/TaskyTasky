@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import { FONT_14, FONT_16 } from '@/styles/FontStyles';
-import { WHITE, BLACK } from '@/styles/ColorStyles';
+import { WHITE, BLACK, VIOLET } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Logo from '../Logo/Logo';
+import { Z_INDEX } from '@/styles/ZIndexStyles';
 
 function MainHeader() {
   return (
@@ -40,7 +41,6 @@ const StyledMobileWrapper = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 100vw;
   height: 70px;
   padding: 20px 80px 20px 26px;
 
@@ -50,7 +50,11 @@ const Wrapper = styled.div`
   align-items: center;
   column-gap: 3.6rem;
 
-  background-color: ${WHITE};
+  position: fixed;
+  top: 0;
+  z-index: ${Z_INDEX.secondHeader_Body};
+
+  background-color: ${VIOLET[9]};
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     padding: 20px 24px;
