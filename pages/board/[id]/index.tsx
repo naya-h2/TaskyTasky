@@ -40,8 +40,8 @@ function Board() {
   const showModal = useStore((state) => state.showModal);
   const modalCard = useStore((state) => state.modalCard);
   const isColumnChanged = useStore((state) => state.isColumnChanged);
-  const modalCardColumnTitle = useStore((state) => state.modalCardColumnTitle);
   const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
+  const modalCardColumnTitle = useStore((state) => state.modalCardColumnTitle);
 
   const router = useRouter();
   const { id } = router.query;
@@ -59,8 +59,8 @@ function Board() {
       ]);
 
       setCurrentDashboard(resCurrentDashboard);
-      setDashboardList(resDashboardList.dashboards);
-      setColumnList(resColumnList.data);
+      setDashboardList(resDashboardList?.dashboards);
+      setColumnList(resColumnList?.data);
     };
 
     fetchData();
@@ -71,7 +71,7 @@ function Board() {
       if (!currentDashboard) return;
 
       const resMemberList = await getMemberList(currentDashboard.id);
-      setMemberList(resMemberList); //헤더에서 totalCount 데이터가 필요해서 이 부분 수정했어요!
+      setMemberList(resMemberList);
     };
 
     fetchMemberData();
@@ -83,8 +83,6 @@ function Board() {
     }
     showModal('createColumn');
   };
-
-  console.log(modal);
 
   return (
     <>
@@ -127,8 +125,10 @@ function Board() {
           />
         )}
         {modal.includes('card') && <CardModal type={'card'} cardInfo={modalCard} columnTitle={modalCardColumnTitle} />}
-        {modal[modal.length - 1] === 'createColumn' && (
-          <ColumnModal type={'createColumn'} dashboardID={Number(id)} refreshColumn={() => setIsColumnChanged()} />
+        {modal[modal.length - 1] === 'createColumn' && <ColumnModal type={'createColumn'} dashboardID={Number(id)} />}
+        {modal.includes('manageColumn') && <ColumnModal type={'manageColumn'} columnID={modalColumnId} />}
+        {modal[modal.length - 1] === 'deleteColumnAlert' && (
+          <AlertModal type={'deleteColumnAlert'} columnID={modalColumnId} />
         )}
         {modal[modal.length - 1] === 'editTodo' && (
           <TodoModal

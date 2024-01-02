@@ -6,8 +6,8 @@ import { FONT_18 } from '@/styles/FontStyles';
 import { ReactNode } from 'react';
 import { useStore } from '@/context/stores';
 import { useRouter } from 'next/router';
-import { is } from 'date-fns/locale';
 import { deleteCard } from '@/api/cards/deleteCard';
+import { deleteColumn } from '@/api/columns/deleteColumn';
 
 interface Props {
   type: modalType;
@@ -15,9 +15,10 @@ interface Props {
   children?: ReactNode;
   isSuccess?: boolean;
   cardId?: number;
+  columnID?: number;
 }
 
-function AlertModal({ type, children, isSuccess, customName, cardId }: Props) {
+function AlertModal({ type, children, isSuccess, customName, cardId, columnID }: Props) {
   const { clearModal, hideModal } = useStore((state) => ({
     clearModal: state.clearModal,
     hideModal: state.hideModal,
@@ -63,11 +64,19 @@ function AlertModal({ type, children, isSuccess, customName, cardId }: Props) {
       if ((router.pathname === '/login' || '/signup') && isSuccess) {
         router.push('/myboard');
       }
+      return;
     }
     if (type === 'deleteCardAlert' && cardId) {
       await deleteCard(cardId);
       setIsColumnChanged();
       clearModal();
+      return;
+    }
+    if (type === 'deleteColumnAlert' && columnID) {
+      await deleteColumn(columnID);
+      setIsColumnChanged();
+      clearModal();
+      return;
     }
   };
 

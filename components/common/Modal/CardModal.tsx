@@ -18,7 +18,7 @@ interface Props {
   cardInfo: Card;
 }
 
-function ColumnModal({ type, columnTitle, cardInfo }: Props) {
+function CardModal({ type, columnTitle, cardInfo }: Props) {
   const handleButtonClick = () => {};
 
   return (
@@ -89,7 +89,7 @@ function ColumnModal({ type, columnTitle, cardInfo }: Props) {
   );
 }
 
-export default ColumnModal;
+export default CardModal;
 
 const StyledContainer = styled.div`
   width: 100%;

@@ -8,7 +8,7 @@ import DropDownList from './DropDownList';
 import ColumnNameChip from '../Chip/ColumnNameChip';
 import MoreIcon from '@/public/icon/more.svg';
 import { FONT_14, FONT_18 } from '@/styles/FontStyles';
-import { columnLists, memberLists } from '@/lib/types/type';
+
 import ProfileImg from '../Profile/ProfileImg';
 import { MemberListType } from '@/lib/types/members';
 import { PostCardRequestType } from '@/lib/types/cards';
