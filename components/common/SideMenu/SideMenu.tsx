@@ -103,7 +103,8 @@ const StyledDashboardList = styled.div`
   }
 `;
 
-const StyledLink = styled.a`
+const StyledLink = styled(Link)`
+  border-radius: 2px;
   &:hover {
     text-decoration: none;
     background-color: #f1effd;
