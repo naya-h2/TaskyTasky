@@ -20,7 +20,7 @@ import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import BackButton from '@/components/pages/mypage/BackButton';
 import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
-
+import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Edit() {
   useCheckLogin();
@@ -115,6 +115,7 @@ const ButtonLink = styled(Link)`
   &:link,
   &:visited {
     color: ${[BLACK[2]]};
+    text-decoration: none;
   }
 `;
 
