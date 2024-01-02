@@ -129,6 +129,11 @@ const StyledButtonText = styled.div`
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     ${FONT_14_B};
   }
+
+  white-space: nowrap; /* 줄 바꿈 금지 */
+  overflow: hidden; /* 넘치는 부분 감춤 */
+  text-overflow: ellipsis; /* 초과 시 "..."으로 표시 */
+  max-width: 180px;
 `;
 
 const StyledHighlight = styled.span`

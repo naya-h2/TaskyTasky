@@ -25,6 +25,7 @@ export function DashBoardButton({ isOwner = false, chipColor, roundSize, childre
 
 const StyledLayout = styled.div`
   padding: 0 20px;
+  padding-right: 40px;
 
   display: flex;
   align-items: center;

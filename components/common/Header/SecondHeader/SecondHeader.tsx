@@ -120,7 +120,7 @@ const StyledBody = styled.div`
 const StyledContainer = styled.div<{ $page: string }>`
   width: 100%;
   padding-left: 40px;
-  padding-right: 80px;
+  padding-right: 60px;
 
   display: flex;
   align-items: center;
@@ -215,6 +215,7 @@ const StyledInviteWrapper = styled.div`
 const StyledTitle = styled.div`
   color: ${BLACK[2]};
   ${FONT_20_B};
+  text-overflow: ellipsis;
 `;
 
 const StyledWrapper = styled.div`
