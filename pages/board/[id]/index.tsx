@@ -84,6 +84,8 @@ function Board() {
     showModal('createColumn');
   };
 
+  console.log(modal);
+
   return (
     <>
       <Head>

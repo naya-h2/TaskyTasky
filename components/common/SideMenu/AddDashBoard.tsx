@@ -34,7 +34,7 @@ function AddDashBoard() {
       <StyledButton onClick={handleDashboardAdd}>
         <StyledAddIcon />
       </StyledButton>
-      {modals.length > 0 && <DashboardModal type="dashBoard" />}
+      {modals[modals.length - 1] === 'dashBoard' && <DashboardModal type="dashBoard" />}
     </StyledContainer>
   );
 }
