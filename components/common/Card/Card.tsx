@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { Card as CardType } from '@/lib/types/type';
 import { WHITE, GRAY, RED } from '@/styles/ColorStyles';
-import { FONT_12, FONT_16, FONT_16_B } from '@/styles/FontStyles';
+import { FONT_12, FONT_16, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
 import CardModal from '@/components/common/Modal/CardModal';
@@ -73,14 +73,12 @@ const StyledWrapper = styled.div<{ isRed: boolean }>`
   background-color: ${WHITE};
 
   border-radius: 6px;
-  /* border: ${(props) => (props.isRed ? '2px' : '1px')} solid ${(props) => (props.isRed ? '#EBC7C7' : GRAY[30])}; */
   border: 1px solid ${GRAY[30]};
 
   cursor: pointer;
 
   &:hover {
-    background-color: ${GRAY[20]};
-    background-color: ${(props) => (props.isRed ? '#FFE3E3' : GRAY[20])};
+    background-color: ${(props) => (props.isRed ? '#FFE3E3' : '#EDDFFF')};
   }
 
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
@@ -125,8 +123,7 @@ const StyledContent = styled.div`
 const StyledTitle = styled.div<{ isRed: boolean }>`
   margin-bottom: 10px;
 
-  ${FONT_16}
-  ${(props) => (props.isRed ? FONT_16_B : FONT_16)}
+  ${(props) => (props.isRed ? FONT_16_EB : FONT_16_B)}
 `;
 
 const StyledDetail = styled.div`
