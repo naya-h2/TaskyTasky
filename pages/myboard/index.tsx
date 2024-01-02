@@ -7,10 +7,19 @@ import DashBoardList from '@/components/pages/myboard/DashBoardList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useGetDashboard } from '@/hooks/useGetDashboard';
 import { useGetInvitationList } from '@/hooks/useGetInvitationList';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 function Myboard() {
+  const router = useRouter();
+  //if (window && !window.localStorage.getItem('login')) router.push('/404');
+
   const dashboardList = useGetDashboard();
   const invitationList = useGetInvitationList();
+
+  useEffect(() => {
+    if (window && !window.localStorage.getItem('login')) router.push('/404');
+  }, []);
 
   return (
     <>
