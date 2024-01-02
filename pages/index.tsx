@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '@/components/pages/home/Layout';
 import Button from '@/components/common/Button';
-import mainImage from '@/public/images/resource/desktop/main_image_pc.png';
 import landing1 from '@/public/images/resource/desktop/landging1.png';
 import landing2 from '@/public/images/resource/desktop/landging2.png';
 import landing3 from '@/public/images/resource/desktop/landging3.png';
@@ -11,43 +10,17 @@ import landing4 from '@/public/images/resource/desktop/landging4.png';
 import landing5 from '@/public/images/resource/desktop/landging5.png';
 import { BLACK, WHITE, GRAY, VIOLET } from '@/styles/ColorStyles';
 import { FONT_16, FONT_18, FONT_18_B, FONT_22, FONT_28_B } from '@/styles/FontStyles';
-import { login } from '@/api/auth/login';
-import { editPassword } from '@/api/auth/editPassword';
-import { getCard } from '@/api/cards/getCardInfo';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import PointSection from '@/components/pages/home/PointSection';
+import MainIntro from '@/components/pages/home/MainIntro';
 
 function Home() {
-  // login({ email: 'test@codeit.com', password: '1234asdf' });
-  //editPassword({ password: '1234asdf', newPassword: '1234asdf!' });
-  //getCard(1);
-
   return (
     <Layout>
       <Container>
-        <Image src={mainImage} alt="메인 이미지" />
-        <TitleContainer>
-          <Title>새로운 일정 관리</Title>
-          <TaskifyTitle>Taskify</TaskifyTitle>
-        </TitleContainer>
-        <Subtitle>서비스의 메인 설명 들어갑니다.</Subtitle>
-        <Link href="/login">
-          <ButtonWrapper>
-            <Button.Plain style="primary" roundSize="L">
-              로그인하기
-            </Button.Plain>
-          </ButtonWrapper>
-        </Link>
-        <SectionContainer>
-          <FirstSection>
-            <Text>
-              <Point>Point 1</Point>
-              <Content>
-                일의 <SPAN>우선순위</SPAN>를<br />
-                관리하세요
-              </Content>
-            </Text>
-            <Image src={landing1} alt="랜딩 1" />
-          </FirstSection>
-          <SecondSection>
+        <MainIntro />
+        <PointSection />
+        {/* <SecondSection>
             <Image src={landing2} alt="랜딩 2" />
             <Text>
               <Point>Point 2</Point>
@@ -85,8 +58,7 @@ function Home() {
                 </TextBox>
               </WrapperBox>
             </ThirdContainer>
-          </ThirdSection>
-        </SectionContainer>
+          </ThirdSection> */}
       </Container>
     </Layout>
   );
@@ -95,88 +67,77 @@ function Home() {
 export default Home;
 
 const Container = styled.div`
-  margin-top: 94px;
+  margin: 120px auto 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
 
-const TitleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Title = styled.h1`
-  margin: 48px 20px 24px 0;
-  font-size: 76px;
-  font-weight: 700;
-  color: ${BLACK[1]};
-`;
-
-const TaskifyTitle = styled(Title)`
-  font-family: Montserrat;
-  font-size: 90px;
-  line-height: 65px; /* 72.222% */
-  color: ${VIOLET[1]};
-  letter-spacing: -1px;
-`;
-
-const Subtitle = styled.span`
-  margin-bottom: 66px;
-  ${FONT_18};
-  font-weight: 400;
-  color: ${BLACK[1]};
-  letter-spacing: -1px;
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    margin-top: 100px;
+  }
 `;
 
 const SectionContainer = styled.div`
-  width: 1200px;
-  margin: 184px 0 160px 0;
+  max-width: 1200px;
+  margin: 100px auto;
   display: flex;
-  flex-direction: column;
-  gap: 90px;
+  justify-content: center;
+  gap: 70px;
 `;
 
 const FirstSection = styled.div`
-  width: 100%;
-  height: 600px;
-  padding: 103px 0 0 60px;
-  position: relative;
+  width: 500px;
+  height: 680px;
+  padding: 50px 50px;
+
   display: flex;
-  justify-content: space-between;
-  background: #f7f0fa;
-  border-radius: 8px;
+  flex-direction: column;
+  gap: 30px;
+
+  position: relative;
+
+  background: white;
+  border-radius: 30px;
+  box-shadow: 4px 12px 30px 6px rgba(0, 0, 0, 0.09);
+
+  &:hover {
+    transition: all 0.3s ease;
+    transform: translateY(-5px);
+    box-shadow: 4px 12px 20px 6px rgba(0, 0, 0, 0.18);
+  }
 `;
 
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 20px;
 `;
 
-const Point = styled.p`
+const Point = styled.div`
+  width: 135px;
+  padding: 0 10px;
+
   ${FONT_22};
-  color: ${GRAY[40]};
-  font-feature-settings:
-    'clig' off,
-    'liga' off;
+  font-weight: 700;
+  color: ${VIOLET[1]};
+  text-align: center;
+
+  border: 3px solid ${GRAY[30]};
+  border-radius: 30px;
 `;
 
 const Content = styled.p`
   font-size: 48px;
   font-style: normal;
   font-weight: 700;
-  line-height: 64px; /* 133.333% */
+  line-height: 55px;
   color: ${BLACK[1]};
-  font-feature-settings:
-    'clig' off,
-    'liga' off;
 `;
 
 const SPAN = styled.span`
-  color: ${GRAY[30]};
+  color: ${VIOLET[1]};
 `;
 
 const SecondSection = styled.div`
@@ -250,7 +211,7 @@ const Text2 = styled.p`
   ${FONT_16};
 `;
 
-const ButtonWrapper = styled.div`
-  width: 280px;
-  height: 50px;
+const Detail = styled.div`
+  ${FONT_16};
+  color: ${GRAY[50]};
 `;

@@ -12,31 +12,39 @@ import DashMyMember from '@/components/common/Table/DashMyMember';
 import DashInviteList from '@/components/common/Table/DashInviteList';
 import { MEMBERS1 } from '@/lib/constants/mockup';
 import boardMockData from '@/components/common/SideMenu/mock';
+import Head from 'next/head';
+import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Edit() {
+  useCheckLogin();
   const router = useRouter();
   const { id } = router.query;
   return (
-    <Root>
-      <Second page="others" children="제목" />
-      <SideMenu />
-      <Content>
-        <Wrapper>
-          <ButtonLink href={`/board/${id}`}>
-            <ReturnButton>
-              <ArrowPosition>
-                <ArrowBackward />
-              </ArrowPosition>
-              <ButtonText>돌아가기</ButtonText>
-            </ReturnButton>
-          </ButtonLink>
-          <EditMyDash />
-          <DashMyMember memberList={MEMBERS1} />
-          <DashInviteList memberList={MEMBERS1} />
-          <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
-        </Wrapper>
-      </Content>
-    </Root>
+    <>
+      <Head>
+        <title>대시보드 관리 | TaskyTasky</title>
+      </Head>
+      <Root>
+        <Second page="others" children="제목" />
+        <SideMenu />
+        <Content>
+          <Wrapper>
+            <ButtonLink href={`/board/${id}`}>
+              <ReturnButton>
+                <ArrowPosition>
+                  <ArrowBackward />
+                </ArrowPosition>
+                <ButtonText>돌아가기</ButtonText>
+              </ReturnButton>
+            </ButtonLink>
+            <EditMyDash />
+            <DashMyMember memberList={MEMBERS1} />
+            <DashInviteList memberList={MEMBERS1} />
+            <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
+          </Wrapper>
+        </Content>
+      </Root>
+    </>
   );
 }
 

@@ -1,20 +1,35 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Card as CardType } from '@/lib/types/type';
-import { WHITE, BLACK, GRAY } from '@/styles/ColorStyles';
+import { WHITE, GRAY } from '@/styles/ColorStyles';
 import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
-
+import CardModal from '@/components/common/Modal/CardModal';
+import { useStore } from '@/context/stores';
+import { modalType } from '@/lib/types/zustand';
 import ChipColor from '../Chip/ChipColor';
 
 interface Props {
   card: CardType;
+  columnTitle: string;
 }
 
-function Card({ card }: Props) {
+function Card({ card, columnTitle }: Props) {
+  const modal = useStore((state) => state.modals);
+  const showModal = useStore((state) => state.showModal);
+  const setModalCard = useStore((state) => state.setModalCard);
+  const setModalCardColumnTitle = useStore((state) => state.setModalCardColumnTitle);
+
+  const handleButtonClick = (type: modalType) => {
+    if (modal.includes(type)) return;
+    showModal(type);
+    setModalCard(card);
+    setModalCardColumnTitle(columnTitle);
+  };
+
   return (
-    <StyledWrapper>
+    <StyledWrapper onClick={() => handleButtonClick('card')}>
       {card.imageUrl && <StyledThumbnail src={card.imageUrl} width={274} height={160} alt="" />}
       <StyledContent>
         <StyledTitle>{card.title}</StyledTitle>

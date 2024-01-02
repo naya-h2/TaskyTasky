@@ -10,7 +10,9 @@ import { Z_INDEX } from '@/styles/ZIndexStyles';
 import ColumnNameChip from '../Chip/ColumnNameChip';
 import Profile from '../Profile/Profile';
 import { getFilteredUser } from '@/lib/utils/getFilteredUser';
-import { columnLists, memberLists } from '@/lib/types/type';
+import { columnLists } from '@/lib/types/type';
+import { MemberListType } from '@/lib/types/members';
+import { ColumnType } from '@/lib/types/columns';
 
 interface Value {
   status: string;
@@ -25,11 +27,11 @@ interface Props {
   value: Value;
   type: 'status' | 'member' | 'kebab';
   handleDropDownClose: () => void;
-  columnLists?: columnLists;
-  memberLists?: memberLists;
+  columnList?: ColumnType[];
+  memberLists?: MemberListType[];
 }
 
-function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose, columnLists, memberLists }: Props) {
+function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose, columnList, memberLists }: Props) {
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
   const filteredUser = getFilteredUser(type, memberLists, value);
@@ -70,8 +72,8 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose, c
     <ModalPortal container={anchorRef.current}>
       <StyledWrapperUl $isUser={filteredUser ? filteredUser.length : 0} $type={type}>
         {type === 'status' &&
-          columnLists &&
-          columnLists.data.map((item) => {
+          columnList &&
+          columnList.map((item) => {
             return (
               <StyledWrapperLi key={item.id} onClick={() => handleClickOption(item.title)}>
                 {value.status === item.title ? <CheckIcon /> : <StyledTransparentBox />}
@@ -79,20 +81,30 @@ function DropDownList({ anchorRef, setValue, value, type, handleDropDownClose, c
               </StyledWrapperLi>
             );
           })}
-        {type === 'member' &&
-          value.member &&
-          filteredUser &&
-          filteredUser.map((item) => {
-            return (
-              <StyledWrapperLi
-                key={item.id}
-                onClick={() => handleClickOption(item.nickname, item.profileImageUrl, String(item.id))}
-              >
-                {value.member === item.nickname ? <CheckIcon /> : <StyledTransparentBox />}
-                <Profile type="card" id={item.id} name={item.nickname} profileImg={item.profileImageUrl} />
-              </StyledWrapperLi>
-            );
-          })}
+        {type === 'member' && value.member
+          ? filteredUser &&
+            filteredUser.map((item) => {
+              return (
+                <StyledWrapperLi
+                  key={item.id}
+                  onClick={() => handleClickOption(item.nickname, item.profileImageUrl, String(item.userId))}
+                >
+                  {value.member === item.nickname ? <CheckIcon /> : <StyledTransparentBox />}
+                  <Profile type="card" id={item.id} name={item.nickname} profileImg={item.profileImageUrl} />
+                </StyledWrapperLi>
+              );
+            })
+          : memberLists?.map((item) => {
+              return (
+                <StyledWrapperLi
+                  key={item.id}
+                  onClick={() => handleClickOption(item.nickname, item.profileImageUrl, String(item.id))}
+                >
+                  {value.member === item.nickname ? <CheckIcon /> : <StyledTransparentBox />}
+                  <Profile type="card" id={item.id} name={item.nickname} profileImg={item.profileImageUrl} />
+                </StyledWrapperLi>
+              );
+            })}
         {type === 'kebab' && (
           <>
             <StyledModalPopLi onClick={() => handleButtonClick('editTodo')}>수정하기</StyledModalPopLi>

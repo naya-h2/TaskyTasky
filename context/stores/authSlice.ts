@@ -10,5 +10,5 @@ export const createAuthSlice: StateCreator<AuthState> = (set) => ({
   setAuthToken: (token: string) => set({ authToken: token }),
   setIsLoading: (loading: boolean) => set({ isLoading: loading }),
   setError: (error: string) => set({ error: error }),
-  setUser: (user: UserType) => set({ user: user }),
+  setUser: (user: UserType | null) => set({ user: user }),
 });

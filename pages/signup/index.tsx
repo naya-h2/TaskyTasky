@@ -10,11 +10,17 @@ import Checkbox from '@/components/common/Checkbox/Checkbox';
 import Spinner from '@/components/common/Spinner/Spinner';
 import AlertModal from '@/components/common/Modal/AlertModal';
 import { FONT_16, FONT_18, FONT_20 } from '@/styles/FontStyles';
-import { BLACK } from '@/styles/ColorStyles';
+import { BLACK, VIOLET } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { createUser } from '@/api/users/createUser';
-import { emailRules, nicknameRules, signUpPasswordRules, signUpPasswordCheckRules } from '@/lib/constants/inputErrorRules';
+import {
+  emailRules,
+  nicknameRules,
+  signUpPasswordRules,
+  signUpPasswordCheckRules,
+} from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
+import Head from 'next/head';
 
 function SignUp() {
   const [message, setMessage] = useState('');
@@ -45,7 +51,7 @@ function SignUp() {
         setUser(result.user);
       }
       setIsLoading(false);
-      setMessage('회원가입이 성공적으로 완료되었습니다.')
+      setMessage('회원가입이 성공적으로 완료되었습니다.');
       showModal('customAlert');
       setIsSuccess(true);
     },
@@ -67,48 +73,65 @@ function SignUp() {
   };
 
   return (
-    <StyledRoot>
-      <StyledContainer>
-        <Link href="/">
-          <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
-        </Link>
-        <StyledWord>첫 방문을 환영합니다!</StyledWord>
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm={true} />
-          <Input type="nickname" register={register('nickname', nicknameRules)} error={errors.nickname} isHookForm={true} />
-          <Input type="password" isPassword register={register('password', signUpPasswordRules)} error={errors.password} isHookForm={true} />
-          <Input
-            type="passwordConfirm"
-            isPassword
-            register={register('passwordCheck', signUpPasswordCheckRules(passwordValue))}
-            error={errors.passwordCheck}
-            isHookForm={true}
-          />
-          <Checkbox label="이용약관에 동의합니다." onChange={() => setIsChecked(!isChecked)} />
-          <StyledButtonWrapper>
-            <Button.Plain 
-              type="submit"
-              style="primary" 
-              roundSize="L" 
-              isNotActive={!isButtonActive || isLoading}>
-              가입하기
-            </Button.Plain>
-            {isLoading && <Spinner />}
-          </StyledButtonWrapper>
-          <StyledWrapper>
-            이미 가입하셨나요? <Link href="/login">로그인하기</Link>
-          </StyledWrapper>
+    <>
+      <Head>
+        <title>회원가입 | TaskyTasky</title>
+      </Head>
+      <StyledRoot>
+        <StyledContainer>
+          <Link href="/">
+            <StyledLogo src="/images/logo_big.svg" alt="Main logo" />
+          </Link>
+          <StyledWord>첫 방문을 환영해요!</StyledWord>
+          <StyledForm onSubmit={handleSubmit(onSubmit)}>
+            <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm={true} />
+            <Input
+              type="nickname"
+              register={register('nickname', nicknameRules)}
+              error={errors.nickname}
+              isHookForm={true}
+            />
+            <Input
+              type="password"
+              isPassword
+              register={register('password', signUpPasswordRules)}
+              error={errors.password}
+              isHookForm={true}
+            />
+            <Input
+              type="passwordConfirm"
+              isPassword
+              register={register('passwordCheck', signUpPasswordCheckRules(passwordValue))}
+              error={errors.passwordCheck}
+              isHookForm={true}
+            />
+            <Checkbox label="이용약관에 동의합니다." onChange={() => setIsChecked(!isChecked)} />
+            <StyledButtonWrapper>
+              <Button.Plain type="submit" style="primary" roundSize="L" isNotActive={!isButtonActive || isLoading}>
+                가입하기
+              </Button.Plain>
+              {isLoading && <Spinner />}
+            </StyledButtonWrapper>
+            <StyledWrapper>
+              이미 가입하셨나요? <StyledLink href="/login">로그인하기</StyledLink>
+            </StyledWrapper>
           </StyledForm>
-          {modals[modals.length - 1] === 'customAlert' && <AlertModal type="customAlert" isSuccess={isSuccess}>{message}</AlertModal>}
-      </StyledContainer>
-    </StyledRoot>
+          {modals[modals.length - 1] === 'customAlert' && (
+            <AlertModal type="customAlert" isSuccess={isSuccess}>
+              {message}
+            </AlertModal>
+          )}
+        </StyledContainer>
+      </StyledRoot>
+    </>
   );
 }
 
 export default SignUp;
 
 const StyledRoot = styled.div`
-  height: 100vh;
+  padding: 30px 30px;
+  min-height: 100vh;
 `;
 
 const StyledContainer = styled.div`
@@ -125,19 +148,22 @@ const StyledContainer = styled.div`
 
 const StyledLogo = styled.img`
   width: 200px;
-  height: 279px;
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 120px;
-    height: 167px;
+    width: 150px;
   }
 `;
 
 const StyledWord = styled.span`
   width: 189px;
   height: 24px;
-  margin: 10px auto 38px;
+  margin: 10px auto 20px;
   text-align: center;
   ${FONT_20};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    margin-bottom: 20px;
+    ${FONT_16};
+  }
 `;
 
 const StyledForm = styled.form`
@@ -155,4 +181,9 @@ const StyledButtonWrapper = styled.div`
   width: 100%;
   height: 50px;
   ${FONT_18};
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: underline;
+  color: ${VIOLET[1]};
 `;

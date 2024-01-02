@@ -8,12 +8,14 @@ import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button';
 import Spinner from '@/components/common/Spinner/Spinner';
 import AlertModal from '@/components/common/Modal/AlertModal';
-import { FONT_16, FONT_20 } from '@/styles/FontStyles';
-import { BLACK } from '@/styles/ColorStyles';
+import { FONT_16, FONT_18, FONT_20 } from '@/styles/FontStyles';
+import { BLACK, VIOLET } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { login } from '@/api/auth/login';
 import { emailRules, signInPwRules } from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
+import Head from 'next/head';
+import Logo from '@/components/common/Logo/Logo';
 
 function Login() {
   const [message, setMessage] = useState('');
@@ -60,34 +62,43 @@ function Login() {
   };
 
   return (
-    <StyledRoot>
-      <StyledContainer>
-        <Link href="/">
-          <StyledLogo src="/images/logo_main.svg" alt="Main logo" />
-        </Link>
-        <StyledWord>오늘도 만나서 반가워요!</StyledWord>
-        <StyledForm onSubmit={handleSubmit(handleLogin)}>
-          <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm />
-          <Input
-            type="password"
-            isPassword
-            register={register('password', signInPwRules)}
-            error={errors.password}
-            isHookForm
-          />
-          <StyledButtonWrapper>
-            <Button.Plain style="primary" roundSize="L" isNotActive={isLoading}>
-              로그인
-            </Button.Plain>
-            {isLoading && <Spinner />}
-          </StyledButtonWrapper>
-          <StyledWrapper>
-            회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
-          </StyledWrapper>
-        </StyledForm>
-        {modals[modals.length - 1] === 'customAlert' && <AlertModal type="customAlert" isSuccess={isSuccess}>{message}</AlertModal>}
-      </StyledContainer>
-    </StyledRoot>
+    <>
+      <Head>
+        <title>로그인 | TaskyTasky</title>
+      </Head>
+      <StyledRoot>
+        <StyledContainer>
+          <Link href="/">
+            <StyledLogo src="/images/logo_big.svg" alt="Main logo" />
+          </Link>
+          <StyledWord>오늘도 계획적인 하루 보내세요!</StyledWord>
+          <StyledForm onSubmit={handleSubmit(handleLogin)}>
+            <Input type="email" register={register('email', emailRules)} error={errors.email} isHookForm />
+            <Input
+              type="password"
+              isPassword
+              register={register('password', signInPwRules)}
+              error={errors.password}
+              isHookForm
+            />
+            <StyledButtonWrapper>
+              <Button.Plain style="primary" roundSize="L" isNotActive={isLoading}>
+                로그인
+              </Button.Plain>
+              {isLoading && <Spinner />}
+            </StyledButtonWrapper>
+            <StyledWrapper>
+              회원이 아니신가요? <StyledLink href="/signup">회원가입하기</StyledLink>
+            </StyledWrapper>
+          </StyledForm>
+          {modals[modals.length - 1] === 'customAlert' && (
+            <AlertModal type="customAlert" isSuccess={isSuccess}>
+              {message}
+            </AlertModal>
+          )}
+        </StyledContainer>
+      </StyledRoot>
+    </>
   );
 }
 
@@ -95,6 +106,7 @@ export default Login;
 
 const StyledRoot = styled.div`
   height: 100vh;
+  padding: 0 30px;
 `;
 
 const StyledContainer = styled.div`
@@ -102,7 +114,7 @@ const StyledContainer = styled.div`
   max-width: 520px;
   height: 100%;
   margin: 0 auto;
-  padding: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,20 +122,21 @@ const StyledContainer = styled.div`
 `;
 
 const StyledLogo = styled.img`
-  width: 200px;
-  height: 279px;
+  width: 230px;
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 120px;
-    height: 167px;
+    width: 150px;
   }
 `;
 
 const StyledWord = styled.span`
-  width: 189px;
-  height: 24px;
-  margin: 10px auto 38px;
+  margin: 20px auto 38px;
   text-align: center;
   ${FONT_20};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    margin-bottom: 20px;
+    ${FONT_16};
+  }
 `;
 
 const StyledForm = styled.form`
@@ -140,4 +153,9 @@ const StyledWrapper = styled.div`
 const StyledButtonWrapper = styled.div`
   width: 100%;
   height: 50px;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: underline;
+  color: ${VIOLET[1]};
 `;

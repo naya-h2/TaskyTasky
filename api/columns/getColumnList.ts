@@ -1,10 +1,11 @@
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 칼럼 목록 조회
  */
 export const getColumnList = async (dashboardId: number) => {
-  const response = await axios.post(`/api/columns?dashboardId=${dashboardId}`);
-  console.log(response);
-  return response.data;
+  try {
+    const response = await instance.get(`/api/columns?dashboardId=${dashboardId}`);
+    return response.data;
+  } catch (error) {}
 };

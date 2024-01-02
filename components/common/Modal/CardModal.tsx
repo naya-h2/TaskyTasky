@@ -15,11 +15,10 @@ import VectorIcon from '@/public/icon/Vector.svg';
 interface Props {
   type: modalType;
   columnTitle: string;
-  cardInfo: Card; // ServerSideRendering의 getServerSideProps로 받거나 안에서 CSR로 받거나 밖에서 받아오는 걸로
-  teamId: string;
+  cardInfo: Card;
 }
 
-function ColumnModal({ type, columnTitle, cardInfo, teamId }: Props) {
+function ColumnModal({ type, columnTitle, cardInfo }: Props) {
   const handleButtonClick = () => {};
 
   return (
@@ -62,12 +61,14 @@ function ColumnModal({ type, columnTitle, cardInfo, teamId }: Props) {
             })}
           </StyledTaskSmallInfoBox>
           <StyledTaskDescription>{cardInfo.description}</StyledTaskDescription>
-          <StyledImgWrapper>
-            <Image src={cardInfo.imageUrl as string} alt="할일 이미지" fill priority style={{ objectFit: 'cover' }} />
-          </StyledImgWrapper>
-          <Textarea type="comment" isEditing={false} initValue="" />
+          {cardInfo?.imageUrl && (
+            <StyledImgWrapper>
+              <Image src={cardInfo.imageUrl as string} alt="할일 이미지" fill priority />
+            </StyledImgWrapper>
+          )}
+          <Textarea type="comment" isEditing={false} value="" />
           <StyledCommentsArea>
-            <CommentCollection teamId={teamId} cardId={cardInfo.id} />
+            <CommentCollection cardId={cardInfo.id} />
           </StyledCommentsArea>
         </StyledLeftWrapper>
         <StyledRightWrapper>

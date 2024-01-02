@@ -1,23 +1,64 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ModalFrame from './ModalFrame';
 import { modalType } from '@/lib/types/zustand';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { Card, columnLists, memberLists } from '@/lib/types/type';
+import { columnLists } from '@/lib/types/type';
 import AddProfileImg from '@/components/pages/mypage/AddProfileImg';
+import { MemberListType } from '@/lib/types/members';
+import { PostCardRequestType } from '@/lib/types/cards';
 import DropDown from '../DropDown/DropDown';
 import Input from '../Input/Input';
 import Textarea from '../Textarea/Textarea';
+import { useStore } from '@/context/stores';
+import { createCard } from '@/api/cards/createCard';
+import { editCard } from '@/api/cards/editCard';
+import { ColumnType } from '@/lib/types/columns';
 
 interface Props {
   type: modalType;
-  cardInfo?: Card;
-  columnLists?: columnLists;
-  initialStatus?: string;
-  memberLists?: memberLists;
+  memberLists: MemberListType[];
+  dashboardId: number;
+  columnId: number;
+  columnList?: ColumnType[];
 }
 
-function TodoModal({ type, cardInfo, columnLists, initialStatus, memberLists }: Props) {
-  const handleButtonClick = () => {};
+function TodoModal({ type, columnList, memberLists, dashboardId, columnId }: Props) {
+  const modalCard = useStore((state) => state.modalCard);
+  const [reqValue, setReqValue] = useState<PostCardRequestType>({
+    assigneeUserId: type === 'editTodo' ? modalCard.assignee.id : 0,
+    dashboardId: dashboardId,
+    columnId: columnId,
+    title: type === 'editTodo' ? modalCard.title : '',
+    description: type === 'editTodo' ? modalCard.description : '',
+    dueDate: type === 'editTodo' ? modalCard.dueDate : '',
+    tags: type === 'editTodo' ? modalCard.tags : [],
+    imageUrl: type === 'editTodo' ? (modalCard?.imageUrl ? modalCard.imageUrl : '') : '',
+  });
+  const clearModal = useStore((state) => state.clearModal);
+  const modalCardColumnTitle = useStore((state) => state.modalCardColumnTitle);
+  const cardUrl = useStore((state) => state.cardUrl);
+  const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
+
+  const handleButtonClick = async () => {
+    if (type === 'createTodo') {
+      if (!reqValue.imageUrl) delete reqValue.imageUrl;
+      await createCard(reqValue);
+    } else if (type === 'editTodo') {
+      if (!reqValue.imageUrl) delete reqValue.imageUrl;
+      delete reqValue.dashboardId;
+      await editCard(modalCard.id, reqValue);
+    }
+    setIsColumnChanged();
+    clearModal();
+  };
+
+  useEffect(() => {
+    setReqValue((prev) => ({
+      ...prev,
+      imageUrl: cardUrl,
+    }));
+  }, [cardUrl]);
 
   return (
     <ModalFrame
@@ -25,25 +66,38 @@ function TodoModal({ type, cardInfo, columnLists, initialStatus, memberLists }: 
       title={type === 'createTodo' ? '할 일 생성' : '할 일 수정'}
       height="High"
       btnFnc={handleButtonClick}
+      disabledBtn={
+        (reqValue.assigneeUserId === 0 ||
+          reqValue.description === '' ||
+          reqValue.dueDate === '' ||
+          reqValue.title === '') &&
+        true
+      }
     >
       <StyledContainer>
         <StyledDropDownBox>
           {type === 'editTodo' && (
-            <DropDown type="status" initialStatus={initialStatus} columnLists={columnLists as columnLists} />
+            <DropDown
+              type="status"
+              initialStatus={modalCardColumnTitle}
+              columnList={columnList as ColumnType[]}
+              setReqValue={setReqValue}
+            />
           )}
           <DropDown
             type="member"
-            initialMember={cardInfo?.assignee.nickname}
-            initialMemberImg={cardInfo?.assignee.profileImageUrl}
-            initialMemberId={cardInfo?.assignee.id}
-            memberLists={memberLists as memberLists}
+            initialMember={type === 'editTodo' ? modalCard?.assignee.nickname : ''}
+            initialMemberImg={type === 'editTodo' ? modalCard?.assignee.profileImageUrl : ''}
+            initialMemberId={type === 'editTodo' ? modalCard?.assignee.id : 0}
+            memberLists={memberLists as MemberListType[]}
+            setReqValue={setReqValue}
           />
         </StyledDropDownBox>
-        <Input type="title" initValue={cardInfo?.title} />
-        <Textarea type="basic" initValue={cardInfo?.description} />
-        <Input type="dueDate" initValue={cardInfo?.dueDate} />
-        <Input type="tag" initValue={cardInfo?.tags} />
-        <AddProfileImg type="card" profileImgUrl={cardInfo?.imageUrl} />
+        <Input type="title" value={reqValue.title} setValue={setReqValue} />
+        <Textarea type="basic" value={reqValue.description} setValue={setReqValue} />
+        <Input type="dueDate" value={reqValue.dueDate} setValue={setReqValue} />
+        <Input type="tag" value={reqValue.tags} setValue={setReqValue} />
+        <AddProfileImg type="card" initialUrl={reqValue.imageUrl} columnId={columnId} />
       </StyledContainer>
     </ModalFrame>
   );

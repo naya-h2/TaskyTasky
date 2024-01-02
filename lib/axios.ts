@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const instance = axios.create({});
+const authInstance = axios.create({});
 
-instance.interceptors.request.use((config) => {
+authInstance.interceptors.request.use((config) => {
   const accessToken = window.localStorage.getItem('login');
 
   if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
@@ -10,4 +10,4 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-export default instance;
+export default authInstance;

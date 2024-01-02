@@ -1,3 +1,4 @@
+import { CardType } from './cards';
 import { UserType } from './users';
 
 export type modalType =
@@ -17,11 +18,20 @@ export type modalType =
   | 'signUpFailedAlert'
   | 'customAlert'
   | 'profile'
-  | 'editPassword';
+  | 'editPassword'
+  | 'invite'
+  | 'inviteAlert'
+  | 'imgError';
 
 export interface ModalState {
   modals: modalType[];
-  showModal: (type: modalType | string) => void;
+  modalCard: CardType;
+  modalCardColumnTitle: string;
+  isColumnChanged: boolean;
+  setModalCard: (value: CardType) => void;
+  setModalCardColumnTitle: (value: string) => void;
+  setIsColumnChanged: () => void;
+  showModal: (type: modalType) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;
 }
@@ -37,8 +47,10 @@ export interface myboardPageState {
 }
 
 export interface profileImgState {
-  profileUrl: string;
-  setProfileUrl: (src: string) => void;
+  profileUrl: string | null;
+  setProfileUrl: (src: string | null) => void;
+  cardUrl: string | undefined;
+  setCardUrl: (src: string | undefined) => void;
 }
 
 export interface AuthState {
@@ -49,5 +61,5 @@ export interface AuthState {
   setAuthToken: (token: string) => void;
   setIsLoading: (loading: boolean) => void;
   setError: (error: string) => void;
-  setUser: (user: UserType) => void;
+  setUser: (user: UserType | null) => void;
 }

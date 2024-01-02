@@ -1,41 +1,81 @@
 import styled, { css } from 'styled-components';
 import { useStore } from '@/context/stores';
-import { modalType } from '@/lib/types/zustand';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_14_B, FONT_18 } from '@/styles/FontStyles';
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
+import { FONT_12B, FONT_14_B, FONT_18 } from '@/styles/FontStyles';
+import { PostCardRequestType } from '@/lib/types/cards';
+import { uploadCardImg } from '@/api/cards/uploadCardImg';
+import { createUserImage } from '@/api/users/createUserImage';
+import AlertModal from '@/components/common/Modal/AlertModal';
+
+type Value = PostCardRequestType;
 
 interface Props {
   type: 'card' | 'myPage';
-  profileImgUrl: string | undefined | null;
+  initialUrl: string | null | undefined;
+  columnId?: number;
 }
 
-function AddProfileImg({ type = 'myPage', profileImgUrl }: Props) {
-  const modal = useStore((state) => state.modals);
-  const showModal = useStore((state) => state.showModal);
+function AddProfileImg({ type = 'myPage', initialUrl, columnId }: Props) {
+  const [errMsg, setErrMsg] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { profileUrl, setProfileUrl, cardUrl, setCardUrl, showModal, modals } = useStore((state) => ({
+    profileUrl: state.profileUrl,
+    setProfileUrl: state.setProfileUrl,
+    cardUrl: state.cardUrl,
+    setCardUrl: state.setCardUrl,
+    showModal: state.showModal,
+    modals: state.modals,
+  }));
 
-  const handleButtonClick = (type: modalType) => {
-    if (modal.includes(type)) return;
-    showModal(type);
+  const handleImgDelete = () => {
+    type === 'card' ? setCardUrl('') : setProfileUrl(null);
   };
 
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const imgFile = e.target.files[0];
+    if (imgFile && imgFile.type.substring(0, 5) === 'image') {
+      const response =
+        type === 'card' && columnId ? await uploadCardImg(columnId, imgFile) : await createUserImage(imgFile);
+      if (response.status !== 201) {
+        console.log(response.data.error.message);
+        setErrMsg(response.data.error.message);
+        return showModal('imgError');
+      }
+      type === 'card' ? setCardUrl(response.data.imageUrl) : setProfileUrl(response.data.profileImageUrl);
+    }
+  };
+
+  useEffect(() => {
+    type === 'card' ? setCardUrl(initialUrl as string) : setProfileUrl(initialUrl as string | null);
+  }, []);
+
   return (
-    <StyledContainer>
-      {type === 'card' && <StyledLabel>이미지</StyledLabel>}
-      <StyledProfileImgBox $url={profileImgUrl}>
-        <StyledButtonWrapper>
-          <StyledFileBox>
-            <StyledFileLabel htmlFor="img_file">
-              로컬 이미지 <br /> 사용하기
-            </StyledFileLabel>
-            <StyledFileInput type="file" id="img_file" />
-          </StyledFileBox>
-          <StyledImgButton onClick={() => handleButtonClick('imgUrl')}>
-            외부 이미지 <br /> 사용하기
-          </StyledImgButton>
-        </StyledButtonWrapper>
-      </StyledProfileImgBox>
-    </StyledContainer>
+    <>
+      <StyledContainer>
+        {type === 'card' && <StyledLabel>이미지</StyledLabel>}
+        <StyledProfileImgBox $image={type === 'card' ? cardUrl : profileUrl}>
+          <StyledButtonWrapper>
+            <StyledFileBox>
+              <StyledFileLabel htmlFor="img_file">
+                이미지 <br /> 변경하기
+              </StyledFileLabel>
+              <StyledFileInput type="file" id="img_file" accept="image/*" onChange={handleInputChange} ref={inputRef} />
+            </StyledFileBox>
+            <StyledImgButton onClick={handleImgDelete}>
+              이미지 <br /> 삭제하기
+            </StyledImgButton>
+          </StyledButtonWrapper>
+        </StyledProfileImgBox>
+      </StyledContainer>
+      {modals[modals.length - 1] === 'imgError' && (
+        <AlertModal type="customAlert" customName="imgError">
+          {errMsg}
+        </AlertModal>
+      )}
+    </>
   );
 }
 
@@ -56,6 +96,10 @@ const ButtonBox = css`
     background-color: ${GRAY[20]};
     opacity: 70%;
   }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${FONT_12B};
+  }
 `;
 
 const StyledContainer = styled.div`
@@ -64,15 +108,16 @@ const StyledContainer = styled.div`
   gap: 5px;
 `;
 
-const StyledProfileImgBox = styled.div<{ $url: string | undefined }>`
+const StyledProfileImgBox = styled.div<{ $image: string | null | undefined }>`
   width: 182px;
   height: 182px;
 
   border-radius: 6px;
 
-  ${(props) => (props.$url ? `background-image: url(${props.$url})` : noProfileImg)};
+  ${(props) => (props.$image ? `background-image: url(${props.$image})` : noProfileImg)};
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
 
   &:hover :only-child {
     display: flex;
@@ -113,6 +158,11 @@ const StyledFileLabel = styled.label`
   cursor: pointer;
   ${FONT_14_B};
   color: ${GRAY[50]};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    padding-top: 33px;
+    ${FONT_12B};
+  }
 `;
 
 const StyledFileInput = styled.input`

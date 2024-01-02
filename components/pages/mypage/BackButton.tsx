@@ -1,8 +1,13 @@
 import styled, { keyframes } from 'styled-components';
 import { FONT_16 } from '@/styles/FontStyles';
 import BackwordIcon from '@/public/icon/arrow_backward.svg';
+import { ReactNode } from 'react';
 
-function BackButton() {
+interface Props {
+  children: ReactNode;
+}
+
+function BackButton({ children }: Props) {
   const handleButtonClick = () => {
     window.history.back();
   };
@@ -10,7 +15,7 @@ function BackButton() {
   return (
     <StyledBackWrapper onClick={handleButtonClick}>
       <BackwordIcon />
-      <StyledBackText>돌아가기</StyledBackText>
+      <StyledBackText>{children}</StyledBackText>
     </StyledBackWrapper>
   );
 }
@@ -30,6 +35,8 @@ const StyledBackWrapper = styled.div`
   gap: 6px;
 
   animation: ${toRight} 2s 0.5s infinite;
+
+  white-space: nowrap;
 
   &:hover {
     cursor: pointer;

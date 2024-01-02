@@ -15,11 +15,12 @@ interface Props {
 }
 
 function ProfileCard({ data }: Props) {
-  const [nickname, setNickname] = useState(data.nickname);
   const [alertMsg, setAlertMsg] = useState('');
-  const { modals, showModal } = useStore((state) => ({
+  const { modals, showModal, user, profileUrl } = useStore((state) => ({
     modals: state.modals,
     showModal: state.showModal,
+    user: state.user,
+    profileUrl: state.profileUrl,
   }));
   const {
     register,
@@ -28,32 +29,35 @@ function ProfileCard({ data }: Props) {
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
   const newNickname = watch('nickname');
-  const isNotValid = newNickname === nickname || errors.nickname;
+  const isEdited = newNickname !== user?.nickname || profileUrl !== user?.profileImageUrl;
+  const isNotValid = !isEdited || errors.nickname;
 
   const handleUserInfoEdit = async () => {
     const body = {
       nickname: newNickname,
-      profileImageUrl: null,
+      profileImageUrl: profileUrl,
     };
     const response = await editUserInfo(body);
 
     if (response.status === 400) setAlertMsg(response.data.message);
     else {
       setAlertMsg('프로필 정보 변경이 완료되었습니다!');
-      setNickname(newNickname);
+      if (user) {
+        user.nickname = newNickname;
+        user.profileImageUrl = profileUrl;
+      }
     }
-
     showModal('profile');
   };
 
   useEffect(() => {
-    setValue('nickname', nickname);
-  }, [nickname]);
+    setValue('nickname', user?.nickname);
+  }, [user]);
 
   return (
     <>
       <CardFrame title="프로필" buttonText="저장" buttonDisabled={isNotValid} handleClickFunc={handleUserInfoEdit}>
-        <AddProfileImg type="myPage" profileImgUrl={data.profileImageUrl} />
+        <AddProfileImg type="myPage" initialUrl={data.profileImageUrl} />
         <StyledWrapper>
           <Input type="etc" initPlaceholder={data.email} initLabel="이메일" isHookForm disabled />
           <Input

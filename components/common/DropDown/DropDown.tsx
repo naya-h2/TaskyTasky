@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { BLACK, GRAY, VIOLET, WHITE, RED } from '@/styles/ColorStyles';
 import ArrowDropDownIcon from '@/public/icon/arrow_drop_down.svg';
@@ -10,6 +10,10 @@ import MoreIcon from '@/public/icon/more.svg';
 import { FONT_14, FONT_18 } from '@/styles/FontStyles';
 import { columnLists, memberLists } from '@/lib/types/type';
 import ProfileImg from '../Profile/ProfileImg';
+import { MemberListType } from '@/lib/types/members';
+import { PostCardRequestType } from '@/lib/types/cards';
+import { getFilteredUser } from '@/lib/utils/getFilteredUser';
+import { ColumnType } from '@/lib/types/columns';
 
 interface Props {
   type: 'status' | 'member' | 'kebab';
@@ -17,8 +21,9 @@ interface Props {
   initialMember?: string;
   initialMemberImg?: string;
   initialMemberId?: number;
-  columnLists?: columnLists;
-  memberLists?: memberLists;
+  columnList?: ColumnType[];
+  memberLists?: MemberListType[];
+  setReqValue?: (value: SetStateAction<PostCardRequestType>) => void;
 }
 
 interface Value {
@@ -34,8 +39,9 @@ function DropDown({
   initialMember,
   initialMemberImg,
   initialMemberId,
-  columnLists,
+  columnList,
   memberLists,
+  setReqValue,
 }: Props) {
   const [value, setValue] = useState<Value>({
     status: initialStatus ? initialStatus : '',
@@ -86,20 +92,51 @@ function DropDown({
     }
   };
 
+  const handleCheckMemberId = () => {
+    if (!memberLists) return;
+
+    const filteredMember = memberLists.filter((item) => item.nickname === value.member);
+    if (setReqValue && filteredMember) {
+      setReqValue((prev) => ({
+        ...prev,
+        assigneeUserId: filteredMember[0]?.userId,
+      }));
+    }
+  };
+
+  const handleCheckColumnId = () => {
+    if (!columnList) return;
+
+    const filteredColumn = columnList.filter((item) => item.title === value.status);
+    if (setReqValue && filteredColumn) {
+      setReqValue((prev) => ({
+        ...prev,
+        columnId: filteredColumn[0]?.id,
+      }));
+    }
+  };
+
   useEffect(() => {
     if (!value.member) {
       handleDropDownClose();
     } else if (value.member) {
       handleDropDownOpen();
+      handleCheckMemberId();
+      setErrorMessage('');
     }
-  }, [value.member]);
+    if (value.status) {
+      handleCheckColumnId();
+    }
+  }, [value.member, value.status]);
 
   return (
     <>
       <StyledWrapper ref={containerRef} $type={type}>
         {(type === 'status' || type === 'member') && (
           <StyledMainWrapper>
-            <StyledMainLabel>{type === 'status' ? '상태' : '담당자'}</StyledMainLabel>
+            <StyledMainLabel>
+              {type === 'status' ? '상태' : '담당자'} {type === 'member' && <StyledSpan> *</StyledSpan>}
+            </StyledMainLabel>
             <StyledMainBox $isOpen={isDropDownOpen} $type={type} $error={errorMessage} onClick={handleAnchorRefClick}>
               {type === 'status' && value.status && <ColumnNameChip content={value.status} />}
               {type === 'member' && (
@@ -113,9 +150,7 @@ function DropDown({
                   placeholder="이름을 입력해 주세요"
                 />
               )}
-              {type === 'member' && !value.member ? null : (
-                <StyledArrowIcon $type={type} onClick={handleArrowIconClick} />
-              )}
+              {type === 'member' && <StyledArrowIcon $type={type} onClick={handleArrowIconClick} />}
             </StyledMainBox>
             {errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
           </StyledMainWrapper>
@@ -129,8 +164,8 @@ function DropDown({
           value={value}
           type={type}
           handleDropDownClose={handleDropDownClose}
-          columnLists={columnLists as columnLists}
-          memberLists={memberLists as memberLists}
+          columnList={columnList as ColumnType[]}
+          memberLists={memberLists as MemberListType[]}
         />
       )}
     </>
@@ -173,6 +208,12 @@ const StyledMainBox = styled.div<{ $isOpen: boolean; $type: string; $error: stri
   &:focus-within {
     border: 1px solid ${VIOLET[1]};
   }
+`;
+
+const StyledSpan = styled.span`
+  color: ${VIOLET[1]};
+  font-size: 1.8rem;
+  font-weight: 500;
 `;
 
 const StyledInput = styled.input`

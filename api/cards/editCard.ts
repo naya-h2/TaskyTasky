@@ -1,11 +1,10 @@
-import axios from 'axios';
+import instance from '@/lib/axios';
 import { PutCardRequestType } from '@/lib/types/cards';
 
 /**
  * 카드 수정
  */
 export const editCard = async (cardId: number, data: PutCardRequestType) => {
-  const response = await axios.put(`/api/cards/${cardId}`, data);
-  console.log(response);
+  const response = await instance.put(`/api/cards/${cardId}`, data);
   return response.data;
 };
