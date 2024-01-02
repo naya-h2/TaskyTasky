@@ -25,8 +25,11 @@ import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
 import PlusIcon from '@/public/icon/add_no_background.svg';
 import AlertModal from '@/components/common/Modal/AlertModal';
+import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Board() {
+  useCheckLogin();
+
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [columnList, setColumnList] = useState<ColumnType[]>([]);
@@ -84,7 +87,7 @@ function Board() {
   return (
     <>
       <Head>
-        <title>{`${currentDashboard?.title} | Taskify`}</title>
+        <title>{`${currentDashboard?.title} | TaskyTasky`}</title>
       </Head>
       <StyledRoot>
         <Header

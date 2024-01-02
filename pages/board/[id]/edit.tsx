@@ -13,14 +13,16 @@ import DashInviteList from '@/components/common/Table/DashInviteList';
 import { MEMBERS1 } from '@/lib/constants/mockup';
 import boardMockData from '@/components/common/SideMenu/mock';
 import Head from 'next/head';
+import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Edit() {
+  useCheckLogin();
   const router = useRouter();
   const { id } = router.query;
   return (
     <>
       <Head>
-        <title>대시보드 관리 | Taskify</title>
+        <title>대시보드 관리 | TaskyTasky</title>
       </Head>
       <Root>
         <Second page="others" children="제목" />

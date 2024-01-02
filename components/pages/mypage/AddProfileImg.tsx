@@ -2,11 +2,12 @@ import styled, { css } from 'styled-components';
 import { useStore } from '@/context/stores';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_14_B, FONT_18 } from '@/styles/FontStyles';
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
+import { FONT_12B, FONT_14_B, FONT_18 } from '@/styles/FontStyles';
 import { PostCardRequestType } from '@/lib/types/cards';
 import { uploadCardImg } from '@/api/cards/uploadCardImg';
 import { createUserImage } from '@/api/users/createUserImage';
+import AlertModal from '@/components/common/Modal/AlertModal';
 
 type Value = PostCardRequestType;
 
@@ -17,12 +18,15 @@ interface Props {
 }
 
 function AddProfileImg({ type = 'myPage', initialUrl, columnId }: Props) {
+  const [errMsg, setErrMsg] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const { profileUrl, setProfileUrl, cardUrl, setCardUrl } = useStore((state) => ({
+  const { profileUrl, setProfileUrl, cardUrl, setCardUrl, showModal, modals } = useStore((state) => ({
     profileUrl: state.profileUrl,
     setProfileUrl: state.setProfileUrl,
     cardUrl: state.cardUrl,
     setCardUrl: state.setCardUrl,
+    showModal: state.showModal,
+    modals: state.modals,
   }));
 
   const handleImgDelete = () => {
@@ -33,9 +37,14 @@ function AddProfileImg({ type = 'myPage', initialUrl, columnId }: Props) {
     if (!e.target.files) return;
     const imgFile = e.target.files[0];
     if (imgFile && imgFile.type.substring(0, 5) === 'image') {
-      const imgUrl =
+      const response =
         type === 'card' && columnId ? await uploadCardImg(columnId, imgFile) : await createUserImage(imgFile);
-      type === 'card' ? setCardUrl(imgUrl) : setProfileUrl(imgUrl);
+      if (response.status !== 201) {
+        console.log(response.data.error.message);
+        setErrMsg(response.data.error.message);
+        return showModal('imgError');
+      }
+      type === 'card' ? setCardUrl(response.data.imageUrl) : setProfileUrl(response.data.profileImageUrl);
     }
   };
 
@@ -44,22 +53,29 @@ function AddProfileImg({ type = 'myPage', initialUrl, columnId }: Props) {
   }, []);
 
   return (
-    <StyledContainer>
-      {type === 'card' && <StyledLabel>이미지</StyledLabel>}
-      <StyledProfileImgBox $image={type === 'card' ? cardUrl : profileUrl}>
-        <StyledButtonWrapper>
-          <StyledFileBox>
-            <StyledFileLabel htmlFor="img_file">
-              이미지 <br /> 변경하기
-            </StyledFileLabel>
-            <StyledFileInput type="file" id="img_file" accept="image/*" onChange={handleInputChange} ref={inputRef} />
-          </StyledFileBox>
-          <StyledImgButton onClick={handleImgDelete}>
-            이미지 <br /> 삭제하기
-          </StyledImgButton>
-        </StyledButtonWrapper>
-      </StyledProfileImgBox>
-    </StyledContainer>
+    <>
+      <StyledContainer>
+        {type === 'card' && <StyledLabel>이미지</StyledLabel>}
+        <StyledProfileImgBox $image={type === 'card' ? cardUrl : profileUrl}>
+          <StyledButtonWrapper>
+            <StyledFileBox>
+              <StyledFileLabel htmlFor="img_file">
+                이미지 <br /> 변경하기
+              </StyledFileLabel>
+              <StyledFileInput type="file" id="img_file" accept="image/*" onChange={handleInputChange} ref={inputRef} />
+            </StyledFileBox>
+            <StyledImgButton onClick={handleImgDelete}>
+              이미지 <br /> 삭제하기
+            </StyledImgButton>
+          </StyledButtonWrapper>
+        </StyledProfileImgBox>
+      </StyledContainer>
+      {modals[modals.length - 1] === 'imgError' && (
+        <AlertModal type="customAlert" customName="imgError">
+          {errMsg}
+        </AlertModal>
+      )}
+    </>
   );
 }
 
@@ -79,6 +95,10 @@ const ButtonBox = css`
   &:hover {
     background-color: ${GRAY[20]};
     opacity: 70%;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${FONT_12B};
   }
 `;
 
@@ -138,6 +158,11 @@ const StyledFileLabel = styled.label`
   cursor: pointer;
   ${FONT_14_B};
   color: ${GRAY[50]};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    padding-top: 33px;
+    ${FONT_12B};
+  }
 `;
 
 const StyledFileInput = styled.input`

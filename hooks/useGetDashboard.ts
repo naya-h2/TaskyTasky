@@ -17,8 +17,8 @@ export const useGetDashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       const dashboardData = await getDashboardList('pagination', 5, undefined, page);
-      setDashboardList(dashboardData.dashboards);
-      setTotal(Math.ceil(dashboardData.totalCount / 5));
+      setDashboardList(dashboardData?.dashboards);
+      setTotal(Math.ceil(dashboardData?.totalCount / 5));
     };
 
     fetchDashboardData();

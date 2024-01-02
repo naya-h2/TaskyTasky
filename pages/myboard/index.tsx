@@ -7,22 +7,25 @@ import DashBoardList from '@/components/pages/myboard/DashBoardList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useGetDashboard } from '@/hooks/useGetDashboard';
 import { useGetInvitationList } from '@/hooks/useGetInvitationList';
+import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Myboard() {
+  useCheckLogin();
+
   const dashboardList = useGetDashboard();
   const invitationList = useGetInvitationList();
 
   return (
     <>
       <Head>
-        <title>내 대시보드 | Taskify</title>
+        <title>내 대시보드 | TaskyTasky</title>
       </Head>
       <Header page="myboard">내 대시보드</Header>
       <SideMenu dashboards={dashboardList} />
       <StyledBody>
         <StyledContainer>
-          <DashBoardList data={dashboardList} />
-          <InviteDash inviteList={invitationList} />
+          {dashboardList && <DashBoardList data={dashboardList} />}
+          {invitationList && <InviteDash inviteList={invitationList} />}
         </StyledContainer>
       </StyledBody>
     </>

@@ -20,7 +20,8 @@ export type modalType =
   | 'profile'
   | 'editPassword'
   | 'invite'
-  | 'inviteAlert';
+  | 'inviteAlert'
+  | 'imgError';
 
 export interface ModalState {
   modals: modalType[];
