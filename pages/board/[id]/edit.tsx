@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ArrowIcon from '@/public/icon/arrow_backward.svg';
 import Second from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
-import { FONT_14, FONT_15, FONT_16, FONT_18 } from '@/styles/FontStyles';
+import { FONT_16, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import EditMyDash from '@/components/common/Table/EditMyDash';
@@ -12,37 +12,67 @@ import DashMyMember from '@/components/common/Table/DashMyMember';
 import DashInviteList from '@/components/common/Table/DashInviteList';
 import { MEMBERS1 } from '@/lib/constants/mockup';
 import boardMockData from '@/components/common/SideMenu/mock';
-import Head from 'next/head';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { MemberList } from '@/lib/types/type';
+import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
+import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
+import BackButton from '@/components/pages/mypage/BackButton';
+import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
 
 function Edit() {
   const router = useRouter();
   const { id } = router.query;
+  const dashboardId = Number(id);
+
+  const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>({
+    id: 0,
+    title: '',
+    color: '',
+    createdAt: '',
+    updatedAt: '',
+    createdByMe: false,
+    userId: 0,
+  });
+
+  // useEffect(() => {
+  //   if (!router.isReady) return;
+  //   const fetchDashboardInfo = async () => {
+
+  //     console.log(dashBoardData);
+
+  //   };
+  //   fetchDashboardInfo();
+  // }, [router.isReady]);
+  useEffect(() => {
+    if (!router.isReady) return;
+    const fetchDashboardData = async () => {
+      //const memberData = await getMemberList(1, 5, dashboardId);
+      const dashBoardData = await getDashboardInfo(dashboardId);
+      //setMemberList(memberData);
+      setDashBoardInfo(dashBoardData);
+    };
+    fetchDashboardData();
+  }, [router.isReady]);
+
   return (
-    <>
-      <Head>
-        <title>대시보드 관리 | Taskify</title>
-      </Head>
-      <Root>
-        <Second page="others" children="제목" />
-        <SideMenu dashboards={boardMockData.dashboards} />
-        <Content>
-          <Wrapper>
-            <ButtonLink href={`/board/${id}`}>
-              <ReturnButton>
-                <ArrowPosition>
-                  <ArrowBackward />
-                </ArrowPosition>
-                <ButtonText>돌아가기</ButtonText>
-              </ReturnButton>
-            </ButtonLink>
-            <EditMyDash />
-            <DashMyMember memberList={MEMBERS1} />
-            <DashInviteList memberList={MEMBERS1} />
-            <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
-          </Wrapper>
-        </Content>
-      </Root>
-    </>
+    <Root>
+      <Second page="others" children="제목" />
+      <SideMenu dashboards={boardMockData.dashboards} />
+      <Content>
+        <Wrapper>
+          <ButtonLink href={`/board/${id}`}>
+            <ReturnButton>
+              <BackButton>돌아가기</BackButton>
+            </ReturnButton>
+          </ButtonLink>
+          <EditMyDash dashboardData={dashBoardInfo} />
+          <DashMyMember />
+          <DashInviteList />
+          <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
+        </Wrapper>
+      </Content>
+    </Root>
   );
 }
 
@@ -54,6 +84,7 @@ const Content = styled.div`
   width: 100%;
   padding-top: 70px;
   padding-left: 300px;
+  background-color: ${[GRAY[20]]};
   display: flex;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
@@ -89,27 +120,6 @@ const ReturnButton = styled.div`
   align-items: center;
   height: 30px;
   gap: 6px;
-`;
-
-const ArrowBackward = styled(ArrowIcon)``;
-const ArrowPosition = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 20px;
-    height: 20px;
-  }
-`;
-const ButtonText = styled.div`
-  font-size: 16px;
-  ${[FONT_16]}
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    ${[FONT_14]}
-  }
 `;
 
 const DeleteDashButton = styled.button`
