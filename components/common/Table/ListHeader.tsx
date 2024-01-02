@@ -23,7 +23,7 @@ function ListHeader({ title = '구성원', totalCount, page = 1, getPage }: List
   const router = useRouter();
   const { id } = router.query;
   const totalPage = Math.ceil(totalCount / 5);
-  console.log(totalPage);
+
   const handleButtonNextPage = () => {
     getPage(page + 1);
   };
@@ -38,14 +38,14 @@ function ListHeader({ title = '구성원', totalCount, page = 1, getPage }: List
       {title === '초대 내역' && (
         <HeaderRight>
           <PageStatus>
-            {totalPage} 페이지 중 {page}
+            {totalPage === 0 ? 1 : totalPage} 페이지 중 {page}
           </PageStatus>
           <ArrowButton>
             <ButtonLayout>
-              <Button.Arrow type="left" isNotActive={page === 1 ? true : false} onClick={handleButtonPrevPage} />
+              <Button.Arrow type="left" isNotActive={page <= 1 ? true : false} onClick={handleButtonPrevPage} />
               <Button.Arrow
                 type="right"
-                isNotActive={totalPage === page ? true : false}
+                isNotActive={totalPage <= page ? true : false}
                 onClick={handleButtonNextPage}
               />
             </ButtonLayout>
