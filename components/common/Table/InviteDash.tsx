@@ -5,19 +5,17 @@ import SearchIcon from '@/public/icon/search.svg';
 import InviteList from './InviteList';
 import { FONT_16, FONT_20_B, FONT_24_B } from '@/styles/FontStyles';
 import NullInviteList from './NullInviteList';
-import { GetInvitationResponseType } from '@/lib/types/invitations';
-import { useForm } from 'react-hook-form';
+import { InvitationType } from '@/lib/types/invitations';
 import { useStore } from '@/context/stores';
 import RefreshIcon from '@/public/icon/close_circle.svg';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useRef } from 'react';
 import Image from 'next/image';
 
 interface Props {
-  inviteList: GetInvitationResponseType;
+  inviteList: InvitationType[];
 }
 
 function InviteDash({ inviteList }: Props) {
-  const { invitations } = inviteList;
   const { search, setDashboardSearch } = useStore((state) => ({
     setDashboardSearch: state.setDashboardSearch,
     search: state.dashboardSearch,
@@ -34,7 +32,7 @@ function InviteDash({ inviteList }: Props) {
     if (inputValue.current) inputValue.current.value = '';
   };
 
-  if (invitations.length === 0 && !search) {
+  if (inviteList.length === 0 && !search) {
     return <NullInviteList />;
   }
 
@@ -59,9 +57,9 @@ function InviteDash({ inviteList }: Props) {
         <Subject>초대자</Subject>
         <Subject>수락여부</Subject>
       </InviteListHead>
-      {!invitations.length && search && <StyledNoSearch>검색 결과가 없습니다.</StyledNoSearch>}
+      {!inviteList.length && search && <StyledNoSearch>검색 결과가 없습니다.</StyledNoSearch>}
       <InviteContent>
-        {invitations.map((list) => (
+        {inviteList.map((list) => (
           <InviteList key={list.id} invite={list} />
         ))}
       </InviteContent>

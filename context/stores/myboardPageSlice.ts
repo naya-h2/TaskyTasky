@@ -9,4 +9,5 @@ export const createMyboardPageSlice: StateCreator<myboardPageState> = (set) => (
   increasePage: (prev) => set((state) => ({ ...state, myboardPageNumber: ++prev })),
   decreasePage: (prev) => set((state) => ({ ...state, myboardPageNumber: --prev })),
   setDashboardSearch: (word) => set((state) => ({ ...state, dashboardSearch: word })),
+  setPage: (page) => set((state) => ({ ...state, myboardPageNumber: page })),
 });

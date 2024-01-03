@@ -10,13 +10,12 @@ import EditMyDash from '@/components/common/Table/EditMyDash';
 import DashMyMember from '@/components/common/Table/DashMyMember';
 import DashInviteList from '@/components/common/Table/DashInviteList';
 import boardMockData from '@/components/common/SideMenu/mock';
-
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import BackButton from '@/components/pages/mypage/BackButton';
-import { useCheckLogin } from '@/hooks/useCheckLogin';
+import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
 import { deleteDashboard } from '@/api/dashboards/deleteDashboard';
 
 function Edit() {
@@ -119,6 +118,7 @@ const ButtonLink = styled(Link)`
   &:link,
   &:visited {
     color: ${[BLACK[2]]};
+    text-decoration: none;
   }
 `;
 
