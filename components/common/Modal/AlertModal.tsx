@@ -8,6 +8,7 @@ import { useStore } from '@/context/stores';
 import { useRouter } from 'next/router';
 import { deleteCard } from '@/api/cards/deleteCard';
 import { deleteColumn } from '@/api/columns/deleteColumn';
+import { deleteComment } from '@/api/comments/deleteComment';
 
 interface Props {
   type: modalType;
@@ -16,9 +17,10 @@ interface Props {
   isSuccess?: boolean;
   cardId?: number;
   columnID?: number;
+  commentId?: number;
 }
 
-function AlertModal({ type, children, isSuccess, customName, cardId, columnID }: Props) {
+function AlertModal({ type, children, isSuccess, customName, cardId, columnID, commentId }: Props) {
   const { clearModal, hideModal } = useStore((state) => ({
     clearModal: state.clearModal,
     hideModal: state.hideModal,
@@ -26,6 +28,7 @@ function AlertModal({ type, children, isSuccess, customName, cardId, columnID }:
 
   const router = useRouter();
   const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
+  const setIsCommentChanged = useStore((state) => state.setIsCommentChanged);
 
   const getErrorMsg = (type: modalType): string | undefined => {
     let errorMsg;
@@ -77,6 +80,11 @@ function AlertModal({ type, children, isSuccess, customName, cardId, columnID }:
       setIsColumnChanged();
       clearModal();
       return;
+    }
+    if (type === 'deleteCommentAlert' && commentId) {
+      await deleteComment(commentId);
+      setIsCommentChanged();
+      hideModal('deleteCommentAlert');
     }
   };
 

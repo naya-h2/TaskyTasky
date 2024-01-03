@@ -1,4 +1,5 @@
 import { CardType } from './cards';
+import { CommentType } from './comments';
 import { UserType } from './users';
 
 export type modalType =
@@ -21,16 +22,25 @@ export type modalType =
   | 'editPassword'
   | 'invite'
   | 'inviteAlert'
-  | 'imgError';
+  | 'imgError'
+  | 'loading';
 
 export interface ModalState {
   modals: modalType[];
   modalCard: CardType;
   modalCardColumnTitle: string;
   isColumnChanged: boolean;
+  modalCardComment: string;
+  cardCommentId: number;
+  isCommentChanged: boolean;
+  todoModalDescription: string;
   setModalCard: (value: CardType) => void;
   setModalCardColumnTitle: (value: string) => void;
   setIsColumnChanged: () => void;
+  setModalCardComment: (value: string) => void;
+  setCardCommentId: (value: number) => void;
+  setIsCommentChanged: () => void;
+  setTodoModalDescription: (value: string) => void;
   showModal: (type: modalType) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;

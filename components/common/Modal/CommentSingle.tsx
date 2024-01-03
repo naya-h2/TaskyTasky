@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
+import DOMPurify from 'dompurify';
+import { JSDOM } from 'jsdom';
 import { modalType } from '@/lib/types/zustand';
 import { useStore } from '@/context/stores';
 import ProfileImg from '../Profile/ProfileImg';
 import Textarea from '../Textarea/Textarea';
-import { Comment } from '@/lib/types/type';
 import { FONT_12, FONT_14_B } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
+import { CommentType } from '@/lib/types/comments';
+import { editComment } from '@/api/comments/editComment';
+import { timestamp } from '@/lib/utils/timestamp';
 
 interface Props {
-  data: Comment;
+  data: CommentType;
 }
 
 function CommentSingle({ data }: Props) {
@@ -18,30 +22,48 @@ function CommentSingle({ data }: Props) {
   const [commentContent, setCommentContent] = useState(initialCommentContent);
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
+  const setCardCommentId = useStore((state) => state.setCardCommentId);
+
+  const time = timestamp(new Date(data.createdAt));
 
   const handleDeleteClick = (type: modalType) => {
     if (modal.includes(type)) return;
     showModal(type);
+    setCardCommentId(data.id);
   };
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
 
+  const handleTextareaClick = async () => {
+    const commentData = {
+      content: commentContent,
+    };
+    await editComment(data.id, commentData);
+    setIsEditing(!isEditing);
+  };
+
   return (
-    <StyledContainer key={data.id}>
+    <StyledContainer>
       <StyledLeftWrapper>
         <ProfileImg url={data.author.profileImageUrl} name={data.author.nickname} id={data.id} size={34} />
       </StyledLeftWrapper>
       <StyledRightWrapper>
         <StyledInformation>
           <StyledAuthor>{data.author.nickname}</StyledAuthor>
-          <StyledDate>{data.createdAt}</StyledDate>
+          <StyledDate>{time}</StyledDate>
         </StyledInformation>
         {isEditing ? (
-          <Textarea type="comment" isEditing={true} initialValue={commentContent} />
+          <Textarea
+            type="comment"
+            isEditing={true}
+            value={commentContent}
+            setCommentValue={setCommentContent}
+            onClick={handleTextareaClick}
+          />
         ) : (
-          <StyledContent>{data.content}</StyledContent>
+          <StyledContent dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(commentContent) }}></StyledContent>
         )}
         <StyledToolBox $isEditing={isEditing}>
           {isEditing ? (
@@ -80,7 +102,7 @@ const StyledLeftWrapper = styled.div`
 `;
 
 const StyledRightWrapper = styled.div`
-  width: 396px;
+  width: 85%;
   padding-top: 6px;
   display: flex;
   flex-direction: column;

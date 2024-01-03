@@ -1,10 +1,10 @@
-import { CommentType } from '@/lib/types/comments';
-import axios from 'axios';
+import { PostCommentRequestType } from '@/lib/types/comments';
+import instance from '@/lib/axios';
 
 /**
  * 댓글 생성
  */
-export const createComment = async (data: CommentType) => {
-  const response = await axios.post('/api/comments', data);
+export const createComment = async (data: PostCommentRequestType) => {
+  const response = await instance.post('/api/comments', data);
   return response.data;
 };

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 댓글 목록 조회
@@ -6,8 +6,8 @@ import axios from 'axios';
  * @param cursorId
  * @param columnId 댓글을 가져올 카드의 ID
  */
-export const getCardList = async (size: number, cursorId: number, cardId: number) => {
-  const response = await axios.get(`/api/comments?size=${size}&cursorId=${cursorId}&cardId=${cardId}`);
-  console.log(response);
+export const getCommentList = async (size: number = 10, cardId: number, cursorId?: number) => {
+  const cursorID = cursorId ? `&cursorId=${cursorId}` : ``;
+  const response = await instance.get(`/api/comments?size=${size}${cursorID}&cardId=${cardId}`);
   return response.data;
 };

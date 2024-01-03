@@ -1,21 +1,22 @@
 import Image from 'next/image';
+import { SetStateAction } from 'react';
 import styled from 'styled-components';
 import { Card as CardType } from '@/lib/types/type';
 import { WHITE, GRAY, RED } from '@/styles/ColorStyles';
 import { FONT_12, FONT_16, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
-import CardModal from '@/components/common/Modal/CardModal';
 import { useStore } from '@/context/stores';
 import { modalType } from '@/lib/types/zustand';
 import ChipColor from '../Chip/ChipColor';
+import { ColumnType } from '@/lib/types/columns';
 
 interface Props {
   card: CardType;
-  columnTitle: string;
+  column: ColumnType;
 }
 
-function Card({ card, columnTitle }: Props) {
+function Card({ card, column }: Props) {
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
   const setModalCard = useStore((state) => state.setModalCard);
@@ -30,7 +31,7 @@ function Card({ card, columnTitle }: Props) {
     if (modal.includes(type)) return;
     showModal(type);
     setModalCard(card);
-    setModalCardColumnTitle(columnTitle);
+    setModalCardColumnTitle(column.title);
   };
 
   return (
