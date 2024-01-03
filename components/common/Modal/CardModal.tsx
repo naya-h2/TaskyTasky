@@ -111,6 +111,7 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
           </StyledTaskSmallInfoBox>
           <StyledTaskDescription
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(cardInfo.description) }}
+            $isImage={cardInfo?.imageUrl}
           ></StyledTaskDescription>
           {cardInfo?.imageUrl && (
             <StyledImgWrapper>
@@ -180,8 +181,8 @@ const StyledTaskBigInfoBox = styled.div`
   border-radius: 8px;
 `;
 
-const StyledTaskDescription = styled.p`
-  min-height: 100px;
+const StyledTaskDescription = styled.p<{ $isImage: string | undefined }>`
+  ${({ $isImage }) => $isImage || 'min-height: 100px'};
   ${FONT_14};
   font-weight: 400;
   line-height: 171.5%;
