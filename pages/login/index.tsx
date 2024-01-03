@@ -8,14 +8,14 @@ import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button';
 import Spinner from '@/components/common/Spinner/Spinner';
 import AlertModal from '@/components/common/Modal/AlertModal';
-import { FONT_16, FONT_18, FONT_20 } from '@/styles/FontStyles';
+import { FONT_16, FONT_20 } from '@/styles/FontStyles';
 import { BLACK, VIOLET } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { login } from '@/api/auth/login';
 import { emailRules, signUpPasswordRules } from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
 import Head from 'next/head';
-import Logo from '@/components/common/Logo/Logo';
+import { toast } from 'react-toastify';
 
 function Login() {
   const [message, setMessage] = useState('');
@@ -27,10 +27,9 @@ function Login() {
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
 
-  const { modals, showModal, hideModal } = useStore((state) => ({
+  const { modals, showModal } = useStore((state) => ({
     modals: state.modals,
     showModal: state.showModal,
-    hideModal: state.hideModal,
   }));
 
   const { isLoading, setAuthToken, setIsLoading, setError, setUser } = useStore();
@@ -41,8 +40,10 @@ function Login() {
       setAuthToken(data.token);
       setUser(data.user);
       setIsLoading(false);
-      showModal('customAlert');
+      // showModal('customAlert');
+      toast.success(`${data.user.nickname}님 안녕하세요!`);
       setsSuccess(true);
+      setTimeout(() => router.push('/myboard'), 1500);
     },
     onError: (error: any) => {
       setMessage(error.message);

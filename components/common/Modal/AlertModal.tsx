@@ -64,8 +64,8 @@ function AlertModal({ type, children, isSuccess, customName, cardId, columnID, c
     if (customName) return hideModal(customName);
     if (type === 'customAlert') {
       clearModal();
-      if ((router.pathname === '/login' || '/signup') && isSuccess) {
-        router.push('/myboard');
+      if (router.pathname === '/signup' && isSuccess) {
+        router.push('/login');
       }
       return;
     }

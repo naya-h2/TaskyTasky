@@ -4,8 +4,9 @@ import GlobalStyles from '@/styles/GlobalStyles';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
-import NProgress from 'nprogress';
 import PageSpinner from '@/components/common/Spinner/PageSpinner';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +40,21 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/images/logo_icon.svg" />
       </Head>
       <GlobalStyles />
-      {isLoading ? <PageSpinner /> : <Component {...pageProps} />}
+      {isLoading ? (
+        <PageSpinner />
+      ) : (
+        <>
+          <Component {...pageProps} />
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            closeOnClick
+            pauseOnHover={false}
+            theme="light"
+            limit={1}
+          />
+        </>
+      )}
       <div id="modal"></div>
     </QueryClientProvider>
   );

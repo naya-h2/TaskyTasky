@@ -130,10 +130,12 @@ function SignUp() {
 export default SignUp;
 
 const StyledRoot = styled.div`
+  min-height: 100vh;
+  padding: 0 30px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
 `;
 
 const StyledContainer = styled.div`
@@ -154,7 +156,6 @@ const StyledLogo = styled.img`
 `;
 
 const StyledWord = styled.span`
-  width: 189px;
   height: 24px;
   margin: 10px auto 20px;
   text-align: center;
