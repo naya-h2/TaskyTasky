@@ -8,10 +8,10 @@ import { DashboardType } from '@/lib/types/dashboards';
  * @returns 해당 페이지에 맞는 대시보드 목록
  */
 export const useGetDashboard = () => {
-  const { page, setTotal, setPage } = useStore((state) => ({
+  const { page, setTotal, trigger } = useStore((state) => ({
     page: state.myboardPageNumber,
     setTotal: state.calcTotalPage,
-    setPage: state.setPage,
+    trigger: state.inviteTrigger,
   }));
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
 
@@ -23,7 +23,7 @@ export const useGetDashboard = () => {
     };
 
     fetchDashboardData();
-  }, [page]);
+  }, [page, trigger]);
 
   useEffect(() => {
     setPage(1);

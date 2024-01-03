@@ -4,9 +4,10 @@ import { getInvitationList } from '@/api/invitations/getInvitationList';
 import { InvitationType } from '@/lib/types/invitations';
 
 export const useGetInvitationList = () => {
-  const { search, setDashboardSearch } = useStore((state) => ({
+  const { search, setDashboardSearch, trigger } = useStore((state) => ({
     search: state.dashboardSearch,
     setDashboardSearch: state.setDashboardSearch,
+    trigger: state.inviteTrigger,
   }));
   const [invitationList, setInvitationList] = useState<InvitationType[]>([]);
   const [cursorId, setCursorId] = useState(null);
@@ -14,7 +15,9 @@ export const useGetInvitationList = () => {
 
   const fetchData = async () => {
     const searchResult = await getInvitationList(6, cursorId, search);
-    if (!searchResult.cursorId) setHasMore(false);
+    if (!searchResult.cursorId || !searchResult) {
+      setHasMore(false);
+    }
     setCursorId(searchResult.cursorId);
     if (!cursorId) return setInvitationList(searchResult.invitations);
     setInvitationList((prev) => [...prev, ...searchResult.invitations]);
@@ -29,10 +32,12 @@ export const useGetInvitationList = () => {
     setHasMore(true);
     setCursorId(null);
     setInvitationList([]);
-  }, [search]);
+  }, [search, trigger]);
 
   useEffect(() => {
-    if (!invitationList.length) fetchData();
+    if (!invitationList.length && hasMore) {
+      fetchData();
+    }
   }, [invitationList]);
 
   useEffect(() => {

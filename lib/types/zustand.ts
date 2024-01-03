@@ -50,11 +50,13 @@ export interface myboardPageState {
   dashboardSearch: string;
   myboardTotalPage: number;
   myboardPageNumber: number;
+  inviteTrigger: boolean;
   calcTotalPage: (totalDataNum: number) => void;
   increasePage: (prev: number) => void;
   decreasePage: (prev: number) => void;
   setDashboardSearch: (word: string) => void;
   setPage: (page: number) => void;
+  toggleInviteTrigger: (prev: boolean) => void;
 }
 
 export interface profileImgState {

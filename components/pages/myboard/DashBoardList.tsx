@@ -3,20 +3,17 @@ import Button from '@/components/common/Button';
 import { FONT_14, FONT_14_B, FONT_16_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { BLACK, VIOLET } from '@/styles/ColorStyles';
-import { DashboardType } from '@/lib/types/dashboards';
 import { useStore } from '@/context/stores';
 import DashboardModal from '@/components/common/Modal/DashboardModal';
 import Link from 'next/link';
 import DoubleBackward from '@/public/icon/double-small-left.svg';
 import DoubleForward from '@/public/icon/double-small-right.svg';
+import { useGetDashboard } from '@/hooks/useGetDashboard';
 
-interface Props {
-  data: DashboardType[];
-}
 /**
  * @param data dashboard 목록의 배열
  */
-function DashBoardList({ data }: Props) {
+function DashBoardList() {
   const { modals, showModal, page, total, increasePage, decreasePage, setPage } = useStore((state) => ({
     modals: state.modals,
     showModal: state.showModal,
@@ -26,6 +23,7 @@ function DashBoardList({ data }: Props) {
     decreasePage: state.decreasePage,
     setPage: state.setPage,
   }));
+  const dashboardList = useGetDashboard();
 
   const handleDashboardAdd = () => {
     showModal('dashBoard');
@@ -42,8 +40,8 @@ function DashBoardList({ data }: Props) {
                 <StyledButtonText>새로운 대시보드</StyledButtonText>
               </Button.Add>
             </StyledButtonWrapper>
-            {data &&
-              data.map((dashboard) => (
+            {dashboardList &&
+              dashboardList.map((dashboard) => (
                 <Link href={`/board/${dashboard.id}`} key={dashboard.id}>
                   <StyledButtonWrapper>
                     <Button.DashBoard isOwner={dashboard.createdByMe} chipColor={dashboard.color} roundSize="XL">

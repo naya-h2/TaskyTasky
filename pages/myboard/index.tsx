@@ -5,13 +5,10 @@ import SideMenu from '@/components/common/SideMenu/SideMenu';
 import InviteDash from '@/components/common/Table/InviteDash';
 import DashBoardList from '@/components/pages/myboard/DashBoardList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { useGetDashboard } from '@/hooks/useGetDashboard';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Myboard() {
   useCheckLogin();
-
-  const dashboardList = useGetDashboard();
 
   return (
     <>
@@ -22,7 +19,7 @@ function Myboard() {
       <SideMenu />
       <StyledBody>
         <StyledContainer>
-          {dashboardList && <DashBoardList data={dashboardList} />}
+          <DashBoardList />
           <InviteDash />
         </StyledContainer>
       </StyledBody>

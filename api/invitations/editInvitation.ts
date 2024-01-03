@@ -6,6 +6,5 @@ import authInstance from '@/lib/axios';
  */
 export const editInvitation = async (invitationId: string, data: PutInvitationRequestType) => {
   const response = await authInstance.put(`/api/invitations/${invitationId}`, data);
-  console.log(response);
   return response.data;
 };
