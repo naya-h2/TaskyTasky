@@ -1,9 +1,10 @@
 import styled, { keyframes } from 'styled-components';
-import ArrowToFrontIcon from '@/public/icon/arrow_backward.svg';
-import ArrowToBackIcon from '@/public/icon/arrow_forward.svg';
+import ArrowToFrontIcon from '@/public/icon/double-small-left.svg';
+import ArrowToBackIcon from '@/public/icon/double-small-right.svg';
 import { useEffect, useState } from 'react';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
-import { VIOLET } from '@/styles/ColorStyles';
+import { GRAY, VIOLET } from '@/styles/ColorStyles';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 function ScrollableContent() {
   const [isFront, setIsFront] = useState(true);
@@ -64,7 +65,7 @@ const toLeft = keyframes`
 
 const Wrapper = styled.div`
   width: calc(100vw - 300px);
-  height: 60px;
+  height: 50px;
   padding: 0 20px 0;
 
   position: fixed;
@@ -74,15 +75,16 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  z-index: ${Z_INDEX.secondHeader_Body};
+  z-index: ${Z_INDEX['LeftRightScroll_Button']};
 
   background-color: ${VIOLET[9]};
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    display: none;
+  }
 `;
 
 const Btn = styled.button`
-  width: 45px;
-  height: 45px;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,10 +93,11 @@ const Btn = styled.button`
   border: none;
   cursor: pointer;
   outline: none;
+  fill: ${GRAY[40]};
 
   svg {
-    width: 50px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
 `;
 

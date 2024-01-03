@@ -27,7 +27,8 @@ import { useStore } from '@/context/stores';
 import PlusIcon from '@/public/icon/add_no_background.svg';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
 import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
-import ScrollableContent from '@/components/pages/Board/ScrollableContent';
+import LeftRightButton from '@/components/pages/Board/LeftRightButton';
+import UpDownButton from '@/components/pages/Board/UpDownButton';
 
 function Board() {
   useCheckLogin();
@@ -100,7 +101,8 @@ function Board() {
         />
         <SideMenu />
         <StyledBody>
-          <ScrollableContent />
+          <LeftRightButton />
+          <UpDownButton />
           <StyledContent>
             {columnList.length > 0 && (
               <ColumnLists
@@ -164,12 +166,12 @@ const StyledBody = styled.div`
   flex-direction: column;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    padding: 90px 10px 0 175px;
+    padding: 90px 20px 0 175px;
 
     flex-direction: column;
   }
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding: 80px 10px 0 80px;
+    padding: 80px 20px 0 80px;
   }
 `;
 
@@ -207,56 +209,9 @@ const NewColumnBtn = styled.button`
 
   box-shadow: 1px 1px 1px ${GRAY[40]};
 
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-  }
-
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 30px;
-    height: 30px;
-    bottom: 15px;
-    left: 15px;
-    font-size: 15px;
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
   }
-`;
-
-const StyledBtnWrapper = styled.div`
-  display: none;
-
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    height: 70px;
-    margin: 20px 0;
-    padding: 0 20px;
-
-    display: flex;
-  }
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    height: 60px;
-    margin: 12px 0;
-    padding: 0 15px;
-
-    display: flex;
-  }
-`;
-
-const StyledText = styled.div`
-  ${FONT_18_B}
-`;
-
-const StyledButton = styled.button`
-  position: absolute;
-  top: 65px;
-  right: 0;
-
-  background: none;
-
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    display: none;
-  }
-`;
-
-const StyledAddChip = styled(PlusIcon)`
-  width: 35px;
-  height: 35px;
-  margin: 20px;
 `;
