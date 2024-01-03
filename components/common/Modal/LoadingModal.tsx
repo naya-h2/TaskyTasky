@@ -34,7 +34,7 @@ const StyledMask = styled.div`
   width: 100%;
   height: 100%;
 
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   z-index: ${Z_INDEX.modalFrame_Mask_Mid};
