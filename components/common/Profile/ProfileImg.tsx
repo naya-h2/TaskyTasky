@@ -4,7 +4,7 @@ import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-const COLORS = [BLUE, ORANGE, PURPLE, GREEN, PINK[1]];
+const COLORS = [BLUE[1], ORANGE[1], PURPLE[1], GREEN[1], PINK[1]];
 
 interface Props {
   url: string | null;
