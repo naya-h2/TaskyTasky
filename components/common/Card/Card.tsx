@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Card as CardType } from '@/lib/types/type';
-import { WHITE, GRAY } from '@/styles/ColorStyles';
-import { FONT_12, FONT_16 } from '@/styles/FontStyles';
+import { WHITE, GRAY, RED } from '@/styles/ColorStyles';
+import { FONT_12, FONT_16, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
 import CardModal from '@/components/common/Modal/CardModal';
@@ -21,6 +21,11 @@ function Card({ card, columnTitle }: Props) {
   const setModalCard = useStore((state) => state.setModalCard);
   const setModalCardColumnTitle = useStore((state) => state.setModalCardColumnTitle);
 
+  const currentDate = new Date();
+  const threeDaysLater = new Date();
+  threeDaysLater.setDate(currentDate.getDate() + 3);
+  const isCloseDuedate = currentDate < new Date(card.dueDate) && new Date(card.dueDate) <= threeDaysLater;
+
   const handleButtonClick = (type: modalType) => {
     if (modal.includes(type)) return;
     showModal(type);
@@ -29,10 +34,11 @@ function Card({ card, columnTitle }: Props) {
   };
 
   return (
-    <StyledWrapper onClick={() => handleButtonClick('card')}>
+    <StyledWrapper isRed={isCloseDuedate} onClick={() => handleButtonClick('card')}>
       {card.imageUrl && <StyledThumbnail src={card.imageUrl} width={274} height={160} alt="" />}
+      <StyledCircle isRed={isCloseDuedate} />
       <StyledContent>
-        <StyledTitle>{card.title}</StyledTitle>
+        <StyledTitle isRed={isCloseDuedate}>{card.title}</StyledTitle>
         <StyledDetail>
           <StyledTagWrapper>
             {card.tags.map((t) => (
@@ -44,7 +50,7 @@ function Card({ card, columnTitle }: Props) {
             {card.dueDate}
           </StyledDateWrapper>
           {card.assignee.profileImageUrl ? (
-            <StyledProfileChip src={card.assignee.profileImageUrl} width={24} height={24} alt="프로필 이미지" />
+            <StyledProfileChip src={card.assignee?.profileImageUrl} width={24} height={24} alt="프로필 이미지" />
           ) : (
             <StyledDefaultProfileChip>{card.assignee.nickname[0]}</StyledDefaultProfileChip>
           )}
@@ -56,7 +62,7 @@ function Card({ card, columnTitle }: Props) {
 
 export default Card;
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<{ isRed: boolean }>`
   width: 100%;
   height: fit-content;
   margin-bottom: 16px;
@@ -64,7 +70,7 @@ const StyledWrapper = styled.div`
 
   position: relative;
 
-  background: ${WHITE};
+  background-color: ${WHITE};
 
   border-radius: 6px;
   border: 1px solid ${GRAY[30]};
@@ -72,13 +78,27 @@ const StyledWrapper = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: ${GRAY[20]};
+    background-color: ${(props) => (props.isRed ? '#FFE3E3' : '#EDDFFF')};
   }
 
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
     display: flex;
     flex-direction: row;
   }
+`;
+
+const StyledCircle = styled.div<{ isRed: boolean }>`
+  width: 10px;
+  height: 10px;
+
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  display: ${(props) => (props.isRed ? 'flex' : 'none')};
+
+  background-color: ${RED};
+  border-radius: 50%;
 `;
 
 const StyledThumbnail = styled(Image)`
@@ -100,10 +120,10 @@ const StyledContent = styled.div`
   width: 100%;
 `;
 
-const StyledTitle = styled.div`
+const StyledTitle = styled.div<{ isRed: boolean }>`
   margin-bottom: 10px;
 
-  ${FONT_16}
+  ${(props) => (props.isRed ? FONT_16_EB : FONT_16_B)}
 `;
 
 const StyledDetail = styled.div`

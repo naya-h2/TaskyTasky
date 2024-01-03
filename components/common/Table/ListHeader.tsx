@@ -3,28 +3,55 @@ import styled from 'styled-components';
 import Button from '../Button';
 import AddBoxIcon from '@/public/icon/add_box_fill.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { useMediaQuery } from 'react-responsive';
+import { useRouter } from 'next/router';
+import { useStore } from '@/context/stores';
+import InviteModal from '@/components/common/Modal/InviteModal';
 
 interface ListHeaderProps {
   title: '구성원' | '초대 내역';
+  totalCount: number;
+  page: number;
+  getPage: (num: number) => void;
 }
 
-function ListHeader({ title = '구성원' }: ListHeaderProps) {
-  const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
+function ListHeader({ title = '구성원', totalCount, page = 1, getPage }: ListHeaderProps) {
+  const { modal, showModal } = useStore((state) => ({
+    modal: state.modals,
+    showModal: state.showModal,
+  }));
+
+  const router = useRouter();
+  const { id } = router.query;
+  const totalPage = Math.ceil(totalCount / 5);
+
+  const handleButtonNextPage = () => {
+    getPage(page + 1);
+  };
+
+  const handleButtonPrevPage = () => {
+    getPage(page - 1);
+  };
+
   return (
     <ListHeaderLayout>
       <HeaderLeft>{title}</HeaderLeft>
-      <HeaderRight>
-        <PageStatus>1 페이지 중 1</PageStatus>
-        <ArrowButton>
-          <ButtonLayout>
-            <Button.Arrow type="left" isNotActive />
-            <Button.Arrow type="right" isNotActive />
-          </ButtonLayout>
-        </ArrowButton>
-        {title === '초대 내역' && (
+      {title === '초대 내역' && (
+        <HeaderRight>
+          <PageStatus>
+            {totalPage === 0 ? 1 : totalPage} 페이지 중 {page}
+          </PageStatus>
+          <ArrowButton>
+            <ButtonLayout>
+              <Button.Arrow type="left" isNotActive={page <= 1 ? true : false} onClick={handleButtonPrevPage} />
+              <Button.Arrow
+                type="right"
+                isNotActive={totalPage <= page ? true : false}
+                onClick={handleButtonNextPage}
+              />
+            </ButtonLayout>
+          </ArrowButton>
           <InviteButtonLayout>
-            <Button.Plain style="primary" roundSize="S">
+            <Button.Plain style="primary" roundSize="S" onClick={() => showModal('invite')}>
               <ButtonStyle>
                 <ButtonIcon>
                   <AddBox />
@@ -33,8 +60,10 @@ function ListHeader({ title = '구성원' }: ListHeaderProps) {
               </ButtonStyle>
             </Button.Plain>
           </InviteButtonLayout>
-        )}
-      </HeaderRight>
+
+          {modal.includes('invite') && <InviteModal dashboardId={Number(id)} />}
+        </HeaderRight>
+      )}
     </ListHeaderLayout>
   );
 }

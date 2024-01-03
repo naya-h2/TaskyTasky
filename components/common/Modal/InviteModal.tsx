@@ -31,7 +31,10 @@ function InviteModal({ dashboardId }: Props) {
     if (response.status !== 201) {
       setErrorMsg(response.data?.message);
       showModal('inviteAlert');
-    } else clearModal();
+    } else {
+      clearModal();
+      window.location.reload();
+    }
   };
 
   return (

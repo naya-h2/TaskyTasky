@@ -1,41 +1,71 @@
 import { styled } from 'styled-components';
-import { GRAY, GREEN, WHITE } from '@/styles/ColorStyles';
+import { BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_18, FONT_20_B } from '@/styles/FontStyles';
-import React, { useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import DashBoardColor from '../Chip/DashBoardColor';
 import Button from '../Button';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { useMediaQuery } from 'react-responsive';
+import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
+import { editDashboard } from '@/api/dashboards/editDashboard';
+import { tree } from 'next/dist/build/templates/app-page';
 
-function EditMyDash() {
+interface Props {
+  dashboardData: GetDashboardListDetailResponseType;
+}
+
+function EditMyDash({ dashboardData }: Props) {
+  const initialColor = dashboardData.color;
+  const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
+  const colorIndex = colors.indexOf(initialColor);
   const [selectedColor, setSelectedColor] = useState('');
-  const [editName, setEditName] = useState('뉴프로젝트');
+  const [isNotActive, setIsNotActive] = useState(true);
+  const [dashData, setDashData] = useState(dashboardData);
+  const [editName, setEditName] = useState('');
 
   const OnNameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setEditName(value);
+    value === '' ? setIsNotActive(true) : setIsNotActive(false);
   };
 
   const OnFocusInputHandler = (event: React.FocusEvent<HTMLInputElement>) => {
     setEditName('');
   };
 
+  const handleSubmit = async () => {
+    alert('변경이 완료되었습니다.');
+    const body = { title: editName, color: selectedColor };
+    const response = await editDashboard(dashboardData.id, body);
+    setDashData(response);
+    setEditName('');
+  };
+
+  useEffect(() => {
+    setSelectedColor(colors[colorIndex]);
+    setDashData(dashboardData);
+  }, [colorIndex]);
+
   return (
     <Wrapper>
       <Container>
         <EditDashChip>
-          <BoardTitle>제목</BoardTitle>
-          <DashBoardColor selectedColor={GREEN} setSelectedColor={setSelectedColor} />
+          <BoardTitle>{dashData.title}</BoardTitle>
+          <DashBoardColor selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
         </EditDashChip>
         <EditDashName>
           <DashNameText>대시보드 이름</DashNameText>
           <EditNameInputWrap>
-            <EditNameInput value={editName} onChange={OnNameChangeHandler} onFocus={OnFocusInputHandler} />
+            <EditNameInput
+              value={editName}
+              onChange={OnNameChangeHandler}
+              onFocus={OnFocusInputHandler}
+              placeholder="뉴프로젝트"
+            />
           </EditNameInputWrap>
         </EditDashName>
         <EditButton>
           <ButtonWrapper>
-            <Button.Plain style="primary" roundSize="M">
+            <Button.Plain style="primary" roundSize="M" onClick={handleSubmit} isNotActive={isNotActive}>
               <ButtonText>변경</ButtonText>
             </Button.Plain>
           </ButtonWrapper>
@@ -111,7 +141,9 @@ const EditNameInputWrap = styled.div`
     padding: 13px 16px;
   }
 `;
-const EditNameInput = styled.input``;
+const EditNameInput = styled.input`
+  width: 100%;
+`;
 const EditButton = styled.div`
   display: flex;
   justify-content: right;
