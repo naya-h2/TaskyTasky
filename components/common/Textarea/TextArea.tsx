@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic';
-import { ChangeEvent, SetStateAction, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useStore } from '@/context/stores';
 import Button from '../Button';
-import { FONT_12, FONT_14, FONT_16, FONT_18 } from '@/styles/FontStyles';
-import { BLACK, GRAY, VIOLET, RED } from '@/styles/ColorStyles';
+import { FONT_12, FONT_16, FONT_18 } from '@/styles/FontStyles';
+import { BLACK, VIOLET, RED } from '@/styles/ColorStyles';
 import { PostCardRequestType } from '@/lib/types/cards';
 import 'react-quill/dist/quill.snow.css';
 
@@ -12,74 +13,104 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 type Value = PostCardRequestType;
 
 interface Props {
-  type: 'basic' | 'comment';
+  type: 'toDo' | 'comment';
   isEditing?: boolean;
-  value: string;
-  setValue: (value: SetStateAction<Value>) => void;
+  value?: string;
+  setValue?: (value: SetStateAction<Value>) => void;
+  setCommentValue?: (value: string) => void;
+  onClick?: () => void;
 }
 
-function Textarea({ type, isEditing, value, setValue }: Props) {
+function Textarea({ type, isEditing, value, setValue, setCommentValue, onClick }: Props) {
   const [violet, setViolet] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [red, setRed] = useState(false);
+
+  const todoModalDescription = useStore((state) => state.todoModalDescription);
+  const setTodoModalDescription = useStore((state) => state.setTodoModalDescription);
+
+  const modules = {
+    toolbar: [
+      [{ size: ['small', false, 'large'] }], // custom dropdown
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+      ['clean'],
+    ],
+  };
+
+  const formats = [
+    'size',
+    'header',
+    'color',
+    'background',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+  ];
 
   const handleReactQuillFocus = () => {
-    setViolet(!violet);
+    setViolet(true);
+    setRed(false);
   };
 
   const handleReactQuillBlur = () => {
-    setViolet(!violet);
+    if (value === '') {
+      setViolet(false);
+      setRed(true);
+    } else {
+      setViolet(false);
+      setRed(false);
+    }
   };
 
-  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    if (type === 'basic') {
+  const handleTextareaChange = () => {
+    if (setValue) {
       setValue((prev) => ({
         ...prev,
-        description: e.target.value,
+        description: todoModalDescription,
       }));
     }
-    setErrorMessage('');
   };
 
-  const handleTextareaFocusOut = () => {
-    if (value === '') {
-      setErrorMessage('내용을 입력해주세요.');
-    }
-  };
-
-  const handleButtonClick = () => {};
+  useEffect(() => {
+    handleTextareaChange();
+  }, [todoModalDescription]);
 
   return (
     <StyledWrapper>
-      {type === 'basic' && (
+      {type === 'toDo' && (
         <StyledLabel $type={type} htmlFor={type}>
           설명 <StyledSpan> *</StyledSpan>
         </StyledLabel>
       )}
-      {type === 'basic' && (
-        <StyledTextarea
-          value={value}
-          onChange={handleTextareaChange}
-          onBlur={handleTextareaFocusOut}
-          id={type}
-          placeholder="내용을 입력해 주세요"
-          $error={errorMessage}
-        />
-      )}
-      {type === 'basic' && errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
       {type === 'comment' && !isEditing && <StyledLabel $type={type}>댓글</StyledLabel>}
-      {type === 'comment' && (
-        <StyledReactQuill
-          theme="snow"
-          value={value}
-          // onChange={setValue}
-          onFocus={handleReactQuillFocus}
-          onBlur={handleReactQuillBlur}
-          $violet={violet}
-        />
-      )}
+      <StyledReactQuill
+        theme="snow"
+        value={type === 'comment' ? value : todoModalDescription}
+        onChange={type === 'comment' ? setCommentValue : setTodoModalDescription}
+        onFocus={handleReactQuillFocus}
+        onBlur={handleReactQuillBlur}
+        placeholder="내용을 입력해 주세요"
+        modules={modules}
+        formats={formats}
+        $violet={violet}
+        $red={red}
+        $type={type}
+      />
       {type === 'comment' && (
         <StyledButtonWrapper>
-          <Button.Plain style="secondary" roundSize="S" onClick={handleButtonClick}>
+          <Button.Plain
+            style="secondary"
+            roundSize="S"
+            onClick={onClick}
+            isNotActive={value ? (value === '<p><br></p>' ? true : false) : true}
+          >
             <StyledButtonText>입력</StyledButtonText>
           </Button.Plain>
         </StyledButtonWrapper>
@@ -99,9 +130,9 @@ const StyledWrapper = styled.div`
   margin-top: 5px;
 `;
 
-const StyledLabel = styled.label<{ $type: 'basic' | 'comment' }>`
+const StyledLabel = styled.label<{ $type: 'toDo' | 'comment' }>`
   ${({ $type }) => $type === 'comment' && `${FONT_16}`};
-  ${({ $type }) => $type === 'basic' && `${FONT_18}`};
+  ${({ $type }) => $type === 'toDo' && `${FONT_18}`};
   color: ${BLACK[2]};
 `;
 
@@ -111,30 +142,13 @@ const StyledSpan = styled.span`
   font-weight: 500;
 `;
 
-const StyledTextarea = styled.textarea<{ $error: string }>`
+const StyledReactQuill = styled(ReactQuill)<{ $violet: boolean; $red: boolean; $type: 'comment' | 'toDo' }>`
   width: 100%;
-  min-height: 96px;
-  border-radius: 6px;
-  border: 1px solid ${({ $error }) => ($error ? `${RED}` : `${GRAY[30]}`)};
-  background-color: white;
-  padding: 15px;
-  color: ${BLACK[2]};
-  ${FONT_16};
-  font-weight: 400;
-  resize: none;
-  outline: none;
-
-  &:focus {
-    border: 1px solid ${VIOLET[1]};
-  }
-`;
-
-const StyledReactQuill = styled(ReactQuill)<{ $violet: boolean }>`
-  width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: ${({ $type }) => ($type === 'comment' ? '10px' : '0px')};
 
   .ql-snow {
     ${(props) => props.$violet && `border: 1px solid ${VIOLET[1]}`};
+    ${(props) => props.$red && `border: 1px solid ${RED}`};
   }
 
   .ql-toolbar {
@@ -142,11 +156,12 @@ const StyledReactQuill = styled(ReactQuill)<{ $violet: boolean }>`
   }
 
   .ql-container {
+    height: 100px;
     border-radius: 0px 0px 6px 6px;
   }
 
   .ql-editor {
-    min-height: 80px;
+    min-height: 50px;
   }
 `;
 
@@ -156,13 +171,18 @@ const StyledButtonWrapper = styled.div`
   position: absolute;
   right: 10px;
   bottom: 20px;
+  opacity: 0.3;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const StyledButtonText = styled.span`
   ${FONT_12};
 `;
 
-const StyledErrorMessage = styled.span`
+/* const StyledErrorMessage = styled.span`
   ${FONT_14};
   color: ${RED};
-`;
+`; */

@@ -1,8 +1,8 @@
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 댓글 삭제
  */
 export const deleteComment = async (commentId: number) => {
-  const response = await axios.delete(`/api/cards/${commentId}`);
+  const response = await instance.delete(`/api/comments/${commentId}`);
 };

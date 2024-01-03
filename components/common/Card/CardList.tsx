@@ -69,8 +69,7 @@ function CardList({ key, column, setModalColumnId }: Props) {
       <StyledBtnWrapper>
         <Button.Add roundSize="M" onClick={() => handleAddButtonClick('createTodo', column.id)} />
       </StyledBtnWrapper>
-      {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} columnTitle={column.title} />)}
-      {modal[modal.length - 1] === 'imgUrl' && <ImgUrlModal type="imgUrl" />}
+      {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} column={column} />)}
     </StyledRoot>
   );
 }
