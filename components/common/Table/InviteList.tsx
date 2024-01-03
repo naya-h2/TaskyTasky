@@ -1,27 +1,32 @@
+import { styled } from 'styled-components';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Button from '../Button';
 import { GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_16, FONT_14, FONT_12 } from '@/styles/FontStyles';
-import { styled } from 'styled-components';
-import Button from '../Button';
 import { editInvitation } from '@/api/invitations/editInvitation';
 import { InvitationType } from '@/lib/types/invitations';
-
-const ALERT_MSG = {
-  invitationAccept: '초대를 수락하였습니다.',
-  invitationReject: '초대를 거절하였습니다.',
-};
+import { useStore } from '@/context/stores';
 
 interface Props {
   invite: InvitationType;
 }
 
 function InviteList({ invite }: Props) {
+  const { setPage, trigger, toggleTriger } = useStore((state) => ({
+    setPage: state.setPage,
+    trigger: state.inviteTrigger,
+    toggleTriger: state.toggleInviteTrigger,
+  }));
+
   const handleInvitationClick = async (name: string, isAccept: boolean) => {
-    await editInvitation(`${invite.id}`, { inviteAccepted: isAccept });
-    const invitationInfo = `[ ${name} ]`;
-    const msg = (isAccept ? ALERT_MSG.invitationAccept : ALERT_MSG.invitationReject) + '\n' + invitationInfo;
-    alert(msg);
-    window.location.reload();
+    if (isAccept) await toast.success(`초대 수락: ${name}`);
+    else await toast.error(`초대 거절: ${name}`);
+
+    const data = await editInvitation(`${invite.id}`, { inviteAccepted: isAccept });
+    setPage(1);
+    toggleTriger(trigger);
   };
 
   return (

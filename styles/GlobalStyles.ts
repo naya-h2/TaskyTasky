@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { VIOLET } from './ColorStyles';
+import { customScroll } from './CustomScroll';
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -20,6 +21,7 @@ const GlobalStyles = createGlobalStyle`
 
   html, body{
     background-color: ${VIOLET[9]};
+    ${customScroll};
   }
 
   html, body, div, span, h1, h2, h3, h4, h5, h6, p, 

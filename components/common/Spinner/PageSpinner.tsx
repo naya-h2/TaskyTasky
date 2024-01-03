@@ -6,7 +6,7 @@ function PageSpinner() {
   return (
     <StyledSpinner>
       <Image src="/images/Spinner-1s-200px.gif" alt="로딩중" width={80} height={80} />
-      페이지 이동중 . . .
+      페이지 이동중 ..💜
     </StyledSpinner>
   );
 }

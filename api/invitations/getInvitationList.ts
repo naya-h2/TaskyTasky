@@ -15,6 +15,6 @@ export const getInvitationList = async (size: number, cursorId: number | null, t
     const response = await authInstance.get(path);
     return response.data;
   } catch (error) {
-    console.log(error);
+    return { cursorId: null, invitation: [] };
   }
 };
