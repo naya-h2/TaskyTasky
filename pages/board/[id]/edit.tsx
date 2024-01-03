@@ -73,7 +73,7 @@ function Edit() {
               <BackButton>돌아가기</BackButton>
             </ReturnButton>
           </ButtonLink>
-          <EditMyDash dashboardData={dashBoardInfo} />
+          {dashBoardInfo && <EditMyDash dashboardData={dashBoardInfo} />}
           <DashMyMember />
           <DashInviteList />
           <DeleteDashButton onClick={hadnlerDashBoardDelete}>대시보드 삭제하기</DeleteDashButton>

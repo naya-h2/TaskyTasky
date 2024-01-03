@@ -7,6 +7,10 @@ import authInstance from '@/lib/axios';
  * @param dashboardId
  */
 export const getMemberList = async (dashboardId: number, page: number = 1, size: number = 20) => {
-  const response = await authInstance.get(`/api/members?page=${page}&size=${size}&dashboardId=${dashboardId}`);
-  return response.data;
+  try {
+    const response = await authInstance.get(`/api/members?page=${page}&size=${size}&dashboardId=${dashboardId}`);
+    return response.data;
+  } catch (error) {
+    return null;
+  }
 };
