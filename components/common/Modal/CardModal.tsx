@@ -67,7 +67,7 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
     await createComment(commentData);
     setModalCardComment('');
     setIsCommentChanged();
-    areaRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    areaRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
