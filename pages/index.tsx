@@ -13,8 +13,16 @@ import { FONT_16, FONT_18, FONT_18_B, FONT_22, FONT_28_B } from '@/styles/FontSt
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import PointSection from '@/components/pages/home/PointSection';
 import MainIntro from '@/components/pages/home/MainIntro';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (window && window.localStorage.getItem('login')) router.push('/myboard');
+  }, []);
+
   return (
     <Layout>
       <Container>
