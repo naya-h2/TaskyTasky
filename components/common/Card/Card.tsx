@@ -107,6 +107,8 @@ const StyledThumbnail = styled(Image)`
   margin-bottom: 12px;
 
   border-radius: 6px;
+  object-fit: cover;
+  object-position: center;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
     width: 90px;

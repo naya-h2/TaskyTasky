@@ -71,5 +71,4 @@ const StyledCommentsArea = styled.div`
 const StyledObserveTargetBox = styled.div`
   width: 100%;
   height: 10px;
-  border: 1px solid red;
 `;

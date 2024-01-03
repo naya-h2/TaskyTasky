@@ -118,7 +118,13 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
           ></StyledTaskDescription>
           {cardInfo?.imageUrl && (
             <StyledImgWrapper>
-              <Image src={cardInfo.imageUrl as string} alt="할일 이미지" fill priority />
+              <Image
+                src={cardInfo.imageUrl as string}
+                alt="할일 이미지"
+                fill
+                priority
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
             </StyledImgWrapper>
           )}
           <Textarea
