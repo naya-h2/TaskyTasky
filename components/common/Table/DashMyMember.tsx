@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { GetMemberListResponseType } from '@/lib/types/members';
 import { getMemberList } from '@/api/members/getMemberList';
 import Crown from '@/public/icon/crown.svg';
+import { deleteMember } from '@/api/members/deleteMember';
 
 function DashMyMember() {
   const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
@@ -25,9 +26,17 @@ function DashMyMember() {
 
   const totalPage = Math.ceil(totalCount / 5);
 
+  console.log(members);
+
   const fetchDashboardData = async (page: number) => {
     const dashMember = await getMemberList(dashboardId, page, 5);
     setDashMember(dashMember);
+  };
+
+  const handleDeleteMember = async (Id: number, nickname: string) => {
+    await deleteMember(Id);
+    alert(`'${nickname}'님을 대시보드 구성원에서 삭제했습니다.`);
+    window.location.reload();
   };
 
   const handleButtonNextPage = () => {
@@ -80,7 +89,11 @@ function DashMyMember() {
                     <StyledCrown />
                   ) : (
                     <MemberDeleteButton>
-                      <Button.Plain style="secondary" roundSize="S">
+                      <Button.Plain
+                        style="secondary"
+                        roundSize="S"
+                        onClick={() => handleDeleteMember(member.id, member.nickname)}
+                      >
                         <ButtonText>삭제</ButtonText>
                       </Button.Plain>
                     </MemberDeleteButton>

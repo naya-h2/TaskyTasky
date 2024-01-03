@@ -1,8 +1,8 @@
-import axios from 'axios';
+import authInstance from '@/lib/axios';
 
 /**
  * 대시보드 멤버 삭제
  */
-export const deleteMember = async (memberId: string) => {
-  const response = await axios.delete(`/api/members/${memberId}`);
+export const deleteMember = async (memberId: number) => {
+  const response = await authInstance.delete(`/api/members/${memberId}`);
 };

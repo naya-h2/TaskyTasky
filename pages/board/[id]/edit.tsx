@@ -17,6 +17,7 @@ import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import BackButton from '@/components/pages/mypage/BackButton';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
+import { deleteDashboard } from '@/api/dashboards/deleteDashboard';
 
 function Edit() {
   useCheckLogin();
@@ -24,6 +25,13 @@ function Edit() {
   const { id } = router.query;
   const dashboardId = Number(id);
 
+  const hadnlerDashBoardDelete = async () => {
+    if (confirm('대쉬보드를 삭제하시겠습니까?')) {
+      await deleteDashboard(dashboardId);
+      alert('대쉬보드를 삭제했습니다.');
+      router.push('/myboard');
+    }
+  };
   const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>({
     id: 0,
     title: '',
@@ -68,7 +76,7 @@ function Edit() {
           <EditMyDash dashboardData={dashBoardInfo} />
           <DashMyMember />
           <DashInviteList />
-          <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
+          <DeleteDashButton onClick={hadnlerDashBoardDelete}>대시보드 삭제하기</DeleteDashButton>
         </Wrapper>
       </Content>
     </Root>

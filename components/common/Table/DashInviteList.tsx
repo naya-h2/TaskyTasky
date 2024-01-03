@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
 import NoDashImg from '@/public/images/No_Invite_Dash.svg';
+import { deleteDashboardInvitation } from '@/api/dashboards/deleteDashboardInvitation';
 
 // interface Props {
 //   invitationsList: GetDashboardInvitationResponseType;
@@ -25,6 +26,7 @@ function DashInviteList() {
   const { invitations, totalCount } = dashInvitation;
   const [page, setPage] = useState(1);
 
+  console.log(invitations);
   const fetchDashboardData = async (page: number) => {
     const dashInvitation = await getDashboardInvitationList(dashboardId, 5, page);
     setDashInvitation(dashInvitation);
@@ -32,6 +34,11 @@ function DashInviteList() {
   const getPage = (num: number) => {
     setPage(num);
     fetchDashboardData(num);
+  };
+
+  const handleCancelInvite = async (dashboardId: number, invitationId: number, email: string) => {
+    await deleteDashboardInvitation(dashboardId, invitationId);
+    alert(`${email} 초대를 취소하였습니다.`);
   };
 
   useEffect(() => {
@@ -57,7 +64,13 @@ function DashInviteList() {
                   <InviterEmailLayout>
                     <InviteEmail>{invitation.invitee.email}</InviteEmail>
                     <InviteCancelButton>
-                      <Button.Plain style="outline" roundSize="S">
+                      <Button.Plain
+                        style="outline"
+                        roundSize="S"
+                        onClick={() =>
+                          handleCancelInvite(invitation.dashboard.id, invitation.id, invitation.invitee.email)
+                        }
+                      >
                         <ButtonText>취소</ButtonText>
                       </Button.Plain>
                     </InviteCancelButton>
