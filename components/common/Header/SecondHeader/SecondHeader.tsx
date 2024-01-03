@@ -31,8 +31,8 @@ function Header({ page, children, crown, membersData }: Props) {
     <StyledBody>
       <StyledContainer $page={page}>
         <StyledTitleSection $page={page}>
-          <StyledTitle>{children}</StyledTitle>
           {crown && <StyledCrownIcon />}
+          <StyledTitle>{children}</StyledTitle>
         </StyledTitleSection>
         <StyledRight>
           {page !== 'myboard' && (
@@ -113,8 +113,8 @@ const StyledBody = styled.div`
 
 const StyledContainer = styled.div<{ $page: string }>`
   width: 100%;
-  padding-left: 30px;
-  padding-right: 60px;
+  padding-left: 20px;
+  padding-right: 40px;
 
   display: flex;
   align-items: center;
@@ -134,11 +134,7 @@ const StyledContainer = styled.div<{ $page: string }>`
 
 const StyledRight = styled.div`
   display: flex;
-  gap: 32px;
-
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    gap: 24px;
-  }
+  gap: 24px;
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     gap: 12px;
@@ -148,7 +144,7 @@ const StyledRight = styled.div`
 const StyledTitleSection = styled.div<{ $page: string }>`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     display: ${(props) => (props.$page === 'others' ? `none` : null)};
@@ -208,7 +204,7 @@ const StyledInviteWrapper = styled.div`
 
 const StyledTitle = styled.div`
   min-width: 5vw;
-  max-width: 20vw;
+  max-width: 18vw;
 
   color: ${BLACK[2]};
   ${FONT_20_B};
