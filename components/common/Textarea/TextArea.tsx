@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useStore } from '@/context/stores';
 import Button from '../Button';
@@ -7,8 +7,12 @@ import { FONT_12, FONT_16, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, VIOLET, RED } from '@/styles/ColorStyles';
 import { PostCardRequestType } from '@/lib/types/cards';
 import 'react-quill/dist/quill.snow.css';
+import Loader from './Loader';
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+  loading: () => <Loader />,
+});
 
 type Value = PostCardRequestType;
 
@@ -28,16 +32,19 @@ function Textarea({ type, isEditing, value, setValue, setCommentValue, onClick }
   const todoModalDescription = useStore((state) => state.todoModalDescription);
   const setTodoModalDescription = useStore((state) => state.setTodoModalDescription);
 
-  const modules = {
-    toolbar: [
-      [{ size: ['small', false, 'large'] }], // custom dropdown
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-      ['clean'],
-    ],
-  };
+  const modules = useMemo(
+    () => ({
+      toolbar: [
+        [{ size: ['small', false, 'large'] }], // custom dropdown
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+        ['clean'],
+      ],
+    }),
+    [],
+  );
 
   const formats = [
     'size',

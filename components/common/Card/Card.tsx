@@ -35,11 +35,11 @@ function Card({ card, column }: Props) {
   };
 
   return (
-    <StyledWrapper isRed={isCloseDuedate} onClick={() => handleButtonClick('card')}>
+    <StyledWrapper $isRed={isCloseDuedate} onClick={() => handleButtonClick('card')}>
       {card.imageUrl && <StyledThumbnail src={card.imageUrl} width={274} height={160} alt="" />}
-      <StyledCircle isRed={isCloseDuedate} />
+      <StyledCircle $isRed={isCloseDuedate} />
       <StyledContent>
-        <StyledTitle isRed={isCloseDuedate}>{card.title}</StyledTitle>
+        <StyledTitle $isRed={isCloseDuedate}>{card.title}</StyledTitle>
         <StyledDetail>
           <StyledTagWrapper>
             {card.tags.map((t) => (
@@ -63,7 +63,7 @@ function Card({ card, column }: Props) {
 
 export default Card;
 
-const StyledWrapper = styled.div<{ isRed: boolean }>`
+const StyledWrapper = styled.div<{ $isRed: boolean }>`
   width: 100%;
   height: fit-content;
   margin-bottom: 16px;
@@ -79,7 +79,7 @@ const StyledWrapper = styled.div<{ isRed: boolean }>`
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => (props.isRed ? '#FFE3E3' : '#EDDFFF')};
+    background-color: ${(props) => (props.$isRed ? '#FFE3E3' : '#EDDFFF')};
   }
 
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
@@ -88,7 +88,7 @@ const StyledWrapper = styled.div<{ isRed: boolean }>`
   }
 `;
 
-const StyledCircle = styled.div<{ isRed: boolean }>`
+const StyledCircle = styled.div<{ $isRed: boolean }>`
   width: 10px;
   height: 10px;
 
@@ -96,7 +96,7 @@ const StyledCircle = styled.div<{ isRed: boolean }>`
   top: 10px;
   left: 10px;
 
-  display: ${(props) => (props.isRed ? 'flex' : 'none')};
+  display: ${(props) => (props.$isRed ? 'flex' : 'none')};
 
   background-color: ${RED};
   border-radius: 50%;
@@ -107,6 +107,8 @@ const StyledThumbnail = styled(Image)`
   margin-bottom: 12px;
 
   border-radius: 6px;
+  object-fit: cover;
+  object-position: center;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
     width: 90px;
@@ -121,10 +123,10 @@ const StyledContent = styled.div`
   width: 100%;
 `;
 
-const StyledTitle = styled.div<{ isRed: boolean }>`
+const StyledTitle = styled.div<{ $isRed: boolean }>`
   margin-bottom: 10px;
 
-  ${(props) => (props.isRed ? FONT_16_EB : FONT_16_B)}
+  ${(props) => (props.$isRed ? FONT_16_EB : FONT_16_B)}
 `;
 
 const StyledDetail = styled.div`

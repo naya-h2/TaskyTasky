@@ -32,6 +32,7 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
   const offsetRef = useRef<number>(0);
+  const areaRef = useRef<HTMLDivElement>(null);
   const modalCardComment = useStore((state) => state.modalCardComment);
   const isCommentChanged = useStore((state) => state.isCommentChanged);
   const setModalCardComment = useStore((state) => state.setModalCardComment);
@@ -42,8 +43,11 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
     try {
       const resComment = await getCommentList(limit, cardId, cursor);
       const { cursorId, comments } = resComment;
-      if (cursor === 0) {
+      if (!cursor) {
         setCommentList(comments);
+      }
+      if (cursor) {
+        setCommentList((prevComment) => [...prevComment, ...comments]);
       }
       offsetRef.current = cursorId;
     } catch (err) {
@@ -62,8 +66,8 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
     };
     await createComment(commentData);
     setModalCardComment('');
-
     setIsCommentChanged();
+    areaRef?.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -111,10 +115,17 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
           </StyledTaskSmallInfoBox>
           <StyledTaskDescription
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(cardInfo.description) }}
+            $isImage={cardInfo?.imageUrl}
           ></StyledTaskDescription>
           {cardInfo?.imageUrl && (
             <StyledImgWrapper>
-              <Image src={cardInfo.imageUrl as string} alt="할일 이미지" fill priority />
+              <Image
+                src={cardInfo.imageUrl as string}
+                alt="할일 이미지"
+                fill
+                priority
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
             </StyledImgWrapper>
           )}
           <Textarea
@@ -124,7 +135,14 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
             setCommentValue={setModalCardComment}
             onClick={handleTextareaClick}
           />
-          <CommentCollection isLoading={isLoading} commentList={commentList} />
+          <CommentCollection
+            areaRef={areaRef}
+            isLoading={isLoading}
+            commentList={commentList}
+            offsetRef={offsetRef}
+            cardId={cardInfo.id}
+            getCommentData={getCommentData}
+          />
         </StyledLeftWrapper>
         <StyledRightWrapper>
           <StyledTaskBigInfoBox>
@@ -180,8 +198,8 @@ const StyledTaskBigInfoBox = styled.div`
   border-radius: 8px;
 `;
 
-const StyledTaskDescription = styled.p`
-  min-height: 100px;
+const StyledTaskDescription = styled.p<{ $isImage: string | undefined }>`
+  ${({ $isImage }) => $isImage || 'min-height: 100px'};
   ${FONT_14};
   font-weight: 400;
   line-height: 171.5%;
