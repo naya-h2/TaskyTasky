@@ -1,11 +1,13 @@
-import { MutableRefObject, useCallback, useEffect, useRef } from 'react';
+import { MutableRefObject, RefObject, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import LoadingModal from './LoadingModal';
 import CommentSingle from './CommentSingle';
 import { CommentType } from '@/lib/types/comments';
+import { GRAY } from '@/styles/ColorStyles';
 
 const LIMIT = 5;
 interface Props {
+  areaRef: RefObject<HTMLDivElement>;
   isLoading: boolean;
   commentList: CommentType[];
   offsetRef: MutableRefObject<number>;
@@ -13,9 +15,14 @@ interface Props {
   getCommentData: (limit: number, cardId: number, cursor: number) => Promise<void>;
 }
 
-function CommentCollection({ isLoading, commentList, offsetRef, cardId, getCommentData }: Props) {
-  const areaRef = useRef<HTMLDivElement>(null);
+function CommentCollection({ areaRef, isLoading, commentList, offsetRef, cardId, getCommentData }: Props) {
   const target = useRef<HTMLDivElement>(null);
+
+  const MoveToTop = () => {
+    if (areaRef && areaRef.current) {
+      areaRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const observeCallback: IntersectionObserverCallback = useCallback(
     (entries) => {
@@ -49,6 +56,7 @@ function CommentCollection({ isLoading, commentList, offsetRef, cardId, getComme
       })}
       {offsetRef.current > 0 && <StyledObserveTargetBox ref={target} />}
       {isLoading && <LoadingModal anchorRef={areaRef} />}
+      <StyledScrollTop onClick={MoveToTop}>↑</StyledScrollTop>
     </StyledCommentsArea>
   );
 }
@@ -70,5 +78,21 @@ const StyledCommentsArea = styled.div`
 
 const StyledObserveTargetBox = styled.div`
   width: 100%;
-  height: 10px;
+  height: 15px;
+  border: 1px solid white;
+`;
+
+const StyledScrollTop = styled.div`
+  width: 30px;
+  height: 30px;
+  border: 1px solid ${GRAY[50]};
+  border-radius: 70%;
+  color: ${GRAY[50]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 430px;
+  bottom: -200px;
+  cursor: pointer;
 `;

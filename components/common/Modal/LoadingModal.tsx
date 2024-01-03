@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { RefObject } from 'react';
 import styled, { keyframes } from 'styled-components';
 import ModalPortal from './ModalPortal';
@@ -15,8 +16,9 @@ function LoadingModal({ anchorRef }: Props) {
   return (
     <>
       <ModalPortal container={anchorRef.current}>
-        <StyledMask />
-        <Spinner />
+        <StyledMask>
+          <StyledSpinner src={spinnerImg} alt={'Spinner'} />
+        </StyledMask>
       </ModalPortal>
     </>
   );
@@ -31,28 +33,22 @@ const placeholderRotate = keyframes`
 `;
 
 const StyledMask = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 440px;
+  height: 200px;
 
-  position: relative;
-  top: 0;
-  left: 0;
+  position: fixed;
   z-index: ${Z_INDEX.modalFrame_Mask_Mid};
 
   background-color: black;
-  opacity: 0.4;
+  opacity: 0.1;
 `;
 
-export const Spinner = styled.div`
+const StyledSpinner = styled(Image)`
   animation: ${placeholderRotate} 1.5s linear infinite;
   z-index: ${Z_INDEX.modalFrame_Body_Mid};
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 30%;
+  left: 40%;
   width: 100px;
   height: 100px;
-  background-image: url(${`${spinnerImg}`});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
 `;

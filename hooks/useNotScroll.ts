@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
-function useNotScroll(): void {
+const useNotScroll = () => {
   useEffect(() => {
     document.body.style.cssText = `
             position: fixed; 
             top: -${window.scrollY}px;
-            overflow-y: hidden;
+            overflow-y: scroll;
             width: 100%;`;
     return () => {
       const scrollY = document.body.style.top;
@@ -14,6 +14,6 @@ function useNotScroll(): void {
     };
   }, []);
   return;
-}
+};
 
 export default useNotScroll;

@@ -32,6 +32,7 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
   const offsetRef = useRef<number>(0);
+  const areaRef = useRef<HTMLDivElement>(null);
   const modalCardComment = useStore((state) => state.modalCardComment);
   const isCommentChanged = useStore((state) => state.isCommentChanged);
   const setModalCardComment = useStore((state) => state.setModalCardComment);
@@ -65,8 +66,8 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
     };
     await createComment(commentData);
     setModalCardComment('');
-
     setIsCommentChanged();
+    areaRef.current.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -135,6 +136,7 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
             onClick={handleTextareaClick}
           />
           <CommentCollection
+            areaRef={areaRef}
             isLoading={isLoading}
             commentList={commentList}
             offsetRef={offsetRef}
