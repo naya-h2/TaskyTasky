@@ -130,15 +130,15 @@ function SignUp() {
 export default SignUp;
 
 const StyledRoot = styled.div`
-  padding: 30px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
 `;
 
 const StyledContainer = styled.div`
   width: 100%;
   max-width: 520px;
-  height: 100%;
-  margin: 0 auto;
   padding: 0;
   display: flex;
   align-items: center;
