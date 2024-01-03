@@ -42,8 +42,11 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
     try {
       const resComment = await getCommentList(limit, cardId, cursor);
       const { cursorId, comments } = resComment;
-      if (cursor === 0) {
+      if (!cursor) {
         setCommentList(comments);
+      }
+      if (cursor) {
+        setCommentList((prevComment) => [...prevComment, ...comments]);
       }
       offsetRef.current = cursorId;
     } catch (err) {
@@ -125,7 +128,13 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
             setCommentValue={setModalCardComment}
             onClick={handleTextareaClick}
           />
-          <CommentCollection isLoading={isLoading} commentList={commentList} />
+          <CommentCollection
+            isLoading={isLoading}
+            commentList={commentList}
+            offsetRef={offsetRef}
+            cardId={cardInfo.id}
+            getCommentData={getCommentData}
+          />
         </StyledLeftWrapper>
         <StyledRightWrapper>
           <StyledTaskBigInfoBox>

@@ -105,7 +105,6 @@ const StyledCircle = styled.div<{ $isRed: boolean }>`
 const StyledThumbnail = styled(Image)`
   width: 100%;
   margin-bottom: 12px;
-  object-fit: cover;
 
   border-radius: 6px;
 
