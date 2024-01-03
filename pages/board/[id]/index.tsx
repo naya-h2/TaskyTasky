@@ -1,8 +1,8 @@
-import { SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import Head from 'next/head';
 
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
@@ -12,6 +12,7 @@ import ColumnLists from '@/components/pages/Board/ColumnLists';
 import TodoModal from '@/components/common/Modal/TodoModal';
 import BackButton from '@/components/pages/mypage/BackButton';
 import CardModal from '@/components/common/Modal/CardModal';
+import AlertModal from '@/components/common/Modal/AlertModal';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { FONT_18_B } from '@/styles/FontStyles';
 
@@ -24,7 +25,6 @@ import { GetMemberListResponseType, MemberListType } from '@/lib/types/members';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
 import PlusIcon from '@/public/icon/add_no_background.svg';
-import AlertModal from '@/components/common/Modal/AlertModal';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Board() {
@@ -42,6 +42,7 @@ function Board() {
   const isColumnChanged = useStore((state) => state.isColumnChanged);
   const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
   const modalCardColumnTitle = useStore((state) => state.modalCardColumnTitle);
+  const cardCommentId = useStore((state) => state.cardCommentId);
 
   const router = useRouter();
   const { id } = router.query;
@@ -124,7 +125,14 @@ function Board() {
             columnId={modalColumnId as number}
           />
         )}
-        {modal.includes('card') && <CardModal type={'card'} cardInfo={modalCard} columnTitle={modalCardColumnTitle} />}
+        {modal.includes('card') && (
+          <CardModal
+            type={'card'}
+            cardInfo={modalCard}
+            columnTitle={modalCardColumnTitle}
+            dashboardId={currentDashboard?.id as number}
+          />
+        )}
         {modal[modal.length - 1] === 'createColumn' && <ColumnModal type={'createColumn'} dashboardID={Number(id)} />}
         {modal.includes('manageColumn') && <ColumnModal type={'manageColumn'} columnID={modalColumnId} />}
         {modal[modal.length - 1] === 'deleteColumnAlert' && (
@@ -140,6 +148,9 @@ function Board() {
           />
         )}
         {modal[modal.length - 1] === 'deleteCardAlert' && <AlertModal type={'deleteCardAlert'} cardId={modalCard.id} />}
+        {modal[modal.length - 1] === 'deleteCommentAlert' && (
+          <AlertModal type={'deleteCommentAlert'} commentId={cardCommentId} />
+        )}
       </StyledRoot>
     </>
   );
@@ -170,7 +181,6 @@ const StyledBody = styled.div`
 
 const StyledContent = styled.div`
   width: 100%;
-
   display: flex;
   flex-direction: row;
 

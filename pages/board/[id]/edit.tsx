@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
-import ArrowIcon from '@/public/icon/arrow_backward.svg';
 import Second from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import { FONT_16, FONT_18 } from '@/styles/FontStyles';
@@ -10,17 +9,14 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import EditMyDash from '@/components/common/Table/EditMyDash';
 import DashMyMember from '@/components/common/Table/DashMyMember';
 import DashInviteList from '@/components/common/Table/DashInviteList';
-import { MEMBERS1 } from '@/lib/constants/mockup';
 import boardMockData from '@/components/common/SideMenu/mock';
-
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { MemberList } from '@/lib/types/type';
 import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import BackButton from '@/components/pages/mypage/BackButton';
 import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
-import { useCheckLogin } from '@/hooks/useCheckLogin';
+import { deleteDashboard } from '@/api/dashboards/deleteDashboard';
 
 function Edit() {
   useCheckLogin();
@@ -28,6 +24,13 @@ function Edit() {
   const { id } = router.query;
   const dashboardId = Number(id);
 
+  const hadnlerDashBoardDelete = async () => {
+    if (confirm('대쉬보드를 삭제하시겠습니까?')) {
+      await deleteDashboard(dashboardId);
+      alert('대쉬보드를 삭제했습니다.');
+      router.push('/myboard');
+    }
+  };
   const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>({
     id: 0,
     title: '',
@@ -61,7 +64,7 @@ function Edit() {
   return (
     <Root>
       <Second page="others" children="제목" />
-      <SideMenu dashboards={boardMockData.dashboards} />
+      <SideMenu />
       <Content>
         <Wrapper>
           <ButtonLink href={`/board/${id}`}>
@@ -72,7 +75,7 @@ function Edit() {
           <EditMyDash dashboardData={dashBoardInfo} />
           <DashMyMember />
           <DashInviteList />
-          <DeleteDashButton>대시보드 삭제하기</DeleteDashButton>
+          <DeleteDashButton onClick={hadnlerDashBoardDelete}>대시보드 삭제하기</DeleteDashButton>
         </Wrapper>
       </Content>
     </Root>

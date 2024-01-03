@@ -1,5 +1,5 @@
 import { PutCommentRequestType } from '@/lib/types/comments';
-import axios from 'axios';
+import instance from '@/lib/axios';
 
 /**
  * 댓글 수정
@@ -7,7 +7,6 @@ import axios from 'axios';
  * @param data
  */
 export const editComment = async (commentId: number, data: PutCommentRequestType) => {
-  const response = await axios.put(`/api/cards/${commentId}`, data);
-  console.log(response);
+  const response = await instance.put(`/api/comments/${commentId}`, data);
   return response.data;
 };

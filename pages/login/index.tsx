@@ -12,7 +12,7 @@ import { FONT_16, FONT_18, FONT_20 } from '@/styles/FontStyles';
 import { BLACK, VIOLET } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { login } from '@/api/auth/login';
-import { emailRules, signInPwRules } from '@/lib/constants/inputErrorRules';
+import { emailRules, signUpPasswordRules } from '@/lib/constants/inputErrorRules';
 import { useStore } from '@/context/stores';
 import Head from 'next/head';
 import Logo from '@/components/common/Logo/Logo';
@@ -77,7 +77,7 @@ function Login() {
             <Input
               type="password"
               isPassword
-              register={register('password', signInPwRules)}
+              register={register('password', signUpPasswordRules)}
               error={errors.password}
               isHookForm
             />

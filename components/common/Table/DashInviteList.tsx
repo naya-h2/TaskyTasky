@@ -8,6 +8,8 @@ import { GetDashboardInvitationResponseType } from '@/lib/types/dashboards';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
+import NoDashImg from '@/public/images/No_Invite_Dash.svg';
+import { deleteDashboardInvitation } from '@/api/dashboards/deleteDashboardInvitation';
 
 // interface Props {
 //   invitationsList: GetDashboardInvitationResponseType;
@@ -24,6 +26,7 @@ function DashInviteList() {
   const { invitations, totalCount } = dashInvitation;
   const [page, setPage] = useState(1);
 
+  console.log(invitations);
   const fetchDashboardData = async (page: number) => {
     const dashInvitation = await getDashboardInvitationList(dashboardId, 5, page);
     setDashInvitation(dashInvitation);
@@ -31,6 +34,11 @@ function DashInviteList() {
   const getPage = (num: number) => {
     setPage(num);
     fetchDashboardData(num);
+  };
+
+  const handleCancelInvite = async (dashboardId: number, invitationId: number, email: string) => {
+    await deleteDashboardInvitation(dashboardId, invitationId);
+    alert(`${email} 초대를 취소하였습니다.`);
   };
 
   useEffect(() => {
@@ -42,21 +50,36 @@ function DashInviteList() {
     <Wrapper>
       <Container>
         <ListHeader title="초대 내역" totalCount={totalCount} page={page} getPage={getPage} />
-        <ListTitle>이메일</ListTitle>
-        <ListLayout>
-          {invitations.map((invitation) => (
-            <InviterEmailWrapper key={invitation.id}>
-              <InviterEmailLayout>
-                <InviteEmail>{invitation.invitee.email}</InviteEmail>
-                <InviteCancelButton>
-                  <Button.Plain style="outline" roundSize="S">
-                    <ButtonText>취소</ButtonText>
-                  </Button.Plain>
-                </InviteCancelButton>
-              </InviterEmailLayout>
-            </InviterEmailWrapper>
-          ))}
-        </ListLayout>
+        {invitations.length === 0 ? (
+          <NullWrapper>
+            <NoDashImg />
+            <NullInviteList>초대내역이 없습니다.</NullInviteList>
+          </NullWrapper>
+        ) : (
+          <>
+            <ListTitle>이메일</ListTitle>
+            <ListLayout>
+              {invitations.map((invitation) => (
+                <InviterEmailWrapper key={invitation.id}>
+                  <InviterEmailLayout>
+                    <InviteEmail>{invitation.invitee.email}</InviteEmail>
+                    <InviteCancelButton>
+                      <Button.Plain
+                        style="outline"
+                        roundSize="S"
+                        onClick={() =>
+                          handleCancelInvite(invitation.dashboard.id, invitation.id, invitation.invitee.email)
+                        }
+                      >
+                        <ButtonText>취소</ButtonText>
+                      </Button.Plain>
+                    </InviteCancelButton>
+                  </InviterEmailLayout>
+                </InviterEmailWrapper>
+              ))}
+            </ListLayout>
+          </>
+        )}
       </Container>
     </Wrapper>
   );
@@ -137,4 +160,17 @@ const InviteCancelButton = styled.div`
 `;
 const ButtonText = styled.div`
   color: ${[VIOLET[1]]};
+`;
+const NullInviteList = styled.div``;
+
+const NullWrapper = styled.div`
+  height: 410px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    height: 340px;
+  }
 `;

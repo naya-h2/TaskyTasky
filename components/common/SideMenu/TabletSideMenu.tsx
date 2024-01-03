@@ -1,54 +1,48 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import AddDashBoard from './AddDashBoard';
-import DashBoard from './DashBoard';
-import LogoLink from './LogoLink';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import TabletAddDashBoard from './TabletAddDashBoard';
+import TabletDashBoard from './TabletDashBoard';
+import TabletLogoLink from './TabletLogoLink';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { WHITE, GRAY } from '@/styles/ColorStyles';
 import { useStore } from '@/context/stores';
 import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { DashboardType } from '@/lib/types/dashboards';
-import TabletSideMenu from './TabletSideMenu';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
-function SideMenu() {
+function TabletSideMenu({ setIsTablet }: any) {
   const { page, setTotal } = useStore((state) => ({
     page: state.myboardPageNumber,
     setTotal: state.calcTotalPage,
   }));
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
-  const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       const dashboardData = await getDashboardList('pagination', 10, undefined, page);
-      setDashboardList(dashboardData?.dashboards);
-      setTotal(Math.ceil(dashboardData?.totalCount / 5));
+      setDashboardList(dashboardData.dashboards);
+      setTotal(Math.ceil(dashboardData.totalCount / 5));
     };
 
     fetchDashboardData();
   }, [page]);
 
-  if (isTablet) {
-    return <TabletSideMenu setIsTablet={setIsTablet} />;
-  }
-
   return (
     <StyledWrapper>
       <StyledLogoWrapper>
-        <LogoLink />
-        <StyledButton onClick={() => setIsTablet(true)}>
-          <Arrow>&gt;&gt;</Arrow>
+        <TabletLogoLink />
+        <StyledButton onClick={() => setIsTablet(false)}>
+          <Arrow>&lt;&lt;</Arrow>
         </StyledButton>
       </StyledLogoWrapper>
       <StyledAddDashBoardWrapper>
-        <AddDashBoard data={dashboardList} />
+        <TabletAddDashBoard data={dashboardList} />
       </StyledAddDashBoardWrapper>
       <StyledDashboardList>
         {dashboardList?.map((dashboard) => (
           <StyledLink href={`/board/${dashboard.id}`} key={dashboard.id}>
-            <DashBoard
+            <TabletDashBoard
               key={dashboard.id}
               color={dashboard.color}
               title={dashboard.title}
@@ -61,15 +55,15 @@ function SideMenu() {
   );
 }
 
-export default SideMenu;
+export default TabletSideMenu;
 
 const StyledWrapper = styled.div`
-  width: 300px;
-  height: 1550px;
+  width: 160px;
+  height: 1660px;
   padding: 20px 12px;
   border-right: 1px solid ${GRAY[30]};
   left: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: flex-start;
 
@@ -79,25 +73,16 @@ const StyledWrapper = styled.div`
 
   background-color: ${WHITE};
 
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    width: 160px;
-    height: 1666px;
-  }
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 67px;
-    height: 1859px;
+    display: flex;
   }
 `;
 
 const StyledLogoWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column-reverse;
   align-items: center;
   padding: 0 12px;
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    margin-bottom: 20px;
-  }
 `;
 
 const StyledAddDashBoardWrapper = styled.div`
@@ -106,15 +91,9 @@ const StyledAddDashBoardWrapper = styled.div`
 `;
 
 const StyledDashboardList = styled.div`
-  margin-top: 30px;
+  margin-top: 18px;
   display: flex;
   flex-direction: column;
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    margin-top: 18px;
-  }
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    margin-top: 22px;
-  }
 `;
 
 const StyledLink = styled(Link)`

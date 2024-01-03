@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { GetMemberListResponseType } from '@/lib/types/members';
 import { getMemberList } from '@/api/members/getMemberList';
+import Crown from '@/public/icon/crown.svg';
+import { deleteMember } from '@/api/members/deleteMember';
 
 function DashMyMember() {
   const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
@@ -24,9 +26,17 @@ function DashMyMember() {
 
   const totalPage = Math.ceil(totalCount / 5);
 
+  console.log(members);
+
   const fetchDashboardData = async (page: number) => {
     const dashMember = await getMemberList(dashboardId, page, 5);
     setDashMember(dashMember);
+  };
+
+  const handleDeleteMember = async (Id: number, nickname: string) => {
+    await deleteMember(Id);
+    alert(`'${nickname}'님을 대시보드 구성원에서 삭제했습니다.`);
+    window.location.reload();
   };
 
   const handleButtonNextPage = () => {
@@ -47,7 +57,9 @@ function DashMyMember() {
         <Header>
           <Title>구성원</Title>
           <ArrowButton>
-            <PageStatus>1 페이지 중 1</PageStatus>
+            <PageStatus>
+              {totalPage} 페이지 중 {page}
+            </PageStatus>
             <ButtonLayout>
               <Button.Arrow type="left" isNotActive={page === 1 ? true : false} onClick={handleButtonPrevPage} />
               <Button.Arrow
@@ -60,7 +72,7 @@ function DashMyMember() {
         </Header>
         <ListTitle>이름</ListTitle>
         <ListLayout>
-          {members.map((member) => (
+          {members.map((member, index) => (
             <MemberWrapper key={member.id}>
               <MemberNameLayout>
                 <ProfileImgLayout>
@@ -73,11 +85,19 @@ function DashMyMember() {
                 </ProfileImgLayout>
                 <NameLayout>
                   <MemberName>{member.nickname}</MemberName>
-                  <MemberDeleteButton>
-                    <Button.Plain style="secondary" roundSize="S">
-                      <ButtonText>삭제</ButtonText>
-                    </Button.Plain>
-                  </MemberDeleteButton>
+                  {index === 0 && page === 1 ? (
+                    <StyledCrown />
+                  ) : (
+                    <MemberDeleteButton>
+                      <Button.Plain
+                        style="secondary"
+                        roundSize="S"
+                        onClick={() => handleDeleteMember(member.id, member.nickname)}
+                      >
+                        <ButtonText>삭제</ButtonText>
+                      </Button.Plain>
+                    </MemberDeleteButton>
+                  )}
                 </NameLayout>
               </MemberNameLayout>
             </MemberWrapper>
@@ -206,5 +226,12 @@ const PageStatus = styled.div`
   ${[FONT_14]}
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     ${[FONT_12]}
+  }
+`;
+
+const StyledCrown = styled(Crown)`
+  margin-right: 30px;
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    margin-right: 15px;
   }
 `;
