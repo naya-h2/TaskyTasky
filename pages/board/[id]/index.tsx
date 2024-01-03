@@ -26,6 +26,8 @@ import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
 import PlusIcon from '@/public/icon/add_no_background.svg';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
+import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
+import ScrollableContent from '@/components/pages/Board/ScrollableContent';
 
 function Board() {
   useCheckLogin();
@@ -98,7 +100,7 @@ function Board() {
         />
         <SideMenu />
         <StyledBody>
-          <BackButton>마이보드</BackButton>
+          <ScrollableContent />
           <StyledContent>
             {columnList.length > 0 && (
               <ColumnLists
@@ -106,15 +108,8 @@ function Board() {
                 setModalColumnId={setModalColumnId as (value: SetStateAction<number>) => void}
               />
             )}
-            <StyledButton onClick={handleAddColumnBtn}>
-              <StyledAddChip />
-            </StyledButton>
-            <StyledBtnWrapper>
-              <Button.Add roundSize="L" onClick={handleAddColumnBtn}>
-                <StyledText>새로운 컬럼 추가하기</StyledText>
-              </Button.Add>
-            </StyledBtnWrapper>
           </StyledContent>
+          <NewColumnBtn onClick={handleAddColumnBtn}>+</NewColumnBtn>
         </StyledBody>
         {modal.includes('createTodo') && (
           <TodoModal
@@ -163,7 +158,7 @@ const StyledRoot = styled.div`
 
 const StyledBody = styled.div`
   width: 100%;
-  padding: 90px 80px 0 320px;
+  padding: 120px 80px 0 300px;
 
   display: flex;
   flex-direction: column;
@@ -185,6 +180,42 @@ const StyledContent = styled.div`
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     flex-direction: column;
+  }
+`;
+
+const NewColumnBtn = styled.button`
+  width: 50px;
+  height: 50px;
+
+  position: fixed;
+  z-index: 1;
+  bottom: 35px;
+  right: 35px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 35px;
+  font-weight: 580;
+  color: #968dce;
+
+  background-color: ${WHITE};
+  border-radius: 13px;
+  border: 1.5px solid ${GRAY[30]};
+  cursor: pointer;
+
+  box-shadow: 1px 1px 1px ${GRAY[40]};
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 30px;
+    height: 30px;
+    bottom: 15px;
+    left: 15px;
+    font-size: 15px;
   }
 `;
 
