@@ -23,7 +23,8 @@ export type modalType =
   | 'invite'
   | 'inviteAlert'
   | 'imgError'
-  | 'loading';
+  | 'loading'
+  | 'editColor';
 
 export interface ModalState {
   modals: modalType[];

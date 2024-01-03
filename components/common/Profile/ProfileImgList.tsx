@@ -1,13 +1,16 @@
 import styled from 'styled-components';
-import { FONT_14, FONT_14_B, FONT_16, FONT_16_B } from '@/styles/FontStyles';
+import { FONT_14_B, FONT_16_B } from '@/styles/FontStyles';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { PINK, WHITE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import ProfileImg from './ProfileImg';
+import { MemberListType } from '@/lib/types/members';
+import { useState } from 'react';
+import MemberDropDown from '../DropDown/MemberDropDown';
 
 interface Props {
   memberCount: number;
-  data: any[];
+  data: MemberListType[];
 }
 
 /**
@@ -15,37 +18,84 @@ interface Props {
  * @param data members 배열
  */
 function ProfileImgList({ memberCount, data }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
   const PcRest = memberCount - 4;
   const TabletRest = memberCount - 2;
 
   if (!memberCount) return;
 
+  const handleRestClick = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <StyledContainer>
       {data[0] && (
         <StyledProfileWrapper $order={Z_INDEX.profileImgList_Img[0]}>
-          <ProfileImg url={data[0].profileImageUrl} size={38} name={data[0].nickname} id={data[0].userId} />
+          <ProfileImg
+            type="header"
+            url={data[0].profileImageUrl}
+            size={38}
+            name={data[0].nickname}
+            id={data[0].userId}
+          />
         </StyledProfileWrapper>
       )}
       {data[1] && (
         <StyledProfileWrapper $order={Z_INDEX.profileImgList_Img[1]}>
-          <ProfileImg url={data[1].profileImageUrl} size={38} name={data[1].nickname} id={data[1].userId} />
+          <ProfileImg
+            type="header"
+            url={data[1].profileImageUrl}
+            size={38}
+            name={data[1].nickname}
+            id={data[1].userId}
+          />
         </StyledProfileWrapper>
       )}
       <StyledWrapper>
         {data[2] && (
           <StyledProfileWrapper $order={Z_INDEX.profileImgList_Img[2]}>
-            <ProfileImg url={data[2].profileImageUrl} size={38} name={data[2].nickname} id={data[2].userId} />
+            <ProfileImg
+              type="header"
+              url={data[2].profileImageUrl}
+              size={38}
+              name={data[2].nickname}
+              id={data[2].userId}
+            />
           </StyledProfileWrapper>
         )}
         {data[3] && (
           <StyledProfileWrapper $order={Z_INDEX.profileImgList_Img[3]}>
-            <ProfileImg url={data[3].profileImageUrl} size={38} name={data[3].nickname} id={data[3].userId} />
+            <ProfileImg
+              type="header"
+              url={data[3].profileImageUrl}
+              size={38}
+              name={data[3].nickname}
+              id={data[3].userId}
+            />
           </StyledProfileWrapper>
         )}
       </StyledWrapper>
-      {memberCount > 4 && <StyledPCRest $order={5}>+{PcRest <= 999 ? PcRest : '999'}</StyledPCRest>}
-      {memberCount > 2 && <StyledTabletRest $order={3}>+{TabletRest <= 999 ? TabletRest : '999'}</StyledTabletRest>}
+      {memberCount > 4 && (
+        <StyledPCRest onClick={handleRestClick} $order={5}>
+          +{PcRest <= 999 ? PcRest : '999'}
+          {isOpen && (
+            <StyledDropDownWrapper>
+              <MemberDropDown memberList={data} />
+            </StyledDropDownWrapper>
+          )}
+        </StyledPCRest>
+      )}
+      {memberCount > 2 && (
+        <StyledTabletRest onClick={handleRestClick} $order={3}>
+          +{TabletRest <= 999 ? TabletRest : '999'}
+          {isOpen && (
+            <StyledDropDownWrapper>
+              <MemberDropDown memberList={data} />
+            </StyledDropDownWrapper>
+          )}
+        </StyledTabletRest>
+      )}
     </StyledContainer>
   );
 }
@@ -94,6 +144,11 @@ const StyledRest = styled.div<{ $order: number }>`
 `;
 
 const StyledPCRest = styled(StyledRest)`
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+  }
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     display: none;
   }
@@ -101,7 +156,11 @@ const StyledPCRest = styled(StyledRest)`
 
 const StyledTabletRest = styled(StyledRest)`
   display: none;
+  position: relative;
 
+  &:hover {
+    cursor: pointer;
+  }
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     display: flex;
   }
@@ -112,4 +171,10 @@ const StyledWrapper = styled(StyledContainer)`
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     display: none;
   }
+`;
+
+const StyledDropDownWrapper = styled.div`
+  position: absolute;
+  top: 38px;
+  right: -10px;
 `;

@@ -26,9 +26,9 @@ function Edit() {
   const dashboardId = Number(id);
 
   const hadnlerDashBoardDelete = async () => {
-    if (confirm('대쉬보드를 삭제하시겠습니까?')) {
+    if (confirm('대시보드를 삭제하시겠습니까?')) {
       await deleteDashboard(dashboardId);
-      alert('대쉬보드를 삭제했습니다.');
+      alert('대시보드를 삭제했습니다.');
       router.push('/myboard');
     }
   };

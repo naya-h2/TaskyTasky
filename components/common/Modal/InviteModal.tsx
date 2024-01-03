@@ -33,7 +33,7 @@ function InviteModal({ dashboardId }: Props) {
       showModal('inviteAlert');
     } else {
       clearModal();
-      window.location.reload();
+      setTimeout(() => window.location.reload(), 1000);
     }
   };
 
