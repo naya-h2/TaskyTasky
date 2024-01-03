@@ -1,21 +1,17 @@
 import Head from 'next/head';
 import styled from 'styled-components';
-import Image from 'next/image';
-import InfiniteScroll from 'react-infinite-scroller';
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import InviteDash from '@/components/common/Table/InviteDash';
 import DashBoardList from '@/components/pages/myboard/DashBoardList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useGetDashboard } from '@/hooks/useGetDashboard';
-import { useGetInvitationList } from '@/hooks/useGetInvitationList';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function Myboard() {
   useCheckLogin();
 
   const dashboardList = useGetDashboard();
-  const { fetchMore, invitationList, hasMore } = useGetInvitationList();
 
   return (
     <>
@@ -27,20 +23,7 @@ function Myboard() {
       <StyledBody>
         <StyledContainer>
           {dashboardList && <DashBoardList data={dashboardList} />}
-          <InfiniteScroll
-            pageStart={0}
-            loadMore={fetchMore}
-            hasMore={hasMore}
-            loader={
-              <StyledSpinner>
-                <Image src="/images/Spinner-1s-200px.gif" alt="로딩중" width={80} height={80} />
-              </StyledSpinner>
-            }
-            useWindow={true}
-            initialLoad={false}
-          >
-            {invitationList && <InviteDash inviteList={invitationList} />}
-          </InfiniteScroll>
+          <InviteDash />
         </StyledContainer>
       </StyledBody>
     </>
@@ -70,10 +53,4 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
-`;
-
-const StyledSpinner = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
 `;

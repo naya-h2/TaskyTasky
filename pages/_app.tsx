@@ -4,7 +4,6 @@ import GlobalStyles from '@/styles/GlobalStyles';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
-import NProgress from 'nprogress';
 import PageSpinner from '@/components/common/Spinner/PageSpinner';
 
 export default function App({ Component, pageProps }: AppProps) {

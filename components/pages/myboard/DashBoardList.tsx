@@ -35,7 +35,7 @@ function DashBoardList({ data }: Props) {
     <>
       <StyledLayout>
         <StyledWrapper>
-          <DoubleBackwardIcon onClick={() => setPage(1)} />
+          {/* <DoubleBackwardIcon onClick={() => setPage(1)} /> */}
           <StyledBoardList>
             <StyledButtonWrapper>
               <Button.Add roundSize="XL" onClick={handleDashboardAdd}>
@@ -53,7 +53,7 @@ function DashBoardList({ data }: Props) {
                 </Link>
               ))}
           </StyledBoardList>
-          <DoubleForwardIcon onClick={() => setPage(total)} />
+          {/* <DoubleForwardIcon onClick={() => setPage(total)} /> */}
         </StyledWrapper>
         <StyledPagination>
           <StyledPageInfo>

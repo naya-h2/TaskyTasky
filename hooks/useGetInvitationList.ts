@@ -4,8 +4,9 @@ import { getInvitationList } from '@/api/invitations/getInvitationList';
 import { InvitationType } from '@/lib/types/invitations';
 
 export const useGetInvitationList = () => {
-  const { search } = useStore((state) => ({
+  const { search, setDashboardSearch } = useStore((state) => ({
     search: state.dashboardSearch,
+    setDashboardSearch: state.setDashboardSearch,
   }));
   const [invitationList, setInvitationList] = useState<InvitationType[]>([]);
   const [cursorId, setCursorId] = useState(null);
@@ -38,5 +39,5 @@ export const useGetInvitationList = () => {
     fetchData();
   }, []);
 
-  return { fetchMore, hasMore, invitationList };
+  return { fetchMore, hasMore, invitationList, search, setDashboardSearch };
 };
