@@ -1,0 +1,5 @@
+[[redirects]]
+from = "/api/*"
+  to = `${process.env.NEXT_PUBLIC_BASE_URL}/:splat` 
+  status = 200
+  force = true
