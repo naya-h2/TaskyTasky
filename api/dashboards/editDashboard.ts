@@ -6,6 +6,4 @@ import { PutDashboardRequestType } from '@/lib/types/dashboards';
  */
 export const editDashboard = async (dashboardId: number, data: PutDashboardRequestType) => {
   const response = await authInstance.put(`/api/dashboards/${dashboardId}`, data);
-  console.log(response);
-  return response.data;
 };

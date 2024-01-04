@@ -64,6 +64,10 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
                   {(type === 'incorrectPWAlert' || type === 'imgUrl' || type === 'customAlert') && '확인'}
                   {type === 'editTodo' && '수정'}
                   {type === 'invite' && '초대'}
+                  {type === 'deleteMember' && '확인'}
+                  {type === 'cancelInvite' && '확인'}
+                  {type === 'deleteDashboard' && '확인'}
+                  {type === 'EditDashboard' && '확인'}
                 </StyledButtonText>
               </Button.Plain>
             </StyledButtonWrapper>

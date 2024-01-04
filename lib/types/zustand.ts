@@ -23,14 +23,24 @@ export type modalType =
   | 'invite'
   | 'inviteAlert'
   | 'imgError'
+  | 'deleteMember'
+  | 'cancelInvite'
+  | 'deleteDashboard'
+  | 'EditDashboard';
   | 'loading'
   | 'editColor';
+
 
 export interface ModalState {
   modals: modalType[];
   modalCard: CardType;
   modalCardColumnTitle: string;
   isColumnChanged: boolean;
+  isDashChanged: boolean;
+  setModalCard: (value: CardType) => void;
+  setModalCardColumnTitle: (value: string) => void;
+  setIsColumnChanged: () => void;
+  setIsDashChanged: () => void;
   modalCardComment: string;
   cardCommentId: number;
   isCommentChanged: boolean;

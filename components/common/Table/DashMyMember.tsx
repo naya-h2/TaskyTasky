@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 import { GetMemberListResponseType } from '@/lib/types/members';
 import { getMemberList } from '@/api/members/getMemberList';
 import Crown from '@/public/icon/crown.svg';
-import { deleteMember } from '@/api/members/deleteMember';
+import { useStore } from '@/context/stores';
+import EditModal from '../Modal/EditModal';
 
 function DashMyMember() {
   const isMobile = useMediaQuery({ query: `(max-width: ${DEVICE_SIZE.mobile})` });
@@ -24,19 +25,24 @@ function DashMyMember() {
   const { members, totalCount } = dashMember;
   const [page, setPage] = useState(1);
 
+  const [memberId, setMemberId] = useState(0);
+
   const totalPage = Math.ceil(totalCount / 5);
 
-  console.log(members);
+  const { modal, showModal, isDashChanged } = useStore((state) => ({
+    modal: state.modals,
+    showModal: state.showModal,
+    isDashChanged: state.isDashChanged,
+  }));
 
   const fetchDashboardData = async (page: number) => {
     const dashMember = await getMemberList(dashboardId, page, 5);
     setDashMember(dashMember);
   };
 
-  const handleDeleteMember = async (Id: number, nickname: string) => {
-    await deleteMember(Id);
-    alert(`'${nickname}'님을 대시보드 구성원에서 삭제했습니다.`);
-    window.location.reload();
+  const modalInviteData = (memberId: number) => {
+    showModal('deleteMember');
+    setMemberId(memberId);
   };
 
   const handleButtonNextPage = () => {
@@ -50,7 +56,7 @@ function DashMyMember() {
   useEffect(() => {
     if (!router.isReady) return;
     fetchDashboardData(page);
-  }, [router.isReady, page]);
+  }, [router.isReady, page, isDashChanged]);
   return (
     <Wrapper>
       <Container>
@@ -89,11 +95,7 @@ function DashMyMember() {
                     <StyledCrown />
                   ) : (
                     <MemberDeleteButton>
-                      <Button.Plain
-                        style="secondary"
-                        roundSize="S"
-                        onClick={() => handleDeleteMember(member.id, member.nickname)}
-                      >
+                      <Button.Plain style="secondary" roundSize="S" onClick={() => modalInviteData(member.id)}>
                         <ButtonText>삭제</ButtonText>
                       </Button.Plain>
                     </MemberDeleteButton>
@@ -104,6 +106,9 @@ function DashMyMember() {
           ))}
         </ListLayout>
       </Container>
+      {modal.includes('deleteMember') && (
+        <EditModal type="deleteMember" dashboardId={dashboardId} memberId={memberId} />
+      )}
     </Wrapper>
   );
 }
