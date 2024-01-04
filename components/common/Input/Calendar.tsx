@@ -2,8 +2,6 @@ import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ReactDatePicker, { registerLocale } from 'react-datepicker'; // ReactDatePicker 컴포넌트 가져오기
 import 'react-datepicker/dist/react-datepicker.css';
-// 출처: https://reactdatepicker.com/#example-filter-dates
-// 출처: https://date-fns.org/
 import { GRAY, PINK, VIOLET } from '@/styles/ColorStyles';
 import CalendarIcon from '@/public/icon/calendar.svg';
 import ko from 'date-fns/locale/ko'; // 한국어로
@@ -13,7 +11,6 @@ import { PostCardRequestType } from '@/lib/types/cards';
 import { timestamp } from '@/lib/utils/timestamp';
 registerLocale('ko', ko); // 한국어로
 const _ = require('lodash'); // _.range를 표현하기 위하여 사용
-//  출처: https://blog.naver.com/PostList.naver?blogId=marsdo
 
 type Value = PostCardRequestType;
 interface Props {

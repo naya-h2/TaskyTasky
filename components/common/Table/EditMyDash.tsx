@@ -19,8 +19,6 @@ interface Props {
 
 function EditMyDash({ dashboardData }: Props) {
   const initialColor = dashboardData.color;
-  const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
-  const colorIndex = colors.indexOf(initialColor);
   const [selectedColor, setSelectedColor] = useState('');
   const [isNotActive, setIsNotActive] = useState(true);
   const [dashData, setDashData] = useState(dashboardData);
@@ -50,15 +48,9 @@ function EditMyDash({ dashboardData }: Props) {
   };
 
   useEffect(() => {
-    setSelectedColor(colors[colorIndex]);
     setDashData(dashboardData);
-  }, [colorIndex]);
-
-  useEffect(() => {
     setSelectedColor(initialColor);
   }, []);
-
-  console.log(selectedColor, initialColor);
 
   return (
     <Wrapper>

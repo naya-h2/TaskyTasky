@@ -3,6 +3,9 @@ import { useStore } from '@/context/stores';
 import { getInvitationList } from '@/api/invitations/getInvitationList';
 import { InvitationType } from '@/lib/types/invitations';
 
+/**
+ * 무한스크롤 로직에 맞춰 초대받은 데시보드 데이터 fetch해주는 커스텀훅
+ */
 export const useGetInvitationList = () => {
   const { search, setDashboardSearch, trigger } = useStore((state) => ({
     search: state.dashboardSearch,

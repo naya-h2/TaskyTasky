@@ -8,7 +8,7 @@ import ModalFrame from './ModalFrame';
 import ColumnNameChip from '../Chip/ColumnNameChip';
 import Profile from '../Profile/Profile';
 import ChipColor from '../Chip/ChipColor';
-import Textarea from '../Textarea/Textarea';
+import Textarea from '../Textarea/TextArea';
 import CommentCollection from './CommentCollection';
 import { FONT_12, FONT_14 } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
