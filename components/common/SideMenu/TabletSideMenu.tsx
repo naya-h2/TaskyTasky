@@ -10,23 +10,57 @@ import { useStore } from '@/context/stores';
 import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { DashboardType } from '@/lib/types/dashboards';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { useRouter } from 'next/router';
+import InfiniteScroll from 'react-infinite-scroller';
+import { customScroll } from '@/styles/CustomScroll';
 
 function TabletSideMenu({ setIsTablet }: any) {
-  const { page, setTotal } = useStore((state) => ({
-    page: state.myboardPageNumber,
-    setTotal: state.calcTotalPage,
-  }));
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const router = useRouter();
+
+  const fetchMoreData = async () => {
+    if (loading) return;
+    setLoading(true);
+    //setHasMore(false);
+
+    try {
+      const size = page === 1 ? 15 : 5;
+      const dashboardData = await getDashboardList('pagination', size, undefined, page);
+      if (dashboardData.dashboards.length > 0) {
+        setDashboardList((prevList) => {
+          const newDashboards = dashboardData.dashboards.filter(
+            (newDashboard: DashboardType) => !prevList.some((dashboard) => dashboard.id === newDashboard.id),
+          );
+          if (newDashboards.length === 0) {
+            setHasMore(false);
+            return prevList;
+          } else {
+            setHasMore(true);
+            return [...prevList, ...newDashboards];
+          }
+        });
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboards:', error);
+    } finally {
+      setLoading(false);
+      setPage((prevPage) => {
+        const newPage = prevPage + 1;
+        setHasMore(true);
+        console.log('New page:', newPage); // 콘솔에 새 페이지 수 출력
+        return newPage;
+      });
+    }
+  };
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      const dashboardData = await getDashboardList('pagination', 10, undefined, page);
-      setDashboardList(dashboardData.dashboards);
-      setTotal(Math.ceil(dashboardData.totalCount / 5));
-    };
-
-    fetchDashboardData();
-  }, [page]);
+    fetchMoreData();
+  }, []);
 
   return (
     <StyledWrapper>
@@ -40,16 +74,23 @@ function TabletSideMenu({ setIsTablet }: any) {
         <TabletAddDashBoard data={dashboardList} />
       </StyledAddDashBoardWrapper>
       <StyledDashboardList>
-        {dashboardList?.map((dashboard) => (
-          <StyledLink href={`/board/${dashboard.id}`} key={dashboard.id}>
-            <TabletDashBoard
-              key={dashboard.id}
-              color={dashboard.color}
-              title={dashboard.title}
-              createdByMe={dashboard.createdByMe}
-            />
-          </StyledLink>
-        ))}
+        <InfiniteScroll
+          pageStart={0}
+          threshold={10}
+          loadMore={fetchMoreData}
+          hasMore={hasMore}
+          // loader={<h4>Loading...</h4>}
+          useWindow={false}
+          initialLoad={false}
+        >
+          {dashboardList.map((dashboard) => (
+            <Link href={`/board/${dashboard.id}`} passHref key={dashboard.id}>
+              <StyledLink current={router.asPath === `/board/${dashboard.id}`}>
+                <TabletDashBoard color={dashboard.color} title={dashboard.title} createdByMe={dashboard.createdByMe} />
+              </StyledLink>
+            </Link>
+          ))}
+        </InfiniteScroll>
       </StyledDashboardList>
     </StyledWrapper>
   );
@@ -59,7 +100,7 @@ export default TabletSideMenu;
 
 const StyledWrapper = styled.div`
   width: 160px;
-  height: 1660px;
+  height: 100vh;
   padding: 20px 12px;
   border-right: 1px solid ${GRAY[30]};
   left: 0;
@@ -83,6 +124,7 @@ const StyledLogoWrapper = styled.div`
   flex-direction: column-reverse;
   align-items: center;
   padding: 0 12px;
+  margin-bottom: 20px;
 `;
 
 const StyledAddDashBoardWrapper = styled.div`
@@ -91,16 +133,22 @@ const StyledAddDashBoardWrapper = styled.div`
 `;
 
 const StyledDashboardList = styled.div`
-  margin-top: 18px;
+  margin-top: 22px;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  height: 100%;
+  ${customScroll};
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a<{ current: boolean }>`
   border-radius: 2px;
+  background-color: ${(props) => (props.current ? '#f1effd' : 'transparent')};
+  color: ${(props) => (props.current ? '#5534da' : 'inherit')};
   &:hover {
     text-decoration: none;
-    background-color: #f1effd;
+    background-color: #f3f2f9;
+    color: ${(props) => (props.current ? '#5534da' : 'inherit')};
   }
   &:visited,
   &:link,

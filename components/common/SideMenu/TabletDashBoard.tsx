@@ -8,10 +8,10 @@ interface DashBoardProps {
   color: string;
   title: string;
   createdByMe?: boolean;
-  key: number;
+  current?: boolean;
 }
 
-function TabletDashBoard({ color, title, createdByMe }: DashBoardProps) {
+function TabletDashBoard({ color, title, createdByMe, current }: DashBoardProps) {
   return (
     <StyledContainer>
       <StyledColor color={color} />

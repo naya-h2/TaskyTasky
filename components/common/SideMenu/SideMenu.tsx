@@ -1,30 +1,68 @@
-import styled from 'styled-components';
-import Image from 'next/image';
-import Link from 'next/link';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
+import styled from 'styled-components';
 import AddDashBoard from './AddDashBoard';
 import DashBoard from './DashBoard';
 import LogoLink from './LogoLink';
 import TabletSideMenu from './TabletSideMenu';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
-import { WHITE, GRAY, VIOLET } from '@/styles/ColorStyles';
-import { useGetDashboardList } from '@/hooks/useGetDashboardList';
+import { WHITE, GRAY } from '@/styles/ColorStyles';
+import { getDashboardList } from '@/api/dashboards/getDashboardList';
+import { DashboardType } from '@/lib/types/dashboards';
+import Link from 'next/link';
+import InfiniteScroll from 'react-infinite-scroller';
 import { customScroll } from '@/styles/CustomScroll';
 
 function SideMenu() {
-  const router = useRouter();
+  const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [isTablet, setIsTablet] = useState(false);
-  const { dashboardList, fetchDashboardData, hasMore } = useGetDashboardList();
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const router = useRouter();
+
+  // 데이터를 불러오는 함수
+  const fetchMoreData = async () => {
+    if (loading) return;
+    setLoading(true);
+    //setHasMore(false);
+
+    try {
+      const size = page === 1 ? 15 : 5;
+      const dashboardData = await getDashboardList('pagination', size, undefined, page);
+      if (dashboardData.dashboards.length > 0) {
+        setDashboardList((prevList) => {
+          const newDashboards = dashboardData.dashboards.filter(
+            (newDashboard: DashboardType) => !prevList.some((dashboard) => dashboard.id === newDashboard.id),
+          );
+          if (newDashboards.length === 0) {
+            setHasMore(false);
+            return prevList; // 변경 사항 없이 이전 리스트를 반환
+          } else {
+            // 새 데이터를 이전 리스트에 추가하여 반환
+            setHasMore(true);
+            return [...prevList, ...newDashboards];
+          }
+        });
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboards:', error);
+    } finally {
+      setLoading(false);
+      setPage((prevPage) => {
+        const newPage = prevPage + 1;
+        setHasMore(true);
+        console.log('New page:', newPage); // 콘솔에 새 페이지 수 출력
+        return newPage;
+      });
+    }
+  };
 
   useEffect(() => {
-    const fetch = async () => {
-      await fetchDashboardData();
-      console.log(dashboardList);
-    };
-    fetch();
+    fetchMoreData();
   }, []);
 
   if (isTablet) {
@@ -42,31 +80,25 @@ function SideMenu() {
       <StyledAddDashBoardWrapper>
         <AddDashBoard data={dashboardList} />
       </StyledAddDashBoardWrapper>
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={fetchDashboardData}
-        hasMore={hasMore}
-        loader={
-          <StyledSpinner>
-            <Image src="/images/Spinner-1s-200px.gif" alt="로딩중" width={80} height={80} />
-          </StyledSpinner>
-        }
-        useWindow={false}
-        initialLoad={false}
-      >
-        <StyledDashboardList>
-          {dashboardList?.map((dashboard) => (
-            <StyledLink href={`/board/${dashboard.id}`} current={router.asPath === `/board/${dashboard.id}`}>
-              <DashBoard
-                key={dashboard.id}
-                color={dashboard.color}
-                title={dashboard.title}
-                createdByMe={dashboard.createdByMe}
-              />
-            </StyledLink>
+      <StyledDashboardList>
+        <InfiniteScroll
+          pageStart={0}
+          threshold={10}
+          loadMore={fetchMoreData}
+          hasMore={hasMore}
+          // loader={<h4>Loading...</h4>}
+          useWindow={false}
+          initialLoad={false}
+        >
+          {dashboardList.map((dashboard) => (
+            <Link href={`/board/${dashboard.id}`} passHref key={dashboard.id}>
+              <StyledLink current={router.asPath === `/board/${dashboard.id}`}>
+                <DashBoard color={dashboard.color} title={dashboard.title} createdByMe={dashboard.createdByMe} />
+              </StyledLink>
+            </Link>
           ))}
-        </StyledDashboardList>
-      </InfiniteScroll>
+        </InfiniteScroll>
+      </StyledDashboardList>
     </StyledWrapper>
   );
 }
@@ -75,7 +107,7 @@ export default SideMenu;
 
 const StyledWrapper = styled.div`
   width: 300px;
-  height: 100vh;
+  height: 100%;
   padding: 20px 12px;
   border-right: 1px solid ${GRAY[30]};
   left: 0;
@@ -91,11 +123,11 @@ const StyledWrapper = styled.div`
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 160px;
-    /* height: 1666px; */
+    //height: 1666px;
   }
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 67px;
-    /* height: 1859px; */
+    //height: 1859px;
   }
 `;
 
@@ -120,7 +152,7 @@ const StyledDashboardList = styled.div`
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  height: 55%;
+  height: 70%;
   ${customScroll};
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     margin-top: 18px;
@@ -130,7 +162,7 @@ const StyledDashboardList = styled.div`
   }
 `;
 
-const StyledLink = styled(Link)<{ current: boolean }>`
+const StyledLink = styled.a<{ current: boolean }>`
   border-radius: 2px;
   background-color: ${(props) => (props.current ? '#f1effd' : 'transparent')};
   color: ${(props) => (props.current ? '#5534da' : 'inherit')};
@@ -164,10 +196,4 @@ const Arrow = styled.span`
   font-size: 20px;
   color: #5534da;
   font-weight: bold;
-`;
-
-const StyledSpinner = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
 `;
