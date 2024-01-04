@@ -28,6 +28,7 @@ function Card({ card, column }: Props) {
   const threeDaysLater = new Date();
   threeDaysLater.setDate(currentDate.getDate() + 3);
   const isCloseDuedate = currentDate < new Date(card.dueDate) && new Date(card.dueDate) <= threeDaysLater;
+  const isOverDuedate = currentDate >= new Date(card.dueDate);
 
   const handleButtonClick = (type: modalType) => {
     if (modal.includes(type)) return;
@@ -37,7 +38,7 @@ function Card({ card, column }: Props) {
   };
 
   return (
-    <StyledWrapper $isRed={isCloseDuedate} onClick={() => handleButtonClick('card')}>
+    <StyledWrapper $isRed={isCloseDuedate} $isOver={isOverDuedate} onClick={() => handleButtonClick('card')}>
       {card.imageUrl && <StyledThumbnail src={card.imageUrl} width={274} height={160} alt="" />}
       <StyledCircle $isRed={isCloseDuedate} />
       <StyledContent>
@@ -65,7 +66,7 @@ function Card({ card, column }: Props) {
 
 export default Card;
 
-const StyledWrapper = styled.div<{ $isRed: boolean }>`
+const StyledWrapper = styled.div<{ $isRed: boolean; $isOver: boolean }>`
   width: 100%;
   height: fit-content;
   margin-bottom: 16px;
@@ -74,14 +75,15 @@ const StyledWrapper = styled.div<{ $isRed: boolean }>`
   position: relative;
 
   background-color: ${WHITE};
+  opacity: ${(props) => (props.$isOver ? 0.8 : 1)};
 
   border-radius: 6px;
-  border: 1px solid ${GRAY[30]};
+  border: ${(props) => (props.$isOver ? '2px' : '1px')} ${(props) => (props.$isOver ? 'dashed' : 'solid')} ${GRAY[30]};
 
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => (props.$isRed ? '#FFE3E3' : '#EDDFFF')};
+    background-color: ${(props) => (props.$isRed ? '#ffe3e3' : GRAY[15])};
   }
 
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
