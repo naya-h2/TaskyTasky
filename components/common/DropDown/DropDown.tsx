@@ -14,6 +14,7 @@ import { MemberListType } from '@/lib/types/members';
 import { PostCardRequestType } from '@/lib/types/cards';
 import { getFilteredUser } from '@/lib/utils/getFilteredUser';
 import { ColumnType } from '@/lib/types/columns';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   type: 'status' | 'member' | 'kebab';
@@ -179,6 +180,10 @@ const StyledWrapper = styled.div<{ $type: string }>`
   display: flex;
   flex-direction: column;
   position: relative;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: ${({ $type }) => ($type === 'kebab' ? '28px' : '100%')};
+  }
 `;
 
 const StyledMainWrapper = styled.div`

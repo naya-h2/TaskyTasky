@@ -23,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     const tag = await TagColor.findOne({ tagName: tagName });
     if (tag) res.status(200).send(tag);
-    else res.status(400).send('tagName does not exist');
+    else res.status(201);
     return;
   }
 
