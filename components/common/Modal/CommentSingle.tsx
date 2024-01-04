@@ -5,7 +5,7 @@ import { JSDOM } from 'jsdom';
 import { modalType } from '@/lib/types/zustand';
 import { useStore } from '@/context/stores';
 import ProfileImg from '../Profile/ProfileImg';
-import Textarea from '../Textarea/Textarea';
+import Textarea from '../Textarea/TextArea';
 import { FONT_12, FONT_14_B } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { CommentType } from '@/lib/types/comments';

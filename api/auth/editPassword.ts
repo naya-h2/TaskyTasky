@@ -10,7 +10,7 @@ export const editPassword = async (data: PutPasswordRequestType) => {
   try {
     const response = await authInstance.put('/api/auth/password', data);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     return error.response;
   }
 };

@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import LargeLogo from '@/public/images/logo_large.svg';
-import SmallLogo from '@/public/images/logo_small.svg';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 

@@ -8,7 +8,7 @@ import { MemberListType } from '@/lib/types/members';
 import { PostCardRequestType } from '@/lib/types/cards';
 import DropDown from '../DropDown/DropDown';
 import Input from '../Input/Input';
-import Textarea from '../Textarea/Textarea';
+import Textarea from '../Textarea/TextArea';
 import { useStore } from '@/context/stores';
 import { createCard } from '@/api/cards/createCard';
 import { editCard } from '@/api/cards/editCard';

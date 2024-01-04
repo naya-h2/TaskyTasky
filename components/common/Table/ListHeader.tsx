@@ -147,7 +147,7 @@ const ButtonStyle = styled.div`
 
 const AddBox = styled(AddBoxIcon)`
   width: 16px;
-  heightL 16px;
+  height: 16px;
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 14px;
     height: 14px;
