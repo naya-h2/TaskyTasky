@@ -1,40 +1,35 @@
+import { SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
-import Button from '@/components/common/Button';
-import ColumnModal from '@/components/common/Modal/ColumnModal';
 import ColumnLists from '@/components/pages/Board/ColumnLists';
+import LeftRightButton from '@/components/pages/Board/LeftRightButton';
+import UpDownButton from '@/components/pages/Board/UpDownButton';
+import ColumnModal from '@/components/common/Modal/ColumnModal';
 import TodoModal from '@/components/common/Modal/TodoModal';
-import BackButton from '@/components/pages/mypage/BackButton';
 import CardModal from '@/components/common/Modal/CardModal';
 import AlertModal from '@/components/common/Modal/AlertModal';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_18_B } from '@/styles/FontStyles';
 
 import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
 import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { getColumnList } from '@/api/columns/getColumnList';
 import { getMemberList } from '@/api/members/getMemberList';
-import { DashboardType } from '@/lib/types/dashboards';
 import { GetMemberListResponseType, MemberListType } from '@/lib/types/members';
+import { DashboardType } from '@/lib/types/dashboards';
 import { ColumnType } from '@/lib/types/columns';
 import { useStore } from '@/context/stores';
-import PlusIcon from '@/public/icon/add_no_background.svg';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
-import { GRAY, VIOLET, WHITE } from '@/styles/ColorStyles';
-import LeftRightButton from '@/components/pages/Board/LeftRightButton';
-import UpDownButton from '@/components/pages/Board/UpDownButton';
+import { GRAY, WHITE } from '@/styles/ColorStyles';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 function Board() {
   useCheckLogin();
 
   const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
-  const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [columnList, setColumnList] = useState<ColumnType[]>([]);
   const [memberList, setMemberList] = useState<GetMemberListResponseType>();
   const [modalColumnId, setModalColumnId] = useState<number>();
@@ -63,7 +58,6 @@ function Board() {
       ]);
 
       setCurrentDashboard(resCurrentDashboard);
-      setDashboardList(resDashboardList?.dashboards);
       setColumnList(resColumnList?.data);
     };
 

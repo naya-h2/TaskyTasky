@@ -1,16 +1,18 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import styled from 'styled-components';
+
+import Calendar from '@/public/icon/calendar.svg';
+import ChipColor from '../Chip/ChipColor';
+
 import { Card as CardType } from '@/lib/types/type';
 import { WHITE, GRAY, RED, BLUE, ORANGE, PURPLE, GREEN, PINK } from '@/styles/ColorStyles';
-import { FONT_12, FONT_16, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
+import { FONT_12, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import Calendar from '@/public/icon/calendar.svg';
 import { useStore } from '@/context/stores';
-import { modalType } from '@/lib/types/zustand';
-import ChipColor from '../Chip/ChipColor';
-import { ColumnType } from '@/lib/types/columns';
 import { useGetUser } from '@/hooks/useGetUser';
+import { modalType } from '@/lib/types/zustand';
+import { ColumnType } from '@/lib/types/columns';
 
 const COLORS = [BLUE[1], ORANGE[1], PURPLE[1], GREEN[1], PINK[1]];
 
