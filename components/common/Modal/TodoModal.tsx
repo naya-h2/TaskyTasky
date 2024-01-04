@@ -3,13 +3,12 @@ import styled from 'styled-components';
 import ModalFrame from './ModalFrame';
 import { modalType } from '@/lib/types/zustand';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { columnLists } from '@/lib/types/type';
 import AddProfileImg from '@/components/pages/mypage/AddProfileImg';
 import { MemberListType } from '@/lib/types/members';
 import { PostCardRequestType } from '@/lib/types/cards';
 import DropDown from '../DropDown/DropDown';
 import Input from '../Input/Input';
-import Textarea from '../Textarea/Textarea';
+import Textarea from '../Textarea/TextArea';
 import { useStore } from '@/context/stores';
 import { createCard } from '@/api/cards/createCard';
 import { editCard } from '@/api/cards/editCard';
@@ -94,7 +93,7 @@ function TodoModal({ type, columnList, memberLists, dashboardId, columnId }: Pro
           />
         </StyledDropDownBox>
         <Input type="title" value={reqValue.title} setValue={setReqValue} />
-        <Textarea type="basic" value={reqValue.description} setValue={setReqValue} />
+        <Textarea type="toDo" value={reqValue.description} setValue={setReqValue} />
         <Input type="dueDate" value={reqValue.dueDate} setValue={setReqValue} />
         <Input type="tag" value={reqValue.tags} setValue={setReqValue} />
         <AddProfileImg type="card" initialUrl={reqValue.imageUrl} columnId={columnId} />

@@ -7,5 +7,7 @@ export const getDashboardInfo = async (dashboardId: number) => {
   try {
     const response = await authInstance.get(`/api/dashboards/${dashboardId}`);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    return null;
+  }
 };

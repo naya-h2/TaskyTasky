@@ -2,17 +2,15 @@ import { SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ReactDatePicker, { registerLocale } from 'react-datepicker'; // ReactDatePicker 컴포넌트 가져오기
 import 'react-datepicker/dist/react-datepicker.css';
-// 출처: https://reactdatepicker.com/#example-filter-dates
-// 출처: https://date-fns.org/
 import { GRAY, PINK, VIOLET } from '@/styles/ColorStyles';
 import CalendarIcon from '@/public/icon/calendar.svg';
 import ko from 'date-fns/locale/ko'; // 한국어로
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { FONT_12 } from '@/styles/FontStyles';
 import { PostCardRequestType } from '@/lib/types/cards';
+import { timestamp } from '@/lib/utils/timestamp';
 registerLocale('ko', ko); // 한국어로
 const _ = require('lodash'); // _.range를 표현하기 위하여 사용
-//  출처: https://blog.naver.com/PostList.naver?blogId=marsdo
 
 type Value = PostCardRequestType;
 interface Props {
@@ -40,11 +38,6 @@ function Calendar({ placeholder, initialValue, setValue }: Props) {
     // };
 
     // const time = selectDate.toLocaleString('ko-KR', options);
-    function timestamp(selectDate: Date) {
-      const aliasDate = new Date(selectDate);
-      aliasDate.setHours(aliasDate.getHours() + 9);
-      return aliasDate.toISOString().replace('T', ' ').substring(0, 16);
-    }
 
     const time = timestamp(selectDate);
 

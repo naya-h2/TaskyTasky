@@ -6,6 +6,7 @@ import DashBoardColor from '../Chip/DashBoardColor';
 import Button from '../Button';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
+
 import { useStore } from '@/context/stores';
 import EditModal from '../Modal/EditModal';
 import { useRouter } from 'next/router';
@@ -28,6 +29,7 @@ function EditMyDash() {
   const [selectedColor, setSelectedColor] = useState('');
   const [isNotActive, setIsNotActive] = useState(true);
   const [editName, setEditName] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
   const { id } = router.query;
@@ -54,12 +56,18 @@ function EditMyDash() {
     setDashBoardInfo(dashBoardData);
   };
 
+  const handleEditColorClick = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   useEffect(() => {
+
     setSelectedColor(colors[colorIndex]);
     setEditName('');
     setIsNotActive(true);
     fetchDashboardData();
   }, [colorIndex, isDashChanged]);
+
 
   return (
     <Wrapper>
@@ -79,6 +87,11 @@ function EditMyDash() {
             />
           </EditNameInputWrap>
         </EditDashName>
+        <EditColorWrapper onClick={handleEditColorClick}>
+          <ColorEdit>색상 변경</ColorEdit>
+          {isOpen ? <StyledUpIcon /> : <StyledDownIcon />}{' '}
+        </EditColorWrapper>
+        {isOpen && <ColorChoice type="edit" color={selectedColor} setColor={setSelectedColor} />}
         <EditButton>
           <ButtonWrapper>
             <Button.Plain
@@ -103,19 +116,17 @@ export default EditMyDash;
 
 const Wrapper = styled.div`
   width: 620px;
-  height: 256px;
   border-radius: 8px;
   background-color: ${[WHITE]};
   padding: 32px 28px;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 544px;
-    height: 256px;
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 284px;
-    height: 211px;
+
     padding: 27px 20px 21px;
   }
 `;
@@ -193,5 +204,45 @@ const ButtonText = styled.text`
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     height: 28px;
+  }
+`;
+
+const Chip = styled.div<{ $color: string }>`
+  width: 15px;
+  height: 15px;
+
+  border-radius: 100%;
+  background-color: ${(props) => props.$color};
+`;
+
+const ColorWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ColorEdit = styled.div`
+  ${FONT_18};
+`;
+
+const StyledDownIcon = styled(DownIcon)`
+  width: 18px;
+  height: 18px;
+`;
+
+const StyledUpIcon = styled(UpIcon)`
+  width: 18px;
+  height: 18px;
+`;
+
+const EditColorWrapper = styled.div`
+  padding-top: 10px;
+  display: flex;
+  gap: 5px;
+
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
   }
 `;

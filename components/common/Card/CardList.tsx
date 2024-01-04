@@ -16,7 +16,6 @@ import { GetCardListResponseType } from '@/lib/types/cards';
 import ColumnModal from '../Modal/ColumnModal';
 
 interface Props {
-  key: number;
   column: ColumnType;
   setModalColumnId: (value: SetStateAction<number>) => void;
 }
@@ -25,7 +24,7 @@ interface Props {
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-function CardList({ key, column, setModalColumnId }: Props) {
+function CardList({ column, setModalColumnId }: Props) {
   const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
   const [cardList, setCardList] = useState<GetCardListResponseType>();
 
@@ -69,8 +68,7 @@ function CardList({ key, column, setModalColumnId }: Props) {
       <StyledBtnWrapper>
         <Button.Add roundSize="M" onClick={() => handleAddButtonClick('createTodo', column.id)} />
       </StyledBtnWrapper>
-      {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} columnTitle={column.title} />)}
-      {modal[modal.length - 1] === 'imgUrl' && <ImgUrlModal type="imgUrl" />}
+      {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} column={column} />)}
     </StyledRoot>
   );
 }

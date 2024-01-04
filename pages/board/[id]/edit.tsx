@@ -15,17 +15,17 @@ import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import { useStore } from '@/context/stores';
 import EditModal from '@/components/common/Modal/EditModal';
 
+
 function Edit() {
   useCheckLogin();
   const router = useRouter();
   const { id } = router.query;
   const dashboardId = Number(id);
-
   const { modal, showModal } = useStore((state) => ({
     modal: state.modals,
     showModal: state.showModal,
   }));
-
+  
   return (
     <Root>
       <Head>
@@ -85,6 +85,7 @@ const ButtonLink = styled(Link)`
   &:link,
   &:visited {
     color: ${[BLACK[2]]};
+    text-decoration: none;
   }
 `;
 

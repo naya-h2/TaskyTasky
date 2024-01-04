@@ -4,16 +4,17 @@ import { FONT_12, FONT_16 } from '@/styles/FontStyles';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-const COLORS = [BLUE, ORANGE, PURPLE, GREEN, PINK[1]];
+const COLORS = [BLUE[1], ORANGE[1], PURPLE[1], GREEN[1], PINK[1]];
 
 interface Props {
-  url: string;
+  url: string | null;
   size: number;
   name: string;
   id: number;
+  type?: string;
 }
 
-function ProfileImg({ url, size, name, id }: Props) {
+function ProfileImg({ url, size, name, id, type }: Props) {
   const colorNum = id % 5;
 
   return (
@@ -25,7 +26,7 @@ function ProfileImg({ url, size, name, id }: Props) {
           {name.slice(0, 1)}
         </StyledDefaultProfile>
       )}
-      <StyledNickName>{name}</StyledNickName>
+      {type === 'header' && <StyledNickName>{name}</StyledNickName>}
     </StyledWrapper>
   );
 }

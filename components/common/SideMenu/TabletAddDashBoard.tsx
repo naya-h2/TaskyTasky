@@ -17,7 +17,7 @@ interface Props {
  * @function onDashboardAdded 대시보드가 추가되었음을 부모 컴포넌트에게 알리는 콜백 함수
  */
 
-function AddDashBoard({ onDashboardAdded }: Props) {
+function TabletAddDashBoard({ onDashboardAdded }: Props) {
   const { modals, showModal, page, total, increasePage, decreasePage } = useStore((state) => ({
     modals: state.modals,
     showModal: state.showModal,
@@ -46,11 +46,11 @@ function AddDashBoard({ onDashboardAdded }: Props) {
   );
 }
 
-export default AddDashBoard;
+export default TabletAddDashBoard;
 
 const StyledContainer = styled.div`
   width: 100%;
-  margin-top: 60px;
+  margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,10 +59,6 @@ const StyledContainer = styled.div`
 const StyledWords = styled.span`
   color: ${GRAY[50]};
   ${FONT_12B};
-
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    display: none;
-  }
 `;
 
 const StyledAddIcon = styled(AddIcon)`

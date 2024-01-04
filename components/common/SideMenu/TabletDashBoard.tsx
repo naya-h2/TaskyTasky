@@ -11,7 +11,7 @@ interface DashBoardProps {
   key: number;
 }
 
-function DashBoard({ color, title, createdByMe }: DashBoardProps) {
+function TabletDashBoard({ color, title, createdByMe }: DashBoardProps) {
   return (
     <StyledContainer>
       <StyledColor color={color} />
@@ -21,25 +21,16 @@ function DashBoard({ color, title, createdByMe }: DashBoardProps) {
   );
 }
 
-export default DashBoard;
+export default TabletDashBoard;
 
 const StyledContainer = styled.div`
-  width: 276px;
-  height: 45px;
+  width: 134px;
+  height: 43px;
   display: flex;
   align-items: center;
   flex-direction: row;
   flex-shrink: 0;
   border-radius: 4px;
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    width: 134px;
-    height: 43px;
-  }
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    width: 40px;
-    height: 40px;
-    justify-content: center;
-  }
 `;
 
 const StyledColor = styled.div<{ color: string }>`
@@ -52,25 +43,13 @@ const StyledColor = styled.div<{ color: string }>`
 `;
 
 const StyledDashBoardTitle = styled.div`
-  width: 75%;
+  width: 60%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-right: 6px;
+  margin-right: 4px;
   color: ${GRAY[50]};
-  ${FONT_18};
-  @media (max-width: ${DEVICE_SIZE.tablet}) {
-    width: 60%;
-    margin-right: 4px;
-    ${FONT_16};
-  }
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    display: none;
-  }
+  ${FONT_16};
 `;
 
-const StyledCrown = styled(Crown)`
-  @media (max-width: ${DEVICE_SIZE.mobile}) {
-    display: none;
-  }
-`;
+const StyledCrown = styled(Crown)``;

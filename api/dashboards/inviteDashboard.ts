@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 export const inviteDashboard = async (dashboardId: number, data: PostDashboardInvitationRequestType) => {
   try {
     const response = await authInstance.post(`/api/dashboards/${dashboardId}/invitations`, data);
-    //alert('초대에 성공했어요!');
+    toast.success('초대에 성공했어요!');
     return response;
   } catch (error: any) {
     return error.response;

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import ButtonBase, { BaseProps } from '../ButtonBase';
-import { BLUE, GREEN, ORANGE, PINK, PURPLE } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import ForwordIcon from '@/public/icon/arrow_forward.svg';
 import Crown from '@/public/icon/crown.svg';
@@ -25,6 +24,7 @@ export function DashBoardButton({ isOwner = false, chipColor, roundSize, childre
 
 const StyledLayout = styled.div`
   padding: 0 20px;
+  padding-right: 40px;
 
   display: flex;
   align-items: center;

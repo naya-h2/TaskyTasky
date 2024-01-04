@@ -1,27 +1,20 @@
+import { FormEvent, useRef } from 'react';
+import Image from 'next/image';
 import styled from 'styled-components';
+import InfiniteScroll from 'react-infinite-scroller';
+import InviteList from './InviteList';
+import NullInviteList from './NullInviteList';
+import { useGetInvitationList } from '@/hooks/useGetInvitationList';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GRAY, WHITE } from '@/styles/ColorStyles';
-import SearchIcon from '@/public/icon/search.svg';
-import InviteList from './InviteList';
 import { FONT_16, FONT_20_B, FONT_24_B } from '@/styles/FontStyles';
-import NullInviteList from './NullInviteList';
-import { GetInvitationResponseType } from '@/lib/types/invitations';
-import { useForm } from 'react-hook-form';
-import { useStore } from '@/context/stores';
+import { customScroll } from '@/styles/CustomScroll';
+import SearchIcon from '@/public/icon/search.svg';
 import RefreshIcon from '@/public/icon/close_circle.svg';
-import { FormEvent, useRef, useState } from 'react';
-import Image from 'next/image';
 
-interface Props {
-  inviteList: GetInvitationResponseType;
-}
+function InviteDash() {
+  const { fetchMore, invitationList, hasMore, search, setDashboardSearch } = useGetInvitationList();
 
-function InviteDash({ inviteList }: Props) {
-  const { invitations } = inviteList;
-  const { search, setDashboardSearch } = useStore((state) => ({
-    setDashboardSearch: state.setDashboardSearch,
-    search: state.dashboardSearch,
-  }));
   const inputValue = useRef<HTMLInputElement>(null);
 
   const handleSearchSubmit = (event: FormEvent) => {
@@ -34,7 +27,7 @@ function InviteDash({ inviteList }: Props) {
     if (inputValue.current) inputValue.current.value = '';
   };
 
-  if (invitations.length === 0 && !search) {
+  if (!invitationList.length && !search) {
     return <NullInviteList />;
   }
 
@@ -59,12 +52,27 @@ function InviteDash({ inviteList }: Props) {
         <Subject>초대자</Subject>
         <Subject>수락여부</Subject>
       </InviteListHead>
-      {!invitations.length && search && <StyledNoSearch>검색 결과가 없습니다.</StyledNoSearch>}
-      <InviteContent>
-        {invitations.map((list) => (
-          <InviteList key={list.id} invite={list} />
-        ))}
-      </InviteContent>
+      <StyledListBox>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={fetchMore}
+          hasMore={hasMore}
+          loader={
+            <StyledSpinner>
+              <Image src="/images/Spinner-1s-200px.gif" alt="로딩중" width={80} height={80} />
+            </StyledSpinner>
+          }
+          useWindow={false}
+          initialLoad={false}
+        >
+          <InviteContent>
+            {invitationList.map((list) => (
+              <InviteList key={list.id} invite={list} />
+            ))}
+          </InviteContent>
+        </InfiniteScroll>
+        {!invitationList.length && search && <StyledNoSearch>검색 결과가 없습니다.</StyledNoSearch>}
+      </StyledListBox>
     </Container>
   );
 }
@@ -160,4 +168,20 @@ const StyledNoSearch = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledSpinner = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledListBox = styled.div`
+  width: 100%;
+  height: 370px;
+  margin: 20px 0;
+  padding-right: 10px;
+  overflow-y: scroll;
+
+  ${customScroll};
 `;

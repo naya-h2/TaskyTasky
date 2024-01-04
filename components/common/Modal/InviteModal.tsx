@@ -29,10 +29,11 @@ function InviteModal({ dashboardId }: Props) {
   } = useForm({ mode: 'onBlur' });
   const email = watch('email');
 
+
   const router = useRouter();
 
-  const handleInviteClick = async (event: FormEvent) => {
-    event.preventDefault();
+  const handleInviteClick = async (event?: FormEvent) => {
+    if (event) event.preventDefault();
 
     const response = await inviteDashboard(dashboardId, { email });
     if (response.status !== 201) {
@@ -43,6 +44,7 @@ function InviteModal({ dashboardId }: Props) {
         autoClose: 1700,
       });
       clearModal();
+
       const delayInMilliseconds = 1800;
       setTimeout(() => {
         router.reload();
@@ -56,7 +58,7 @@ function InviteModal({ dashboardId }: Props) {
         type="invite"
         title="초대하기"
         height="Mid"
-        disabledBtn={errors.email ? true : false}
+        disabledBtn={errors.email || !email ? true : false}
         btnFnc={handleInviteClick}
       >
         <form onSubmit={handleInviteClick}>

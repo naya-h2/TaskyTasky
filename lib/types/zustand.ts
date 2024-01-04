@@ -1,4 +1,5 @@
 import { CardType } from './cards';
+import { CommentType } from './comments';
 import { UserType } from './users';
 
 export type modalType =
@@ -26,6 +27,9 @@ export type modalType =
   | 'cancelInvite'
   | 'deleteDashboard'
   | 'EditDashboard';
+  | 'loading'
+  | 'editColor';
+
 
 export interface ModalState {
   modals: modalType[];
@@ -37,6 +41,17 @@ export interface ModalState {
   setModalCardColumnTitle: (value: string) => void;
   setIsColumnChanged: () => void;
   setIsDashChanged: () => void;
+  modalCardComment: string;
+  cardCommentId: number;
+  isCommentChanged: boolean;
+  todoModalDescription: string;
+  setModalCard: (value: CardType) => void;
+  setModalCardColumnTitle: (value: string) => void;
+  setIsColumnChanged: () => void;
+  setModalCardComment: (value: string) => void;
+  setCardCommentId: (value: number) => void;
+  setIsCommentChanged: () => void;
+  setTodoModalDescription: (value: string) => void;
   showModal: (type: modalType) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;
@@ -46,10 +61,13 @@ export interface myboardPageState {
   dashboardSearch: string;
   myboardTotalPage: number;
   myboardPageNumber: number;
+  inviteTrigger: boolean;
   calcTotalPage: (totalDataNum: number) => void;
   increasePage: (prev: number) => void;
   decreasePage: (prev: number) => void;
   setDashboardSearch: (word: string) => void;
+  setPage: (page: number) => void;
+  toggleInviteTrigger: (prev: boolean) => void;
 }
 
 export interface profileImgState {
