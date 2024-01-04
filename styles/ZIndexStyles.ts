@@ -17,4 +17,5 @@ export const Z_INDEX = {
   secondHeader_ButtonSection: 5,
   SideMenu_Wrapper: 200,
   AddProfileImg_AddButton: 10,
+  LeftRightScroll_Button: 1,
 };

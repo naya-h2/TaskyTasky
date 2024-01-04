@@ -8,14 +8,14 @@ interface DashBoardProps {
   color: string;
   title: string;
   createdByMe?: boolean;
-  key: number;
+  current?: boolean;
 }
 
-function TabletDashBoard({ color, title, createdByMe }: DashBoardProps) {
+function TabletDashBoard({ color, title, createdByMe, current }: DashBoardProps) {
   return (
     <StyledContainer>
       <StyledColor color={color} />
-      <StyledDashBoardTitle>{title}</StyledDashBoardTitle>
+      <StyledDashBoardTitle current={current}>{title}</StyledDashBoardTitle>
       {createdByMe && <StyledCrown />}
     </StyledContainer>
   );
@@ -42,7 +42,7 @@ const StyledColor = styled.div<{ color: string }>`
   border-radius: 100%;
 `;
 
-const StyledDashBoardTitle = styled.div`
+const StyledDashBoardTitle = styled.div<{ current?: boolean }>`
   width: 60%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,6 +50,8 @@ const StyledDashBoardTitle = styled.div`
   margin-right: 4px;
   color: ${GRAY[50]};
   ${FONT_16};
+  text-decoration: none;
+  color: ${(props) => (props.current ? '#5534da' : 'inherit')};
 `;
 
 const StyledCrown = styled(Crown)``;

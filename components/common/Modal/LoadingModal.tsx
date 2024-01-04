@@ -5,6 +5,7 @@ import ModalPortal from './ModalPortal';
 import useNotScroll from '@/hooks/useNotScroll';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import spinnerImg from '@/public/images/spinner.png';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   anchorRef: RefObject<HTMLElement>;
@@ -41,6 +42,10 @@ const StyledMask = styled.div`
 
   background-color: black;
   opacity: 0.1;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 240px;
+  }
 `;
 
 const StyledSpinner = styled(Image)`

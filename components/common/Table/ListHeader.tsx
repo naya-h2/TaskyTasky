@@ -62,7 +62,6 @@ function ListHeader({ title = '구성원', totalCount, page = 1, getPage }: List
               </ButtonStyle>
             </Button.Plain>
           </InviteButtonLayout>
-          <ToastContainer position="top-center" closeOnClick pauseOnHover={false} />
 
           {modal.includes('invite') && <InviteModal dashboardId={Number(id)} />}
         </HeaderRight>

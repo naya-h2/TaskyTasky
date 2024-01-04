@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useStore } from '@/context/stores';
 import Input from '@/components/common/Input/Input';
@@ -16,11 +16,12 @@ interface Props {
 
 function InviteModal({ dashboardId }: Props) {
   const [errorMsg, setErrorMsg] = useState();
-  const { modals, showModal, clearModal, hideModal } = useStore((state) => ({
+  const { modals, showModal, clearModal, hideModal, isDashChanged } = useStore((state) => ({
     modals: state.modals,
     showModal: state.showModal,
     clearModal: state.clearModal,
     hideModal: state.hideModal,
+    isDashChanged: state.isDashChanged,
   }));
   const {
     register,
@@ -28,7 +29,6 @@ function InviteModal({ dashboardId }: Props) {
     formState: { errors },
   } = useForm({ mode: 'onBlur' });
   const email = watch('email');
-
 
   const router = useRouter();
 
@@ -51,6 +51,8 @@ function InviteModal({ dashboardId }: Props) {
       }, delayInMilliseconds);
     }
   };
+
+  useEffect(() => {}, [isDashChanged]);
 
   return (
     <>

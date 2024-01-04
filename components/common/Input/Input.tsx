@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { GRAY, VIOLET, RED, BLACK } from '@/styles/ColorStyles';
 import { FONT_16, FONT_14 } from '@/styles/FontStyles';
 import Calendar from './Calendar';
+import TagMaker from './TagMaker';
 import { validateSignInput } from '@/lib/utils/checkSign';
 import { getPlaceholder } from '@/lib/utils/getPlaceholder';
 import { getInputLabel } from '@/lib/utils/getInputLabel';
@@ -10,7 +11,6 @@ import { InputType } from '@/lib/types/type';
 import EyeOff from '@/public/icon/visibility_off.svg';
 import EyeOn from '@/public/icon/visibility.svg';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import TagPickerCreatable from './TagPicker';
 import { PostCardRequestType } from '@/lib/types/cards';
 
 type Value = PostCardRequestType;
@@ -25,6 +25,7 @@ interface InputProps {
   initLabel?: string;
   disabled?: boolean;
   value?: string | string[];
+  defaultValue?: string;
   setValue?: (value: SetStateAction<Value>) => void;
 }
 
@@ -38,6 +39,7 @@ function Input({
   initLabel,
   disabled = false,
   value,
+  defaultValue,
   setValue,
 }: InputProps) {
   const [passwordInvisible, setPasswordInvisible] = useState(true);
@@ -82,14 +84,12 @@ function Input({
             setValue={setValue as (value: SetStateAction<Value>) => void}
           />
         ) : type === 'tag' ? (
-          <TagPickerCreatable
-            initialValue={value as string[]}
-            setValue={setValue as (value: SetStateAction<Value>) => void}
-          />
+          <TagMaker initialValue={value as string[]} setValue={setValue as (value: SetStateAction<Value>) => void} />
         ) : isHookForm ? (
           <StyledInputBox
             id={type}
             placeholder={placeholder}
+            defaultValue={defaultValue}
             type={
               type === 'password' || type === 'passwordConfirm' ? (passwordInvisible ? 'password' : 'text') : 'text'
             }

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FieldValues, useForm } from 'react-hook-form';
 import { modalType } from '@/lib/types/zustand';
 import { useStore } from '@/context/stores';
 import Input from '../Input/Input';
@@ -7,18 +8,17 @@ import { FONT_14 } from '@/styles/FontStyles';
 import { GRAY } from '@/styles/ColorStyles';
 import { createColumn } from '@/api/columns/createColumn';
 import { editColumn } from '@/api/columns/editColumn';
-import { FieldValues, useForm } from 'react-hook-form';
-import { PostCardRequestType } from '@/lib/types/cards';
 import { PostColumnRequestType, PutColumnRequestType } from '@/lib/types/columns';
-import { Dispatch, SetStateAction } from 'react';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   type: modalType;
   dashboardID?: number;
   columnID?: number;
+  columnName?: string;
 }
 
-function ColumnModal({ type, dashboardID, columnID }: Props) {
+function ColumnModal({ type, dashboardID, columnID, columnName }: Props) {
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
   const hideModal = useStore((state) => state.hideModal);
@@ -58,13 +58,8 @@ function ColumnModal({ type, dashboardID, columnID }: Props) {
         <StyledDeleteButton onClick={() => deleteColumn('deleteColumnAlert')}>삭제하기</StyledDeleteButton>
       )}
       {type === 'manageColumn' ? (
-        <form
-          onSubmit={handleSubmit((data) => manageColumn(data))}
-          onChange={() => {
-            console.log('Hi');
-          }}
-        >
-          <Input type="name" register={register('editColumn')} isHookForm />
+        <form onSubmit={handleSubmit((data) => manageColumn(data))}>
+          <Input type="name" register={register('editColumn')} isHookForm defaultValue={columnName} />
         </form>
       ) : (
         <form onSubmit={handleSubmit((data) => addNewColumn(data))}>
@@ -89,4 +84,8 @@ const StyledDeleteButton = styled.button`
   background-color: white;
 
   cursor: pointer;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    bottom: -30px;
+  }
 `;

@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 import { BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_18, FONT_20_B } from '@/styles/FontStyles';
 import React, { useEffect, useState } from 'react';
-import DashBoardColor from '../Chip/DashBoardColor';
 import Button from '../Button';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
@@ -11,6 +10,9 @@ import { useStore } from '@/context/stores';
 import EditModal from '../Modal/EditModal';
 import { useRouter } from 'next/router';
 import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
+import ColorChoice from '../Chip/ColorChoice';
+import UpIcon from '@/public/icon/small-up.svg';
+import DownIcon from '@/public/icon/small-down.svg';
 
 function EditMyDash() {
   const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>({
@@ -23,7 +25,7 @@ function EditMyDash() {
     userId: 0,
   });
 
-  const initialColor = dashBoardInfo.color;
+  const initialColor = dashBoardInfo?.color;
   const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
   const colorIndex = colors.indexOf(initialColor);
   const [selectedColor, setSelectedColor] = useState('');
@@ -60,31 +62,32 @@ function EditMyDash() {
     setIsOpen((prev) => !prev);
   };
 
+  const setSelectColor = () => {
+    setSelectedColor;
+    setIsNotActive(false);
+  };
+
   useEffect(() => {
-
-    setSelectedColor(colors[colorIndex]);
-    setEditName('');
-    setIsNotActive(true);
+    setSelectedColor(initialColor);
     fetchDashboardData();
-  }, [colorIndex, isDashChanged]);
+    setEditName('');
+  }, [initialColor, isDashChanged]);
 
+  console.log(selectedColor, initialColor);
 
   return (
     <Wrapper>
       <Container>
         <EditDashChip>
-          <BoardTitle>{dashBoardInfo.title}</BoardTitle>
-          <DashBoardColor selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
+          <ColorWrapper>
+            {selectedColor && <Chip $color={selectedColor} />}
+            <BoardTitle>{dashBoardInfo?.title}</BoardTitle>
+          </ColorWrapper>
         </EditDashChip>
         <EditDashName>
           <DashNameText>대시보드 이름</DashNameText>
           <EditNameInputWrap>
-            <EditNameInput
-              value={editName}
-              onChange={OnNameChangeHandler}
-              onFocus={OnFocusInputHandler}
-              placeholder="뉴프로젝트"
-            />
+            <EditNameInput value={editName} onChange={OnNameChangeHandler} onFocus={OnFocusInputHandler} />
           </EditNameInputWrap>
         </EditDashName>
         <EditColorWrapper onClick={handleEditColorClick}>

@@ -4,6 +4,7 @@ import LoadingModal from './LoadingModal';
 import CommentSingle from './CommentSingle';
 import { CommentType } from '@/lib/types/comments';
 import { GRAY } from '@/styles/ColorStyles';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 const LIMIT = 5;
 interface Props {
@@ -56,7 +57,7 @@ function CommentCollection({ areaRef, isLoading, commentList, offsetRef, cardId,
       })}
       {offsetRef.current > 0 && <StyledObserveTargetBox ref={target} />}
       {isLoading && <LoadingModal anchorRef={areaRef} />}
-      <StyledScrollTop onClick={MoveToTop}>↑</StyledScrollTop>
+      {commentList.length > 0 && <StyledScrollTop onClick={MoveToTop}>↑</StyledScrollTop>}
     </StyledCommentsArea>
   );
 }
@@ -69,6 +70,7 @@ const StyledCommentsArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  position: relative;
 
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -91,8 +93,18 @@ const StyledScrollTop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  left: 430px;
-  bottom: -200px;
+  flex-shrink: 0;
+  position: sticky;
+  left: 410px;
+  bottom: 10px;
   cursor: pointer;
+  opacity: 0.8;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    left: 380px;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    left: 240px;
+  }
 `;
