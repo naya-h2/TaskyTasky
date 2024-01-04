@@ -27,7 +27,7 @@ function InviteDash() {
     if (inputValue.current) inputValue.current.value = '';
   };
 
-  if (!invitationList.length && !search) {
+  if (!invitationList || (!invitationList.length && !search)) {
     return <NullInviteList />;
   }
 
