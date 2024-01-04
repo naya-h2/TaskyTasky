@@ -99,7 +99,7 @@ function Board() {
           <LeftRightButton />
           <UpDownButton />
           <StyledContent>
-            {columnList.length > 0 && (
+            {columnList?.length > 0 && (
               <ColumnLists
                 columnList={columnList}
                 setModalColumnId={setModalColumnId as (value: SetStateAction<number>) => void}
@@ -125,14 +125,14 @@ function Board() {
             dashboardId={currentDashboard?.id as number}
           />
         )}
-        {modal[modal.length - 1] === 'createColumn' && <ColumnModal type={'createColumn'} dashboardID={Number(id)} />}
-        {modal.includes('manageColumn') && (
+        {modal[modal?.length - 1] === 'createColumn' && <ColumnModal type={'createColumn'} dashboardID={Number(id)} />}
+        {modal?.includes('manageColumn') && (
           <ColumnModal type={'manageColumn'} columnID={modalColumnId} columnName={modalColumnName} />
         )}
-        {modal[modal.length - 1] === 'deleteColumnAlert' && (
+        {modal[modal?.length - 1] === 'deleteColumnAlert' && (
           <AlertModal type={'deleteColumnAlert'} columnID={modalColumnId} />
         )}
-        {modal[modal.length - 1] === 'editTodo' && (
+        {modal[modal?.length - 1] === 'editTodo' && (
           <TodoModal
             type={'editTodo'}
             memberLists={memberList?.members as MemberListType[]}
@@ -141,8 +141,10 @@ function Board() {
             columnList={columnList}
           />
         )}
-        {modal[modal.length - 1] === 'deleteCardAlert' && <AlertModal type={'deleteCardAlert'} cardId={modalCard.id} />}
-        {modal[modal.length - 1] === 'deleteCommentAlert' && (
+        {modal[modal?.length - 1] === 'deleteCardAlert' && (
+          <AlertModal type={'deleteCardAlert'} cardId={modalCard.id} />
+        )}
+        {modal[modal?.length - 1] === 'deleteCommentAlert' && (
           <AlertModal type={'deleteCommentAlert'} commentId={cardCommentId} />
         )}
       </StyledRoot>
