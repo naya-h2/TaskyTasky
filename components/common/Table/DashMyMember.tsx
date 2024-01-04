@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 import { GetMemberListResponseType } from '@/lib/types/members';
 import { getMemberList } from '@/api/members/getMemberList';
 import Crown from '@/public/icon/crown.svg';
-import { deleteMember } from '@/api/members/deleteMember';
 import { useStore } from '@/context/stores';
 import EditModal from '../Modal/EditModal';
 

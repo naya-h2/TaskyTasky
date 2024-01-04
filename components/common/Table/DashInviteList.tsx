@@ -9,13 +9,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
 import NoDashImg from '@/public/images/No_Invite_Dash.svg';
-import { deleteDashboardInvitation } from '@/api/dashboards/deleteDashboardInvitation';
 import { useStore } from '@/context/stores';
 import EditModal from '../Modal/EditModal';
-
-// interface Props {
-//   invitationsList: GetDashboardInvitationResponseType;
-// }
 
 function DashInviteList() {
   const router = useRouter();

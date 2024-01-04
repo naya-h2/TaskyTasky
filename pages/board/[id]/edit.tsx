@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styled from 'styled-components';
-import Second from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import { FONT_16, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, GRAY, RED } from '@/styles/ColorStyles';
@@ -9,19 +8,11 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import EditMyDash from '@/components/common/Table/EditMyDash';
 import DashMyMember from '@/components/common/Table/DashMyMember';
 import DashInviteList from '@/components/common/Table/DashInviteList';
-import boardMockData from '@/components/common/SideMenu/mock';
-
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
-import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import BackButton from '@/components/pages/mypage/BackButton';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
-import { deleteDashboard } from '@/api/dashboards/deleteDashboard';
 import Head from 'next/head';
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import { useStore } from '@/context/stores';
-import Button from '@/components/common/Button';
 import EditModal from '@/components/common/Modal/EditModal';
 
 function Edit() {
@@ -30,10 +21,9 @@ function Edit() {
   const { id } = router.query;
   const dashboardId = Number(id);
 
-  const { modal, showModal, isDashChanged } = useStore((state) => ({
+  const { modal, showModal } = useStore((state) => ({
     modal: state.modals,
     showModal: state.showModal,
-    isDashChanged: state.isDashChanged,
   }));
 
   return (
