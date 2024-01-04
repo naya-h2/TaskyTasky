@@ -1,15 +1,20 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Card as CardType } from '@/lib/types/type';
-import { WHITE, GRAY, RED } from '@/styles/ColorStyles';
-import { FONT_12, FONT_16, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
+
 import Calendar from '@/public/icon/calendar.svg';
-import { useStore } from '@/context/stores';
-import { modalType } from '@/lib/types/zustand';
 import ChipColor from '../Chip/ChipColor';
+
+import { Card as CardType } from '@/lib/types/type';
+import { WHITE, GRAY, RED, BLUE, ORANGE, PURPLE, GREEN, PINK } from '@/styles/ColorStyles';
+import { FONT_12, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import { useStore } from '@/context/stores';
+import { useGetUser } from '@/hooks/useGetUser';
+import { modalType } from '@/lib/types/zustand';
 import { ColumnType } from '@/lib/types/columns';
+
+const COLORS = [BLUE[1], ORANGE[1], PURPLE[1], GREEN[1], PINK[1]];
 
 interface Props {
   card: CardType;
@@ -18,6 +23,7 @@ interface Props {
 
 function Card({ card, column }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const user = useGetUser();
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
@@ -28,6 +34,7 @@ function Card({ card, column }: Props) {
   const threeDaysLater = new Date();
   threeDaysLater.setDate(currentDate.getDate() + 3);
   const isCloseDuedate = currentDate < new Date(card.dueDate) && new Date(card.dueDate) <= threeDaysLater;
+  const isOverDuedate = currentDate >= new Date(card.dueDate);
 
   const handleButtonClick = (type: modalType) => {
     if (modal.includes(type)) return;
@@ -37,7 +44,7 @@ function Card({ card, column }: Props) {
   };
 
   return (
-    <StyledWrapper $isRed={isCloseDuedate} onClick={() => handleButtonClick('card')}>
+    <StyledWrapper $isRed={isCloseDuedate} $isOver={isOverDuedate} onClick={() => handleButtonClick('card')}>
       {card.imageUrl && <StyledThumbnail src={card.imageUrl} width={274} height={160} alt="" />}
       <StyledCircle $isRed={isCloseDuedate} />
       <StyledContent>
@@ -55,7 +62,9 @@ function Card({ card, column }: Props) {
           {card.assignee.profileImageUrl ? (
             <StyledProfileChip src={card.assignee?.profileImageUrl} width={24} height={24} alt="프로필 이미지" />
           ) : (
-            <StyledDefaultProfileChip>{card.assignee.nickname[0]}</StyledDefaultProfileChip>
+            <StyledDefaultProfileChip $color={card.assignee.id % 5}>
+              {card.assignee.nickname[0]}
+            </StyledDefaultProfileChip>
           )}
         </StyledDetail>
       </StyledContent>
@@ -65,7 +74,7 @@ function Card({ card, column }: Props) {
 
 export default Card;
 
-const StyledWrapper = styled.div<{ $isRed: boolean }>`
+const StyledWrapper = styled.div<{ $isRed: boolean; $isOver: boolean }>`
   width: 100%;
   height: fit-content;
   margin-bottom: 16px;
@@ -74,14 +83,15 @@ const StyledWrapper = styled.div<{ $isRed: boolean }>`
   position: relative;
 
   background-color: ${WHITE};
+  opacity: ${(props) => (props.$isOver ? 0.8 : 1)};
 
   border-radius: 6px;
-  border: 1px solid ${GRAY[30]};
+  border: ${(props) => (props.$isOver ? '2px' : '1px')} ${(props) => (props.$isOver ? 'dashed' : 'solid')} ${GRAY[30]};
 
   cursor: pointer;
 
   &:hover {
-    background-color: ${(props) => (props.$isRed ? '#FFE3E3' : '#EDDFFF')};
+    background-color: ${(props) => (props.$isRed ? '#ffe3e3' : GRAY[15])};
   }
 
   @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
@@ -171,7 +181,7 @@ const StyledProfileChip = styled(Image)`
   border-radius: 50%;
 `;
 
-const StyledDefaultProfileChip = styled.div`
+const StyledDefaultProfileChip = styled.div<{ $color: number }>`
   width: 24px;
   height: 24px;
 
@@ -183,7 +193,7 @@ const StyledDefaultProfileChip = styled.div`
   align-items: center;
   justify-content: space-around;
 
-  background-color: ${GRAY[40]};
+  background-color: ${(props) => COLORS[`${props.$color}`]};
 
   color: ${WHITE};
   ${FONT_12}

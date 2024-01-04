@@ -16,9 +16,10 @@ interface Props {
   type: modalType;
   dashboardID?: number;
   columnID?: number;
+  columnName?: string;
 }
 
-function ColumnModal({ type, dashboardID, columnID }: Props) {
+function ColumnModal({ type, dashboardID, columnID, columnName }: Props) {
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
   const hideModal = useStore((state) => state.hideModal);
@@ -58,13 +59,8 @@ function ColumnModal({ type, dashboardID, columnID }: Props) {
         <StyledDeleteButton onClick={() => deleteColumn('deleteColumnAlert')}>삭제하기</StyledDeleteButton>
       )}
       {type === 'manageColumn' ? (
-        <form
-          onSubmit={handleSubmit((data) => manageColumn(data))}
-          onChange={() => {
-            console.log('Hi');
-          }}
-        >
-          <Input type="name" register={register('editColumn')} isHookForm />
+        <form onSubmit={handleSubmit((data) => manageColumn(data))}>
+          <Input type="name" register={register('editColumn')} isHookForm defaultValue={columnName} />
         </form>
       ) : (
         <form onSubmit={handleSubmit((data) => addNewColumn(data))}>
