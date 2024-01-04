@@ -38,6 +38,7 @@ function Board() {
   const [columnList, setColumnList] = useState<ColumnType[]>([]);
   const [memberList, setMemberList] = useState<GetMemberListResponseType>();
   const [modalColumnId, setModalColumnId] = useState<number>();
+  const [modalColumnName, setModalColumnName] = useState<string>();
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
@@ -108,6 +109,7 @@ function Board() {
               <ColumnLists
                 columnList={columnList}
                 setModalColumnId={setModalColumnId as (value: SetStateAction<number>) => void}
+                setModalColumnName={setModalColumnName as (value: SetStateAction<string>) => void}
               />
             )}
           </StyledContent>
@@ -130,7 +132,9 @@ function Board() {
           />
         )}
         {modal[modal.length - 1] === 'createColumn' && <ColumnModal type={'createColumn'} dashboardID={Number(id)} />}
-        {modal.includes('manageColumn') && <ColumnModal type={'manageColumn'} columnID={modalColumnId} />}
+        {modal.includes('manageColumn') && (
+          <ColumnModal type={'manageColumn'} columnID={modalColumnId} columnName={modalColumnName} />
+        )}
         {modal[modal.length - 1] === 'deleteColumnAlert' && (
           <AlertModal type={'deleteColumnAlert'} columnID={modalColumnId} />
         )}

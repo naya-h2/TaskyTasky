@@ -77,10 +77,6 @@ const Wrapper = styled.div`
 
   z-index: ${Z_INDEX['LeftRightScroll_Button']};
 
-  @media (max-width: ${DEVICE_SIZE.pc}) {
-    display: none;
-  }
-
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 25px;
     height: calc(100vh - 70px);
@@ -88,6 +84,10 @@ const Wrapper = styled.div`
 
     position: fixed;
     top: 70px;
+  }
+
+  @media (min-width: ${DEVICE_SIZE.tablet}) {
+    display: none;
   }
 `;
 

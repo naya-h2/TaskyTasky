@@ -18,30 +18,36 @@ import ColumnModal from '../Modal/ColumnModal';
 interface Props {
   column: ColumnType;
   setModalColumnId: (value: SetStateAction<number>) => void;
+  setModalColumnName: (value: SetStateAction<string>) => void;
 }
 
 /**
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
+<<<<<<< HEAD
 function CardList({ column, setModalColumnId }: Props) {
+=======
+function CardList({ key, column, setModalColumnId, setModalColumnName }: Props) {
+>>>>>>> 8f41b8b (Feat: 컬럼수정시 Input에 컬럼이름이 미리 들어가있도록 구현)
   const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
   const [cardList, setCardList] = useState<GetCardListResponseType>();
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
 
-  const handleAddButtonClick = (type: modalType, columnId: number) => {
+  const handleAddButtonClick = (type: modalType, columnId: number, columnName: string) => {
     if (modal.includes(type)) return;
     showModal(type);
     setModalColumnId(columnId);
+    setModalColumnName(columnName);
   };
 
-  const handleManageButtonClick = (type: modalType, columnID: number) => {
+  const handleManageButtonClick = (type: modalType, columnID: number, columnName: string) => {
     if (modal.includes(type)) return;
     showModal(type);
     setModalColumnId(columnID);
-    console.log(columnID);
+    setModalColumnName(columnName);
   };
 
   useEffect(() => {
@@ -61,12 +67,12 @@ function CardList({ column, setModalColumnId }: Props) {
           <StyledLabel>{column.title}</StyledLabel>
           <StyledCountChip number={cardList ? cardList.totalCount : 0}></StyledCountChip>
         </StyledLabelWrapper>
-        <StyledSettingButton onClick={() => handleManageButtonClick('manageColumn', column.id)}>
+        <StyledSettingButton onClick={() => handleManageButtonClick('manageColumn', column.id, column.title)}>
           <SettingIcon />
         </StyledSettingButton>
       </StyledTop>
       <StyledBtnWrapper>
-        <Button.Add roundSize="M" onClick={() => handleAddButtonClick('createTodo', column.id)} />
+        <Button.Add roundSize="M" onClick={() => handleAddButtonClick('createTodo', column.id, column.title)} />
       </StyledBtnWrapper>
       {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} column={column} />)}
     </StyledRoot>

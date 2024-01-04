@@ -25,6 +25,7 @@ interface InputProps {
   initLabel?: string;
   disabled?: boolean;
   value?: string | string[];
+  defaultValue?: string;
   setValue?: (value: SetStateAction<Value>) => void;
 }
 
@@ -38,6 +39,7 @@ function Input({
   initLabel,
   disabled = false,
   value,
+  defaultValue,
   setValue,
 }: InputProps) {
   const [passwordInvisible, setPasswordInvisible] = useState(true);
@@ -87,6 +89,7 @@ function Input({
           <StyledInputBox
             id={type}
             placeholder={placeholder}
+            defaultValue={defaultValue}
             type={
               type === 'password' || type === 'passwordConfirm' ? (passwordInvisible ? 'password' : 'text') : 'text'
             }
