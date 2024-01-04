@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import TabletAddDashBoard from './TabletAddDashBoard';
@@ -6,13 +6,13 @@ import TabletDashBoard from './TabletDashBoard';
 import TabletLogoLink from './TabletLogoLink';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { WHITE, GRAY } from '@/styles/ColorStyles';
-import { useStore } from '@/context/stores';
 import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { DashboardType } from '@/lib/types/dashboards';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useRouter } from 'next/router';
 import InfiniteScroll from 'react-infinite-scroller';
 import { customScroll } from '@/styles/CustomScroll';
+import AngleLeft from '@/public/icon/angle_left.svg';
 
 function TabletSideMenu({ setIsTablet }: any) {
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
@@ -62,11 +62,11 @@ function TabletSideMenu({ setIsTablet }: any) {
   }, []);
 
   return (
-    <StyledWrapper>
+    <StyledWrapper isTablet={setIsTablet}>
       <StyledLogoWrapper>
         <TabletLogoLink />
         <StyledButton onClick={() => setIsTablet(false)}>
-          <Arrow>&lt;&lt;</Arrow>
+          <StyledIcon />
         </StyledButton>
       </StyledLogoWrapper>
       <StyledAddDashBoardWrapper>
@@ -97,7 +97,7 @@ function TabletSideMenu({ setIsTablet }: any) {
 
 export default TabletSideMenu;
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<{ isTablet: boolean }>`
   width: 160px;
   height: 100vh;
   padding: 20px 12px;
@@ -112,6 +112,8 @@ const StyledWrapper = styled.div`
   z-index: ${Z_INDEX.SideMenu_Wrapper};
 
   background-color: ${WHITE};
+
+  animation: ${(props) => (props.isTablet ? slideIn : slideOut)} 0.5s ease-in-out;
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     display: flex;
@@ -158,21 +160,51 @@ const StyledLink = styled.div<{ current: boolean }>`
 `;
 
 const StyledButton = styled.button`
-  background-color: #fff;
+  background-color: #5534da;
+  color: #fff;
   border: none;
+  border-radius: 50%;
   display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  z-index: 1;
+
+  &:hover {
+    background-color: #f3f2f9;
+    color: #5534da;
+  }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     display: block;
     position: absolute;
-    top: 60px;
-    left: 50%;
+    top: 110px;
+    left: 160px;
     transform: translateX(-50%);
   }
 `;
 
-const Arrow = styled.span`
-  font-size: 20px;
-  color: #5534da;
-  font-weight: bold;
+const StyledIcon = styled(AngleLeft)`
+  margin-top: 2px;
+`;
+
+const slideIn = keyframes`
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
+
+const slideOut = keyframes`
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 `;
