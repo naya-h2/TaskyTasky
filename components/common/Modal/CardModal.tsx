@@ -29,6 +29,7 @@ interface Props {
 
 function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isTagLoading, setIsTagLoading] = useState(false);
   const [commentList, setCommentList] = useState<CommentType[]>([]);
 
   const offsetRef = useRef<number>(0);
@@ -82,35 +83,7 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
             <ColumnNameChip content={columnTitle} />
             {cardInfo.tags.length > 0 && <VectorIcon />}
             {cardInfo.tags.map((tag) => {
-              let backgroundColor, fontColor;
-              switch (tag) {
-                case '프로젝트':
-                  backgroundColor = '#F9EEE3';
-                  fontColor = '#D58D49';
-                  break;
-                case '일반':
-                  backgroundColor = '#E7F7DB';
-                  fontColor = '#86D549';
-                  break;
-                case '백엔드':
-                  backgroundColor = '#F7DBF0';
-                  fontColor = '#D549B6';
-                  break;
-                case '상':
-                  backgroundColor = '#DBE6F7';
-                  fontColor = '#4981D5';
-                  break;
-                default:
-                  break;
-              }
-              return (
-                <ChipColor
-                  key={tag}
-                  backgroundColor={backgroundColor as string}
-                  fontColor={fontColor as string}
-                  text={tag}
-                />
-              );
+              return <ChipColor key={tag} setIsLoading={setIsTagLoading} text={tag} />;
             })}
           </StyledTaskSmallInfoBox>
           <StyledTaskDescription

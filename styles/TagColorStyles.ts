@@ -5,13 +5,7 @@
  * 3: Pink
  * 4: Blue
  */
-export const TAG_FONT_COLOR = {
-  0: '#171717',
-  1: '#D58D49',
-  2: '#86D549',
-  3: '#D549B6',
-  4: '#4981D5',
-};
+export const TAG_FONT_COLOR = ['#171717', '#D58D49', '#86D549', '#D549B6', '#4981D5'];
 
 /**
  * 0: Default(Gray)
@@ -20,10 +14,4 @@ export const TAG_FONT_COLOR = {
  * 3: Pink
  * 4: Blue
  */
-export const TAG_BACKGROUND_COLOR = {
-  0: '#D9D9D9',
-  1: '#F9EEE3',
-  2: '#E7F7DB',
-  3: '#F7DBF0',
-  4: '#DBE6F7',
-};
+export const TAG_BACKGROUND_COLOR = ['#D9D9D9', '#F9EEE3', '#E7F7DB', '#F7DBF0', '#DBE6F7'];

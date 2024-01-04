@@ -1,18 +1,15 @@
 ### 새 태그 생성 후 리턴  (이미 존재하는 태그일 경우, 해당 태그 리턴)
-POST http://localhost:3000/api/tag?tagName=프론트엔드&colorID=2
+POST http://localhost:3000/api/tag?tagName=하이&colorID=2
 
 ### 전체 태그 목록 조회
 GET http://localhost:3000/api/tag
 
-
 ### 특정 태그 조회
-GET http://localhost:3000/api/tag?tagName=백엔드
-
-
+GET http://localhost:3000/api/tag?tagName=하이
 
 
 ### 태그 삭제 (사용 예정 없음)
-DELETE http://localhost:3000/api/tag?tagName=백엔드
+DELETE http://localhost:3000/api/tag?tagName=사
 
 
 ### 태그 수정 (사용 예정 없음)

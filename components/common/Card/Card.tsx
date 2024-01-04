@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { SetStateAction } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Card as CardType } from '@/lib/types/type';
 import { WHITE, GRAY, RED } from '@/styles/ColorStyles';
@@ -17,6 +17,8 @@ interface Props {
 }
 
 function Card({ card, column }: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
   const setModalCard = useStore((state) => state.setModalCard);
@@ -43,7 +45,7 @@ function Card({ card, column }: Props) {
         <StyledDetail>
           <StyledTagWrapper>
             {card.tags.map((t) => (
-              <ChipColor key={t} backgroundColor="#f9eee3" fontColor="#d58d49" text={t}></ChipColor>
+              <ChipColor key={t} text={t} setIsLoading={setIsLoading}></ChipColor>
             ))}
           </StyledTagWrapper>
           <StyledDateWrapper>
