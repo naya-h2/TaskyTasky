@@ -13,10 +13,9 @@ import Button from '../Button';
 import SettingIcon from '@/public/icon/settings.svg';
 import CountChip from '../Chip/CountChip';
 
-import { BLACK, VIOLET, GRAY, WHITE } from '@/styles/ColorStyles';
+import { BLACK, VIOLET, GRAY } from '@/styles/ColorStyles';
 import { FONT_18_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import LoadingModal from '../Modal/LoadingModal';
 
 const FETCH_SIZE = 10;
 
@@ -32,7 +31,6 @@ function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const offsetRef = useRef<number>(0);
   const target = useRef<HTMLDivElement>(null);
-  const areaRef = useRef<HTMLDivElement>(null);
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
@@ -95,7 +93,6 @@ function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    console.log('얍');
     if (target.current) {
       observer = new IntersectionObserver(observeCallback, {
         threshold: 0.2,
@@ -107,7 +104,7 @@ function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
   }, [offsetRef.current, observeCallback]);
 
   return (
-    <StyledRoot ref={areaRef}>
+    <StyledRoot>
       <StyledTop>
         <StyledLabelWrapper>
           <StyledEllipse />
@@ -123,7 +120,6 @@ function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
       </StyledBtnWrapper>
       {cardList && cardList.map((card) => <Card key={card.id} card={card} column={column} />)}
       {offsetRef.current > 0 && <StyledObserveTargetBox ref={target} />}
-      {isLoading && <LoadingModal anchorRef={areaRef} />}
     </StyledRoot>
   );
 }
