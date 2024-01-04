@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Card as CardType } from '@/lib/types/type';
-import { WHITE, GRAY, RED } from '@/styles/ColorStyles';
+import { WHITE, GRAY, RED, BLUE, ORANGE, PURPLE, GREEN, PINK } from '@/styles/ColorStyles';
 import { FONT_12, FONT_16, FONT_16_B, FONT_16_EB } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import Calendar from '@/public/icon/calendar.svg';
@@ -10,6 +10,9 @@ import { useStore } from '@/context/stores';
 import { modalType } from '@/lib/types/zustand';
 import ChipColor from '../Chip/ChipColor';
 import { ColumnType } from '@/lib/types/columns';
+import { useGetUser } from '@/hooks/useGetUser';
+
+const COLORS = [BLUE[1], ORANGE[1], PURPLE[1], GREEN[1], PINK[1]];
 
 interface Props {
   card: CardType;
@@ -18,6 +21,7 @@ interface Props {
 
 function Card({ card, column }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const user = useGetUser();
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
@@ -56,7 +60,9 @@ function Card({ card, column }: Props) {
           {card.assignee.profileImageUrl ? (
             <StyledProfileChip src={card.assignee?.profileImageUrl} width={24} height={24} alt="프로필 이미지" />
           ) : (
-            <StyledDefaultProfileChip>{card.assignee.nickname[0]}</StyledDefaultProfileChip>
+            <StyledDefaultProfileChip $color={card.assignee.id % 5}>
+              {card.assignee.nickname[0]}
+            </StyledDefaultProfileChip>
           )}
         </StyledDetail>
       </StyledContent>
@@ -173,7 +179,7 @@ const StyledProfileChip = styled(Image)`
   border-radius: 50%;
 `;
 
-const StyledDefaultProfileChip = styled.div`
+const StyledDefaultProfileChip = styled.div<{ $color: number }>`
   width: 24px;
   height: 24px;
 
@@ -185,7 +191,7 @@ const StyledDefaultProfileChip = styled.div`
   align-items: center;
   justify-content: space-around;
 
-  background-color: ${GRAY[40]};
+  background-color: ${(props) => COLORS[`${props.$color}`]};
 
   color: ${WHITE};
   ${FONT_12}
