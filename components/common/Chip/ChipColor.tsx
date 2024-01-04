@@ -34,10 +34,6 @@ function ChipColor({ type, tagList, setTagList, text, setIsLoading }: Props) {
     let colorId;
     setIsLoading(true);
     try {
-      const resGet = await axios(`${baseUrl}/api/tag?tagName=${tag}`);
-      const { colorID } = resGet.data;
-      colorId = colorID;
-    } catch (err) {
       const number = getRandomNumber();
       const resPost = await axios.post(`${baseUrl}/api/tag?tagName=${tag}&colorID=${number}`);
       const { colorID } = resPost.data;

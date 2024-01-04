@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FieldValues, useForm } from 'react-hook-form';
 import { modalType } from '@/lib/types/zustand';
 import { useStore } from '@/context/stores';
 import Input from '../Input/Input';
@@ -7,10 +8,8 @@ import { FONT_14 } from '@/styles/FontStyles';
 import { GRAY } from '@/styles/ColorStyles';
 import { createColumn } from '@/api/columns/createColumn';
 import { editColumn } from '@/api/columns/editColumn';
-import { FieldValues, useForm } from 'react-hook-form';
-import { PostCardRequestType } from '@/lib/types/cards';
 import { PostColumnRequestType, PutColumnRequestType } from '@/lib/types/columns';
-import { Dispatch, SetStateAction } from 'react';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   type: modalType;
@@ -85,4 +84,8 @@ const StyledDeleteButton = styled.button`
   background-color: white;
 
   cursor: pointer;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    bottom: -30px;
+  }
 `;

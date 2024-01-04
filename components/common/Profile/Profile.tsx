@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import ProfileImg from './ProfileImg';
-import { FONT_14, FONT_16 } from '@/styles/FontStyles';
+import { FONT_12, FONT_14, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import UpIcon from '@/public/icon/small-up.svg';
 import DownIcon from '@/public/icon/small-down.svg';
@@ -26,7 +26,7 @@ function Profile({ type, id, name, profileImg }: Props) {
     <>
       {isOpen && <StyledMask onClick={() => setIsOpen(false)} />}
       <StyledContainer $type={type}>
-        <ProfileImg url={profileImg} size={38} name={name} id={id} type={type} />
+        <ProfileImg url={profileImg} size={type === 'card' ? 28 : 38} name={name} id={id} type={type} />
         <StyledNameWrapper $type={type} onClick={handleDropdownClick}>
           <StyledName $type={type}>{name}</StyledName>
           {type === 'header' && (isOpen ? <StyledUpIcon /> : <StyledDownIcon />)}
@@ -66,6 +66,10 @@ const StyledName = styled.div<{ $type: string }>`
 
   ${(props) => (props.$type === 'member' ? `${FONT_14}` : null)};
   ${(props) => (props.$type === 'header' ? invisibleMobile : null)};
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    ${(props) => props.$type === 'card' && `${FONT_12}`};
+  }
 `;
 
 const StyledNameWrapper = styled.div<{ $type: string }>`

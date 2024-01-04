@@ -10,7 +10,7 @@ function MainIntro() {
   return (
     <StyledContainer>
       <StyledMainImg>
-        <Image src="/images/tasky_home_main.png" alt="메인 이미지" fill />
+        <Image src="/images/tasky_home_main.png" alt="메인 이미지" fill priority />
       </StyledMainImg>
       <TitleContainer>
         <Title>새로운 일정 관리</Title>
