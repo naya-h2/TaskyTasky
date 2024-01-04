@@ -21,16 +21,22 @@ export type modalType =
   | 'editPassword'
   | 'invite'
   | 'inviteAlert'
-  | 'imgError';
+  | 'imgError'
+  | 'deleteMember'
+  | 'cancelInvite'
+  | 'deleteDashboard'
+  | 'EditDashboard';
 
 export interface ModalState {
   modals: modalType[];
   modalCard: CardType;
   modalCardColumnTitle: string;
   isColumnChanged: boolean;
+  isDashChanged: boolean;
   setModalCard: (value: CardType) => void;
   setModalCardColumnTitle: (value: string) => void;
   setIsColumnChanged: () => void;
+  setIsDashChanged: () => void;
   showModal: (type: modalType) => void;
   hideModal: (type: modalType) => void;
   clearModal: () => void;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Second from '@/components/common/Header/SecondHeader/SecondHeader';
 import SideMenu from '@/components/common/SideMenu/SideMenu';
 import { FONT_16, FONT_18 } from '@/styles/FontStyles';
-import { BLACK, GRAY } from '@/styles/ColorStyles';
+import { BLACK, GRAY, RED } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import EditMyDash from '@/components/common/Table/EditMyDash';
 import DashMyMember from '@/components/common/Table/DashMyMember';
@@ -18,6 +18,11 @@ import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
 import BackButton from '@/components/pages/mypage/BackButton';
 import { useCheckLogin } from '@/hooks/useCheckLogin';
 import { deleteDashboard } from '@/api/dashboards/deleteDashboard';
+import Head from 'next/head';
+import Header from '@/components/common/Header/SecondHeader/SecondHeader';
+import { useStore } from '@/context/stores';
+import Button from '@/components/common/Button';
+import EditModal from '@/components/common/Modal/EditModal';
 
 function Edit() {
   useCheckLogin();
@@ -25,60 +30,34 @@ function Edit() {
   const { id } = router.query;
   const dashboardId = Number(id);
 
-  const hadnlerDashBoardDelete = async () => {
-    if (confirm('대쉬보드를 삭제하시겠습니까?')) {
-      await deleteDashboard(dashboardId);
-      alert('대쉬보드를 삭제했습니다.');
-      router.push('/myboard');
-    }
-  };
-  const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>({
-    id: 0,
-    title: '',
-    color: '',
-    createdAt: '',
-    updatedAt: '',
-    createdByMe: false,
-    userId: 0,
-  });
-
-  // useEffect(() => {
-  //   if (!router.isReady) return;
-  //   const fetchDashboardInfo = async () => {
-
-  //     console.log(dashBoardData);
-
-  //   };
-  //   fetchDashboardInfo();
-  // }, [router.isReady]);
-  useEffect(() => {
-    if (!router.isReady) return;
-    const fetchDashboardData = async () => {
-      //const memberData = await getMemberList(1, 5, dashboardId);
-      const dashBoardData = await getDashboardInfo(dashboardId);
-      //setMemberList(memberData);
-      setDashBoardInfo(dashBoardData);
-    };
-    fetchDashboardData();
-  }, [router.isReady]);
+  const { modal, showModal, isDashChanged } = useStore((state) => ({
+    modal: state.modals,
+    showModal: state.showModal,
+    isDashChanged: state.isDashChanged,
+  }));
 
   return (
     <Root>
-      <Second page="others" children="제목" />
+      <Head>
+        <title>내 대시보드 | TaskyTasky</title>
+      </Head>
+      <Header page="myboard">내 대시보드</Header>
       <SideMenu />
-      <Content>
-        <Wrapper>
+
+      <StyledBody>
+        <StyledContainer>
           <ButtonLink href={`/board/${id}`}>
             <ReturnButton>
               <BackButton>돌아가기</BackButton>
             </ReturnButton>
           </ButtonLink>
-          <EditMyDash dashboardData={dashBoardInfo} />
+          <EditMyDash />
           <DashMyMember />
           <DashInviteList />
-          <DeleteDashButton onClick={hadnlerDashBoardDelete}>대시보드 삭제하기</DeleteDashButton>
-        </Wrapper>
-      </Content>
+          <DeleteDashButton onClick={() => showModal('deleteDashboard')}>대시보드 삭제하기</DeleteDashButton>
+        </StyledContainer>
+      </StyledBody>
+      {modal.includes('deleteDashboard') && <EditModal type="deleteDashboard" dashboardId={dashboardId} />}
     </Root>
   );
 }
@@ -86,30 +65,27 @@ function Edit() {
 export default Edit;
 
 const Root = styled.div``;
-
-const Content = styled.div`
-  width: 100%;
+const StyledBody = styled.div`
   padding-top: 70px;
   padding-left: 300px;
-  background-color: ${[GRAY[20]]};
-  display: flex;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    padding-top: 70px;
     padding-left: 160px;
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding-top: 70px;
     padding-left: 67px;
   }
 `;
 
-const Wrapper = styled.div`
-  padding: 22px 20px;
+const StyledContainer = styled.div`
+  width: 100%;
+  max-width: 1022px;
+  padding: 40px;
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 40px;
 `;
 
 const ButtonLink = styled(Link)`
@@ -138,6 +114,11 @@ const DeleteDashButton = styled.button`
   border-radius: 8px;
   border: 1px solid ${[GRAY[30]]};
   ${[FONT_18]}
+
+  &: hover {
+    border: 1px solid ${[RED]};
+    color: ${[RED]};
+  }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 284px;

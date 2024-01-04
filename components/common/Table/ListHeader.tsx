@@ -6,6 +6,8 @@ import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useRouter } from 'next/router';
 import { useStore } from '@/context/stores';
 import InviteModal from '@/components/common/Modal/InviteModal';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ListHeaderProps {
   title: '구성원' | '초대 내역';
@@ -60,6 +62,7 @@ function ListHeader({ title = '구성원', totalCount, page = 1, getPage }: List
               </ButtonStyle>
             </Button.Plain>
           </InviteButtonLayout>
+          <ToastContainer position="top-center" closeOnClick pauseOnHover={false} />
 
           {modal.includes('invite') && <InviteModal dashboardId={Number(id)} />}
         </HeaderRight>
