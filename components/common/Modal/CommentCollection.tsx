@@ -56,7 +56,7 @@ function CommentCollection({ areaRef, isLoading, commentList, offsetRef, cardId,
       })}
       {offsetRef.current > 0 && <StyledObserveTargetBox ref={target} />}
       {isLoading && <LoadingModal anchorRef={areaRef} />}
-      <StyledScrollTop onClick={MoveToTop}>↑</StyledScrollTop>
+      {commentList.length > 0 && <StyledScrollTop onClick={MoveToTop}>↑</StyledScrollTop>}
     </StyledCommentsArea>
   );
 }
@@ -69,6 +69,7 @@ const StyledCommentsArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  position: relative;
 
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -91,8 +92,8 @@ const StyledScrollTop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  left: 430px;
-  bottom: -200px;
+  position: sticky;
+  left: 410px;
+  bottom: 10px;
   cursor: pointer;
 `;

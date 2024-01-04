@@ -1,29 +1,48 @@
 import { styled } from 'styled-components';
 import { BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_18, FONT_20_B } from '@/styles/FontStyles';
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DashBoardColor from '../Chip/DashBoardColor';
 import Button from '../Button';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
-import { editDashboard } from '@/api/dashboards/editDashboard';
-import { tree } from 'next/dist/build/templates/app-page';
+
 import { useStore } from '@/context/stores';
+import EditModal from '../Modal/EditModal';
+import { useRouter } from 'next/router';
+import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
 import ColorChoice from '../Chip/ColorChoice';
 import UpIcon from '@/public/icon/small-up.svg';
 import DownIcon from '@/public/icon/small-down.svg';
 
-interface Props {
-  dashboardData: GetDashboardListDetailResponseType;
-}
+function EditMyDash() {
+  const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>({
+    id: 0,
+    title: '',
+    color: '',
+    createdAt: '',
+    updatedAt: '',
+    createdByMe: false,
+    userId: 0,
+  });
 
-function EditMyDash({ dashboardData }: Props) {
-  const initialColor = dashboardData.color;
+  const initialColor = dashBoardInfo.color;
+  const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
+  const colorIndex = colors.indexOf(initialColor);
   const [selectedColor, setSelectedColor] = useState('');
   const [isNotActive, setIsNotActive] = useState(true);
-  const [dashData, setDashData] = useState(dashboardData);
   const [editName, setEditName] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
+  const { id } = router.query;
+  const dashboardId = Number(id);
+
+  const { modal, showModal, isDashChanged } = useStore((state) => ({
+    modal: state.modals,
+    showModal: state.showModal,
+    isDashChanged: state.isDashChanged,
+  }));
 
   const OnNameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -35,12 +54,9 @@ function EditMyDash({ dashboardData }: Props) {
     setEditName('');
   };
 
-  const handleSubmit = async () => {
-    alert('변경이 완료되었습니다.');
-    const body = { title: editName, color: selectedColor };
-    const response = await editDashboard(dashboardData.id, body);
-    setDashData(response);
-    setEditName('');
+  const fetchDashboardData = async () => {
+    const dashBoardData = await getDashboardInfo(dashboardId);
+    setDashBoardInfo(dashBoardData);
   };
 
   const handleEditColorClick = () => {
@@ -48,9 +64,16 @@ function EditMyDash({ dashboardData }: Props) {
   };
 
   useEffect(() => {
-    setDashData(dashboardData);
+    setEditName('');
+    setIsNotActive(true);
+    fetchDashboardData();
+  }, [colorIndex, isDashChanged]);
+
+  useEffect(() => {
     setSelectedColor(initialColor);
   }, []);
+
+  console.log(selectedColor, initialColor);
 
   return (
     <Wrapper>
@@ -58,7 +81,7 @@ function EditMyDash({ dashboardData }: Props) {
         <EditDashChip>
           <ColorWrapper>
             {selectedColor && <Chip $color={selectedColor} />}
-            <BoardTitle>{dashData.title}</BoardTitle>
+            <BoardTitle>{dashBoardInfo.title}</BoardTitle>
           </ColorWrapper>
         </EditDashChip>
         <EditDashName>
@@ -79,12 +102,20 @@ function EditMyDash({ dashboardData }: Props) {
         {isOpen && <ColorChoice type="edit" color={selectedColor} setColor={setSelectedColor} />}
         <EditButton>
           <ButtonWrapper>
-            <Button.Plain style="primary" roundSize="M" onClick={handleSubmit} isNotActive={isNotActive}>
+            <Button.Plain
+              style="primary"
+              roundSize="M"
+              onClick={() => showModal('EditDashboard')}
+              isNotActive={isNotActive}
+            >
               <ButtonText>변경</ButtonText>
             </Button.Plain>
           </ButtonWrapper>
         </EditButton>
       </Container>
+      {modal.includes('EditDashboard') && (
+        <EditModal type="EditDashboard" dashboardId={dashboardId} dashTitle={editName} dashColor={selectedColor} />
+      )}
     </Wrapper>
   );
 }

@@ -38,6 +38,7 @@ function TodoModal({ type, columnList, memberLists, dashboardId, columnId }: Pro
   const modalCardColumnTitle = useStore((state) => state.modalCardColumnTitle);
   const cardUrl = useStore((state) => state.cardUrl);
   const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
+  const setTodoModalDescription = useStore((state) => state.setTodoModalDescription);
 
   const handleButtonClick = async () => {
     if (type === 'createTodo') {
@@ -48,11 +49,15 @@ function TodoModal({ type, columnList, memberLists, dashboardId, columnId }: Pro
       delete reqValue.dashboardId;
       await editCard(modalCard.id, reqValue);
     }
-    setIsColumnChanged();
     clearModal();
+    setIsColumnChanged();
+    setTodoModalDescription('');
   };
 
   useEffect(() => {
+    if (type === 'editTodo') {
+      setTodoModalDescription(reqValue.description);
+    }
     setReqValue((prev) => ({
       ...prev,
       imageUrl: cardUrl,

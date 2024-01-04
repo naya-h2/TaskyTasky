@@ -7,7 +7,6 @@ import PasswordCard from '@/components/pages/mypage/PasswordCard';
 import BackButton from '@/components/pages/mypage/BackButton';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { useGetUser } from '@/hooks/useGetUser';
-import dashboardData from '@/components/common/SideMenu/mock'; // 사이드메뉴 되면 목업데이터 삭제 예정
 import { useCheckLogin } from '@/hooks/useCheckLogin';
 
 function MyPage() {

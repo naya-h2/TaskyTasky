@@ -9,11 +9,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getDashboardInvitationList } from '@/api/dashboards/getDashboardInvitationList';
 import NoDashImg from '@/public/images/No_Invite_Dash.svg';
-import { deleteDashboardInvitation } from '@/api/dashboards/deleteDashboardInvitation';
-
-// interface Props {
-//   invitationsList: GetDashboardInvitationResponseType;
-// }
+import { useStore } from '@/context/stores';
+import EditModal from '../Modal/EditModal';
 
 function DashInviteList() {
   const router = useRouter();
@@ -25,8 +22,14 @@ function DashInviteList() {
   });
   const { invitations, totalCount } = dashInvitation;
   const [page, setPage] = useState(1);
+  const [invitationId, setInvitationId] = useState(0);
 
-  console.log(invitations);
+  const { modal, showModal, isDashChanged } = useStore((state) => ({
+    modal: state.modals,
+    showModal: state.showModal,
+    isDashChanged: state.isDashChanged,
+  }));
+
   const fetchDashboardData = async (page: number) => {
     const dashInvitation = await getDashboardInvitationList(dashboardId, 5, page);
     setDashInvitation(dashInvitation);
@@ -36,15 +39,15 @@ function DashInviteList() {
     fetchDashboardData(num);
   };
 
-  const handleCancelInvite = async (dashboardId: number, invitationId: number, email: string) => {
-    await deleteDashboardInvitation(dashboardId, invitationId);
-    alert(`${email} 초대를 취소하였습니다.`);
+  const modalInviteData = (inviteId: number) => {
+    showModal('cancelInvite');
+    setInvitationId(inviteId);
   };
 
   useEffect(() => {
     if (!router.isReady) return;
     fetchDashboardData(page);
-  }, [router.isReady]);
+  }, [router.isReady, isDashChanged]);
 
   return (
     <Wrapper>
@@ -64,19 +67,16 @@ function DashInviteList() {
                   <InviterEmailLayout>
                     <InviteEmail>{invitation.invitee.email}</InviteEmail>
                     <InviteCancelButton>
-                      <Button.Plain
-                        style="outline"
-                        roundSize="S"
-                        onClick={() =>
-                          handleCancelInvite(invitation.dashboard.id, invitation.id, invitation.invitee.email)
-                        }
-                      >
+                      <Button.Plain style="outline" roundSize="S" onClick={() => modalInviteData(invitation.id)}>
                         <ButtonText>취소</ButtonText>
                       </Button.Plain>
                     </InviteCancelButton>
                   </InviterEmailLayout>
                 </InviterEmailWrapper>
               ))}
+              {modal.includes('cancelInvite') && (
+                <EditModal type="cancelInvite" dashboardId={dashboardId} invitationId={invitationId} />
+              )}
             </ListLayout>
           </>
         )}

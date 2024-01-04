@@ -6,6 +6,9 @@ import { emailRules } from '@/lib/constants/inputErrorRules';
 import { inviteDashboard } from '@/api/dashboards/inviteDashboard';
 import ModalFrame from './ModalFrame';
 import AlertModal from './AlertModal';
+import { useRouter } from 'next/router';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Props {
   dashboardId: number;
@@ -13,10 +16,11 @@ interface Props {
 
 function InviteModal({ dashboardId }: Props) {
   const [errorMsg, setErrorMsg] = useState();
-  const { modals, showModal, clearModal } = useStore((state) => ({
+  const { modals, showModal, clearModal, hideModal } = useStore((state) => ({
     modals: state.modals,
     showModal: state.showModal,
     clearModal: state.clearModal,
+    hideModal: state.hideModal,
   }));
   const {
     register,
@@ -25,15 +29,26 @@ function InviteModal({ dashboardId }: Props) {
   } = useForm({ mode: 'onBlur' });
   const email = watch('email');
 
+
+  const router = useRouter();
+
   const handleInviteClick = async (event?: FormEvent) => {
     if (event) event.preventDefault();
+
     const response = await inviteDashboard(dashboardId, { email });
     if (response.status !== 201) {
       setErrorMsg(response.data?.message);
       showModal('inviteAlert');
     } else {
+      const toastId = toast.success('초대가 완료되었습니다.', {
+        autoClose: 1700,
+      });
       clearModal();
-      setTimeout(() => window.location.reload(), 1000);
+
+      const delayInMilliseconds = 1800;
+      setTimeout(() => {
+        router.reload();
+      }, delayInMilliseconds);
     }
   };
 

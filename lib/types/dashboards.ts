@@ -24,8 +24,8 @@ export interface GetDashboardListResponseType {
 export interface GetDashboardListDetailResponseType extends DashboardType {}
 
 export interface PutDashboardRequestType {
-  title: string;
-  color: string;
+  title: string | undefined;
+  color: string | undefined;
 }
 
 export interface PutDashboardResponseType extends DashboardType {}
