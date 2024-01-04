@@ -1,5 +1,5 @@
 [[redirects]]
 from = "/api/*"
-  to = `${process.env.NEXT_PUBLIC_BASE_URL}/:splat` 
+  to = "https://sp-taskify-api.vercel.app/1-10/:splat"  
   status = 200
   force = true
