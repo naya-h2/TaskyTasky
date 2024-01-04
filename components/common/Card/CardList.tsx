@@ -25,11 +25,8 @@ interface Props {
  * @param label 컬럼 제목
  * @param cardList 카드 리스트
  */
-<<<<<<< HEAD
-function CardList({ column, setModalColumnId }: Props) {
-=======
-function CardList({ key, column, setModalColumnId, setModalColumnName }: Props) {
->>>>>>> 8f41b8b (Feat: 컬럼수정시 Input에 컬럼이름이 미리 들어가있도록 구현)
+
+function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
   const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
   const [cardList, setCardList] = useState<GetCardListResponseType>();
 

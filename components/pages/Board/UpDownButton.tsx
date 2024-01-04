@@ -38,10 +38,10 @@ function UpDownButton() {
 
   return (
     <Wrapper>
-      <FrontBtn isTop={isTop} onClick={scrollToStart}>
+      <FrontBtn $isTop={isTop} onClick={scrollToStart}>
         <ArrowToFrontIcon />
       </FrontBtn>
-      <BackBtn isBottom={isBottom} onClick={scrollToEnd}>
+      <BackBtn $isBottom={isBottom} onClick={scrollToEnd}>
         <ArrowToFrontIcon />
       </BackBtn>
     </Wrapper>
@@ -108,17 +108,17 @@ const Btn = styled.button`
   }
 `;
 
-const FrontBtn = styled(Btn)<{ isTop: boolean }>`
+const FrontBtn = styled(Btn)<{ $isTop: boolean }>`
   animation: ${toBottom} 2s 0.5s infinite;
-  opacity: ${(props) => (props.isTop ? 0 : 1)};
+  opacity: ${(props) => (props.$isTop ? 0 : 1)};
   svg {
     transform: rotate(90deg);
   }
 `;
 
-const BackBtn = styled(Btn)<{ isBottom: boolean }>`
+const BackBtn = styled(Btn)<{ $isBottom: boolean }>`
   animation: ${toTop} 2s 0.5s infinite;
-  opacity: ${(props) => (props.isBottom ? 0 : 1)};
+  opacity: ${(props) => (props.$isBottom ? 0 : 1)};
   svg {
     transform: rotate(270deg);
   }

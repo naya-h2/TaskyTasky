@@ -39,10 +39,10 @@ function ScrollableContent() {
 
   return (
     <Wrapper>
-      <FrontBtn isFront={isFront} onClick={scrollToStart}>
+      <FrontBtn $isFront={isFront} onClick={scrollToStart}>
         <ArrowToFrontIcon />
       </FrontBtn>
-      <BackBtn isBack={isBack} onClick={scrollToEnd}>
+      <BackBtn $isBack={isBack} onClick={scrollToEnd}>
         <ArrowToBackIcon />
       </BackBtn>
     </Wrapper>
@@ -101,12 +101,12 @@ const Btn = styled.button`
   }
 `;
 
-const FrontBtn = styled(Btn)<{ isFront: boolean }>`
+const FrontBtn = styled(Btn)<{ $isFront: boolean }>`
   animation: ${toRight} 2s 0.5s infinite;
-  opacity: ${(props) => (props.isFront ? 0 : 1)};
+  opacity: ${(props) => (props.$isFront ? 0 : 1)};
 `;
 
-const BackBtn = styled(Btn)<{ isBack: boolean }>`
+const BackBtn = styled(Btn)<{ $isBack: boolean }>`
   animation: ${toLeft} 2s 0.5s infinite;
-  opacity: ${(props) => (props.isBack ? 0 : 1)};
+  opacity: ${(props) => (props.$isBack ? 0 : 1)};
 `;
