@@ -1,19 +1,24 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
 import { useStore } from '@/context/stores';
-import Card from './Card';
-import Button from '../Button';
-import ImgUrlModal from '../Modal/ImgUrlModal';
 import { getCardList } from '@/api/cards/getCardList';
-import SettingIcon from '@/public/icon/settings.svg';
-import CountChip from '../Chip/CountChip';
-import { BLACK, VIOLET, GRAY } from '@/styles/ColorStyles';
-import { FONT_18_B } from '@/styles/FontStyles';
-import { DEVICE_SIZE } from '@/styles/DeviceSize';
+
 import { modalType } from '@/lib/types/zustand';
 import { ColumnType } from '@/lib/types/columns';
-import { GetCardListResponseType } from '@/lib/types/cards';
-import ColumnModal from '../Modal/ColumnModal';
+import { CardType } from '@/lib/types/cards';
+
+import Card from './Card';
+import Button from '../Button';
+import SettingIcon from '@/public/icon/settings.svg';
+import CountChip from '../Chip/CountChip';
+
+import { BLACK, VIOLET, GRAY, WHITE } from '@/styles/ColorStyles';
+import { FONT_18_B } from '@/styles/FontStyles';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
+import LoadingModal from '../Modal/LoadingModal';
+
+const FETCH_SIZE = 10;
 
 interface Props {
   column: ColumnType;
@@ -21,17 +26,35 @@ interface Props {
   setModalColumnName: (value: SetStateAction<string>) => void;
 }
 
-/**
- * @param label 컬럼 제목
- * @param cardList 카드 리스트
- */
-
 function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
-  const [isColumnChanged, setIsColumnChanged] = useState<boolean>(false);
-  const [cardList, setCardList] = useState<GetCardListResponseType>();
+  const [cardList, setCardList] = useState<CardType[]>([]);
+  const [totalCount, setTotalCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const offsetRef = useRef<number>(0);
+  const target = useRef<HTMLDivElement>(null);
+  const areaRef = useRef<HTMLDivElement>(null);
 
   const modal = useStore((state) => state.modals);
   const showModal = useStore((state) => state.showModal);
+
+  const getCardListData = async (columnID: number, size: number, cursorID: number) => {
+    setIsLoading(true);
+    try {
+      const resComment = await getCardList(columnID, size, cursorID);
+      const { cursorId, cards } = resComment;
+      if (!cursorID) {
+        setCardList(cards);
+      }
+      if (cursorID) {
+        setCardList((prev) => [...prev, ...cards]);
+      }
+      offsetRef.current = cursorId;
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleAddButtonClick = (type: modalType, columnId: number, columnName: string) => {
     if (modal.includes(type)) return;
@@ -47,22 +70,49 @@ function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
     setModalColumnName(columnName);
   };
 
-  useEffect(() => {
-    const fetchCardList = async () => {
-      const resCardList = await getCardList(column.id);
-      setCardList(resCardList);
-    };
+  const observeCallback: IntersectionObserverCallback = useCallback(
+    (entries) => {
+      if (offsetRef.current) {
+        entries.forEach((entry) => {
+          if (isLoading) return;
+          if (!entry.isIntersecting) return;
+          getCardListData(column.id, FETCH_SIZE, offsetRef.current);
+        });
+      }
+    },
+    [offsetRef.current],
+  );
 
-    fetchCardList();
+  useEffect(() => {
+    const firstFetch = async () => {
+      const res = await getCardList(column.id, FETCH_SIZE, offsetRef.current);
+      setCardList(res.cards);
+      setTotalCount(res.totalCount);
+      offsetRef.current = res.cursorId;
+    };
+    firstFetch();
   }, [column]);
 
+  useEffect(() => {
+    let observer: IntersectionObserver;
+    console.log('얍');
+    if (target.current) {
+      observer = new IntersectionObserver(observeCallback, {
+        threshold: 0.2,
+      });
+
+      observer.observe(target.current as Element);
+    }
+    return () => observer && observer.disconnect();
+  }, [offsetRef.current, observeCallback]);
+
   return (
-    <StyledRoot>
+    <StyledRoot ref={areaRef}>
       <StyledTop>
         <StyledLabelWrapper>
           <StyledEllipse />
           <StyledLabel>{column.title}</StyledLabel>
-          <StyledCountChip number={cardList ? cardList.totalCount : 0}></StyledCountChip>
+          <StyledCountChip number={cardList ? totalCount : 0}></StyledCountChip>
         </StyledLabelWrapper>
         <StyledSettingButton onClick={() => handleManageButtonClick('manageColumn', column.id, column.title)}>
           <SettingIcon />
@@ -71,7 +121,9 @@ function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
       <StyledBtnWrapper>
         <Button.Add roundSize="M" onClick={() => handleAddButtonClick('createTodo', column.id, column.title)} />
       </StyledBtnWrapper>
-      {cardList && cardList.cards.map((card) => <Card key={card.id} card={card} column={column} />)}
+      {cardList && cardList.map((card) => <Card key={card.id} card={card} column={column} />)}
+      {offsetRef.current > 0 && <StyledObserveTargetBox ref={target} />}
+      {isLoading && <LoadingModal anchorRef={areaRef} />}
     </StyledRoot>
   );
 }
@@ -177,5 +229,21 @@ const StyledBtnWrapper = styled.div`
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     max-width: none;
+  }
+`;
+
+const StyledObserveTargetBox = styled.div`
+  width: 100%;
+  height: 100px;
+  margin-bottom: 16px;
+
+  background-color: ${GRAY[15]};
+  border: 1px solid ${GRAY[30]};
+  border-radius: 6px;
+  cursor: pointer;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) and (min-width: ${DEVICE_SIZE.mobile}) {
+    display: flex;
+    flex-direction: row;
   }
 `;

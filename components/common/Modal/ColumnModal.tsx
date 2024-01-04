@@ -59,12 +59,7 @@ function ColumnModal({ type, dashboardID, columnID, columnName }: Props) {
         <StyledDeleteButton onClick={() => deleteColumn('deleteColumnAlert')}>삭제하기</StyledDeleteButton>
       )}
       {type === 'manageColumn' ? (
-        <form
-          onSubmit={handleSubmit((data) => manageColumn(data))}
-          onChange={() => {
-            console.log('Hi');
-          }}
-        >
+        <form onSubmit={handleSubmit((data) => manageColumn(data))}>
           <Input type="name" register={register('editColumn')} isHookForm defaultValue={columnName} />
         </form>
       ) : (

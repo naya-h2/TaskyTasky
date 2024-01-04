@@ -9,14 +9,14 @@ import instance from '@/lib/axios';
 export const getCardList = async (columnId: number, size?: number, cursorId?: number) => {
   const query = size
     ? cursorId
-      ? '&size=${size}&cursorId=${cursorId}'
-      : '&size=${size}'
+      ? `size=${size}&cursorId=${cursorId}&`
+      : `size=${size}&`
     : cursorId
-      ? '&cursorId=${cursorId}'
+      ? `cursorId=${cursorId}&`
       : '';
 
   try {
-    const response = await instance.get(`/api/cards?columnId=${columnId}${query}`);
+    const response = await instance.get(`/api/cards?${query}columnId=${columnId}`);
     return response.data;
   } catch (error) {}
 };
