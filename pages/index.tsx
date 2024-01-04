@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Layout from '@/components/pages/home/Layout';
-import PointSection from '@/components/pages/home/PointSection';
-import MainIntro from '@/components/pages/home/MainIntro';
-import MiniSection from '@/components/pages/home/MiniSection';
+import Layout from '@/components/pages/landing/Layout';
+import PointSection from '@/components/pages/landing/PointSection';
+import MainIntro from '@/components/pages/landing/MainIntro';
+import MiniSection from '@/components/pages/landing/MiniSection';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 function Home() {
