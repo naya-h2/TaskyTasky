@@ -1,34 +1,68 @@
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import AddDashBoard from './AddDashBoard';
 import DashBoard from './DashBoard';
 import LogoLink from './LogoLink';
+import TabletSideMenu from './TabletSideMenu';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { Z_INDEX } from '@/styles/ZIndexStyles';
 import { WHITE, GRAY } from '@/styles/ColorStyles';
-import { useStore } from '@/context/stores';
 import { getDashboardList } from '@/api/dashboards/getDashboardList';
 import { DashboardType } from '@/lib/types/dashboards';
-import TabletSideMenu from './TabletSideMenu';
+import Link from 'next/link';
+import InfiniteScroll from 'react-infinite-scroller';
+import { customScroll } from '@/styles/CustomScroll';
 
 function SideMenu() {
-  const { page, setTotal } = useStore((state) => ({
-    page: state.myboardPageNumber,
-    setTotal: state.calcTotalPage,
-  }));
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
   const [isTablet, setIsTablet] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const router = useRouter();
+
+  // 데이터를 불러오는 함수
+  const fetchMoreData = async () => {
+    if (loading) return;
+    setLoading(true);
+    //setHasMore(false);
+
+    try {
+      const size = page === 1 ? 15 : 5;
+      const dashboardData = await getDashboardList('pagination', size, undefined, page);
+      if (dashboardData.dashboards.length > 0) {
+        setDashboardList((prevList) => {
+          const newDashboards = dashboardData.dashboards.filter(
+            (newDashboard: DashboardType) => !prevList.some((dashboard) => dashboard.id === newDashboard.id),
+          );
+          if (newDashboards.length === 0) {
+            setHasMore(false);
+            return prevList; // 변경 사항 없이 이전 리스트를 반환
+          } else {
+            // 새 데이터를 이전 리스트에 추가하여 반환
+            setHasMore(true);
+            return [...prevList, ...newDashboards];
+          }
+        });
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Error fetching dashboards:', error);
+    } finally {
+      setLoading(false);
+      setPage((prevPage) => {
+        const newPage = prevPage + 1;
+        setHasMore(true);
+        return newPage;
+      });
+    }
+  };
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      const dashboardData = await getDashboardList('pagination', 10, undefined, page);
-      setDashboardList(dashboardData?.dashboards);
-      setTotal(Math.ceil(dashboardData?.totalCount / 5));
-    };
-
-    fetchDashboardData();
-  }, [page]);
+    fetchMoreData();
+  }, []);
 
   if (isTablet) {
     return <TabletSideMenu setIsTablet={setIsTablet} />;
@@ -46,16 +80,23 @@ function SideMenu() {
         <AddDashBoard data={dashboardList} />
       </StyledAddDashBoardWrapper>
       <StyledDashboardList>
-        {dashboardList?.map((dashboard) => (
-          <StyledLink href={`/board/${dashboard.id}`} key={dashboard.id}>
-            <DashBoard
-              key={dashboard.id}
-              color={dashboard.color}
-              title={dashboard.title}
-              createdByMe={dashboard.createdByMe}
-            />
-          </StyledLink>
-        ))}
+        <InfiniteScroll
+          pageStart={0}
+          threshold={10}
+          loadMore={fetchMoreData}
+          hasMore={hasMore}
+          // loader={<h4>Loading...</h4>}
+          useWindow={false}
+          initialLoad={false}
+        >
+          {dashboardList.map((dashboard) => (
+            <Link href={`/board/${dashboard.id}`} passHref key={dashboard.id}>
+              <StyledLink current={router.asPath === `/board/${dashboard.id}`}>
+                <DashBoard color={dashboard.color} title={dashboard.title} createdByMe={dashboard.createdByMe} />
+              </StyledLink>
+            </Link>
+          ))}
+        </InfiniteScroll>
       </StyledDashboardList>
     </StyledWrapper>
   );
@@ -65,7 +106,7 @@ export default SideMenu;
 
 const StyledWrapper = styled.div`
   width: 300px;
-  height: 1550px;
+  height: 100%;
   padding: 20px 12px;
   border-right: 1px solid ${GRAY[30]};
   left: 0;
@@ -81,11 +122,11 @@ const StyledWrapper = styled.div`
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 160px;
-    height: 1666px;
+    //height: 1666px;
   }
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     width: 67px;
-    height: 1859px;
+    //height: 1859px;
   }
 `;
 
@@ -109,6 +150,9 @@ const StyledDashboardList = styled.div`
   margin-top: 30px;
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  height: 70%;
+  ${customScroll};
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     margin-top: 18px;
   }
@@ -117,11 +161,15 @@ const StyledDashboardList = styled.div`
   }
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.div<{ current: boolean }>`
   border-radius: 2px;
+  background-color: ${(props) => (props.current ? '#f1effd' : 'transparent')};
+  color: ${(props) => (props.current ? '#5534da' : '#787486')};
+  text-decoration: none;
   &:hover {
     text-decoration: none;
-    background-color: #f1effd;
+    background-color: #f3f2f9;
+    color: ${(props) => (props.current ? '#5534da' : '#787486')};
   }
   &:visited,
   &:link,

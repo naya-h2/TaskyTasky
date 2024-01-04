@@ -14,7 +14,7 @@ export const getDashboardList = async (
   page?: number,
 ) => {
   let query = '';
-  if (cursorId) query += `cursorId=${cursorId}`;
+  if (cursorId) query += `cursorId=${cursorId}&`;
   if (page) query += `page=${page}`;
   try {
     const response = await authInstance.get(
