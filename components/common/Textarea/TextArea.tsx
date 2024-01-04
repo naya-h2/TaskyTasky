@@ -3,7 +3,7 @@ import { SetStateAction, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useStore } from '@/context/stores';
 import Button from '../Button';
-import { FONT_12, FONT_16, FONT_18 } from '@/styles/FontStyles';
+import { FONT_12, FONT_14, FONT_16, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, VIOLET, RED } from '@/styles/ColorStyles';
 import { PostCardRequestType } from '@/lib/types/cards';
 import 'react-quill/dist/quill.snow.css';
@@ -28,6 +28,7 @@ interface Props {
 function Textarea({ type, isEditing, value, setValue, setCommentValue, onClick }: Props) {
   const [violet, setViolet] = useState(false);
   const [red, setRed] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
 
   const todoModalDescription = useStore((state) => state.todoModalDescription);
   const setTodoModalDescription = useStore((state) => state.setTodoModalDescription);
@@ -67,9 +68,10 @@ function Textarea({ type, isEditing, value, setValue, setCommentValue, onClick }
   };
 
   const handleReactQuillBlur = () => {
-    if (value === '') {
+    if (value === '' || value === '<p><br></p>') {
       setViolet(false);
       setRed(true);
+      setErrMsg('내용을 입력해주세요.');
     } else {
       setViolet(false);
       setRed(false);
@@ -83,6 +85,7 @@ function Textarea({ type, isEditing, value, setValue, setCommentValue, onClick }
         description: todoModalDescription,
       }));
     }
+    setErrMsg('');
   };
 
   useEffect(() => {
@@ -122,6 +125,7 @@ function Textarea({ type, isEditing, value, setValue, setCommentValue, onClick }
           </Button.Plain>
         </StyledButtonWrapper>
       )}
+      {type === 'toDo' && <StyledErrorMessage>{errMsg}</StyledErrorMessage>}
     </StyledWrapper>
   );
 }
@@ -189,7 +193,7 @@ const StyledButtonText = styled.span`
   ${FONT_12};
 `;
 
-/* const StyledErrorMessage = styled.span`
+const StyledErrorMessage = styled.span`
   ${FONT_14};
   color: ${RED};
-`; */
+`;

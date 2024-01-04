@@ -22,7 +22,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.method === 'GET') {
     const tag = await TagColor.findOne({ tagName: tagName });
-    res.status(200).send(tag);
+    if (tag) res.status(200).send(tag);
+    else res.status(400).send('tagName does not exist');
     return;
   }
 
@@ -32,7 +33,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return;
     }
 
-    const existingTag = await TagColor.find({ tagName: tagName });
+    const existingTag = await TagColor.findOne({ tagName: tagName });
     if (existingTag) {
       res.status(200).send(existingTag);
       return;
@@ -51,11 +52,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   //   return;
   // }
 
-  // if (req.method === 'DELETE') {
-  //   const tagColor = await TagColor.findOneAndDelete({ tagName: tagName });
-  //   res.status(204).send(`"${tagName}" was deleted`);
-  //   return;
-  // }
+  if (req.method === 'DELETE') {
+    const tagColor = await TagColor.findOneAndDelete({ tagName: tagName });
+    res.status(204).send(`"${tagName}" was deleted`);
+    return;
+  }
 
   res.status(404).send('Invalid Access');
 }

@@ -40,7 +40,6 @@ function Board() {
   const showModal = useStore((state) => state.showModal);
   const modalCard = useStore((state) => state.modalCard);
   const isColumnChanged = useStore((state) => state.isColumnChanged);
-  const setIsColumnChanged = useStore((state) => state.setIsColumnChanged);
   const modalCardColumnTitle = useStore((state) => state.modalCardColumnTitle);
   const cardCommentId = useStore((state) => state.cardCommentId);
 

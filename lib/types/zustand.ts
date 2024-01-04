@@ -26,10 +26,9 @@ export type modalType =
   | 'deleteMember'
   | 'cancelInvite'
   | 'deleteDashboard'
-  | 'EditDashboard';
+  | 'EditDashboard'
   | 'loading'
   | 'editColor';
-
 
 export interface ModalState {
   modals: modalType[];
@@ -37,9 +36,6 @@ export interface ModalState {
   modalCardColumnTitle: string;
   isColumnChanged: boolean;
   isDashChanged: boolean;
-  setModalCard: (value: CardType) => void;
-  setModalCardColumnTitle: (value: string) => void;
-  setIsColumnChanged: () => void;
   setIsDashChanged: () => void;
   modalCardComment: string;
   cardCommentId: number;
