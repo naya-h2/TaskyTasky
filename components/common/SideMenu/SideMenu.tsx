@@ -55,7 +55,6 @@ function SideMenu() {
       setPage((prevPage) => {
         const newPage = prevPage + 1;
         setHasMore(true);
-        console.log('New page:', newPage); // 콘솔에 새 페이지 수 출력
         return newPage;
       });
     }
@@ -162,14 +161,15 @@ const StyledDashboardList = styled.div`
   }
 `;
 
-const StyledLink = styled.a<{ current: boolean }>`
+const StyledLink = styled.div<{ current: boolean }>`
   border-radius: 2px;
   background-color: ${(props) => (props.current ? '#f1effd' : 'transparent')};
-  color: ${(props) => (props.current ? '#5534da' : 'inherit')};
+  color: ${(props) => (props.current ? '#5534da' : '#787486')};
+  text-decoration: none;
   &:hover {
     text-decoration: none;
     background-color: #f3f2f9;
-    color: ${(props) => (props.current ? '#5534da' : 'inherit')};
+    color: ${(props) => (props.current ? '#5534da' : '#787486')};
   }
   &:visited,
   &:link,

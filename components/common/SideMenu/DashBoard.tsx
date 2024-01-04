@@ -59,6 +59,7 @@ const StyledDashBoardTitle = styled.div<{ current?: boolean }>`
   margin-right: 6px;
   color: ${GRAY[50]};
   ${FONT_18};
+  text-decoration: none;
   color: ${(props) => (props.current ? '#5534da' : 'inherit')};
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 60%;

@@ -12,9 +12,15 @@ export const customScroll = css`
     background-color: ${GRAY[30]};
   }
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    padding-right: 7px;
+    padding-right: 6px;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
   }
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    padding-right: 4px;
+    padding-right: 7px;
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
   }
 `;
