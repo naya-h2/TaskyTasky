@@ -1,14 +1,14 @@
+import Link from 'next/link';
 import styled, { keyframes } from 'styled-components';
+import { useStore } from '@/context/stores';
+import { useGetDashboard } from '@/hooks/useGetDashboard';
 import Button from '@/components/common/Button';
+import DashboardModal from '@/components/common/Modal/DashboardModal';
 import { FONT_14, FONT_14_B, FONT_16_B } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { BLACK, VIOLET } from '@/styles/ColorStyles';
-import { useStore } from '@/context/stores';
-import DashboardModal from '@/components/common/Modal/DashboardModal';
-import Link from 'next/link';
+import { BLACK } from '@/styles/ColorStyles';
 import DoubleBackward from '@/public/icon/double-small-left.svg';
 import DoubleForward from '@/public/icon/double-small-right.svg';
-import { useGetDashboard } from '@/hooks/useGetDashboard';
 
 /**
  * @param data dashboard 목록의 배열

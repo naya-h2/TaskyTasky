@@ -1,6 +1,6 @@
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { FONT_14, FONT_16, FONT_20_B, FONT_22, FONT_24_B, FONT_28_B } from '@/styles/FontStyles';
+import { FONT_14, FONT_16, FONT_20_B, FONT_22 } from '@/styles/FontStyles';
 import styled from 'styled-components';
 import Image from 'next/image';
 
