@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { useStore } from '@/context/stores';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
-import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { FONT_12B, FONT_14_B, FONT_18 } from '@/styles/FontStyles';
 import { PostCardRequestType } from '@/lib/types/cards';
 import { uploadCardImg } from '@/api/cards/uploadCardImg';
