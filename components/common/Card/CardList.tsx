@@ -84,16 +84,16 @@ function CardList({ column, setModalColumnId, setModalColumnName }: Props) {
   useEffect(() => {
     const firstFetch = async () => {
       const res = await getCardList(column.id, FETCH_SIZE, offsetRef.current);
-      setCardList(res.cards);
-      setTotalCount(res.totalCount);
-      offsetRef.current = res.cursorId;
+      setCardList(res?.cards);
+      setTotalCount(res?.totalCount);
+      offsetRef.current = res?.cursorId;
     };
     firstFetch();
   }, [column]);
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (target.current) {
+    if (target?.current) {
       observer = new IntersectionObserver(observeCallback, {
         threshold: 0.2,
       });
