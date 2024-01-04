@@ -37,16 +37,12 @@ export default PointSection;
 
 const SectionContainer = styled.div`
   width: 100%;
-  max-width: 1200px;
-  margin: 100px auto;
-  padding: 0 30px;
 
   display: flex;
   justify-content: center;
   gap: 70px;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
-    margin: 60px auto;
     gap: 25px;
   }
 
@@ -83,13 +79,16 @@ const Section = styled.div`
   }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
-    min-width: 300px;
     height: 500px;
   }
 `;
 
 const FirstSection = styled(Section)`
   min-width: 400px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    min-width: 300px;
+  }
 `;
 
 const SecondSection = styled(Section)`
