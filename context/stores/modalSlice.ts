@@ -16,15 +16,12 @@ export const createModalSlice: StateCreator<ModalState> = (set) => ({
   cardCommentId: 0,
   isCommentChanged: false,
   todoModalDescription: '',
-  setModalCard: (value) => set((state) => ({ ...state, modalCard: { ...state.modalCard, ...value } })),
-  setModalCardColumnTitle: (value) => set((state) => ({ ...state, modalCardColumnTitle: value })),
-  setIsColumnChanged: () => set((state) => ({ ...state, isColumnChanged: !state.isColumnChanged })),
   setModalCardComment: (value) => set((state) => ({ ...state, modalCardComment: value })),
-  setCardCommentId: (value) => set((state) => ({ ...state, cardCommentId: value })),
+                                                                      setCardCommentId: (value) => set((state) => ({ ...state, cardCommentId: value })),
   setIsCommentChanged: () => set((state) => ({ ...state, isCommentChanged: !state.isCommentChanged })),
   setTodoModalDescription: (value) => set((state) => ({ ...state, todoModalDescription: value })),
   showModal: (type) => set((state) => ({ ...state, modals: [...state.modals, type] })),
   hideModal: (type) =>
     set((state) => ({ ...state, modals: [...state.modals.filter((modalType) => modalType !== type)] })),
-  clearModal: () => set(() => ({ modals: [] })),
-});
+  clearModal: () => set(() => ({ modals: [] })),      
+  

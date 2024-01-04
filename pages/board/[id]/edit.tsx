@@ -15,7 +15,6 @@ import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import { useStore } from '@/context/stores';
 import EditModal from '@/components/common/Modal/EditModal';
 
-
 function Edit() {
   useCheckLogin();
   const router = useRouter();
@@ -25,7 +24,7 @@ function Edit() {
     modal: state.modals,
     showModal: state.showModal,
   }));
-  
+
   return (
     <Root>
       <Head>
