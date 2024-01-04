@@ -8,7 +8,7 @@ export const editUserInfo = async (data: PutDashboardRequestType) => {
   try {
     const response = await authInstance.put(`/api/users/me`, data);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     return error.response;
   }
 };

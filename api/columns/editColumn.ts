@@ -8,6 +8,6 @@ import { PutColumnRequestType } from '@/lib/types/columns';
  */
 export const editColumn = async (columnId: number, data: PutColumnRequestType) => {
   const response = await authInstance.put(`/api/columns/${columnId}`, data);
-  console.log(columnId);
+
   return response.data;
 };

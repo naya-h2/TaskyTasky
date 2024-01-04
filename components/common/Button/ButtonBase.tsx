@@ -18,7 +18,14 @@ export interface BaseProps {
   type?: 'button' | 'reset' | 'submit';
 }
 
-function ButtonBase({ style = 'outline', roundSize, isNotActive = false, children, onClick, type }: BaseProps) {
+function ButtonBase({
+  style = 'outline',
+  roundSize,
+  isNotActive = false,
+  children,
+  onClick,
+  type = 'button',
+}: BaseProps) {
   return (
     <StyledButtonBase
       $style={style}

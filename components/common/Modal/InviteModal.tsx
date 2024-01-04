@@ -25,8 +25,8 @@ function InviteModal({ dashboardId }: Props) {
   } = useForm({ mode: 'onBlur' });
   const email = watch('email');
 
-  const handleInviteClick = async (event: FormEvent) => {
-    event.preventDefault();
+  const handleInviteClick = async (event?: FormEvent) => {
+    if (event) event.preventDefault();
     const response = await inviteDashboard(dashboardId, { email });
     if (response.status !== 201) {
       setErrorMsg(response.data?.message);

@@ -40,7 +40,7 @@ function DashBoardColor({ theme, selectedColor, setSelectedColor, isInModal }: P
           {...register('customColor', colorCodeRules)}
           placeholder="#FFFFFF 형식으로 입력하세요"
         />
-        {errors.customColor && <StyledErrorMsg>{errors.customColor.message}</StyledErrorMsg>}
+        {errors.customColor && <StyledErrorMsg>{`${errors.customColor.message}`}</StyledErrorMsg>}
       </StyledErrorWrapper>
       <StyledButtonWrapper>
         <Button.Plain

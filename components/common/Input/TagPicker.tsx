@@ -22,10 +22,10 @@ function TagPickerCreatable({ initialValue, setValue }: Props) {
 
   const handleTagPickerSelect = (item: string) => {
     if (initialValue.includes(item)) return;
-    setValue((prev) => ({
-      ...prev,
-      tags: item,
-    }));
+    // setValue((prev) => ({
+    //   ...prev,
+    //   tags: item,
+    // }));
   };
 
   const handleTagPickerClean = () => {
