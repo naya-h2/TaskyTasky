@@ -11,6 +11,9 @@ import { useStore } from '@/context/stores';
 import EditModal from '../Modal/EditModal';
 import { useRouter } from 'next/router';
 import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
+import ColorChoice from '../Chip/ColorChoice';
+import UpIcon from '@/public/icon/small-up.svg';
+import DownIcon from '@/public/icon/small-down.svg';
 
 function EditMyDash() {
   const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>({
@@ -61,20 +64,25 @@ function EditMyDash() {
   };
 
   useEffect(() => {
-
-    setSelectedColor(colors[colorIndex]);
     setEditName('');
     setIsNotActive(true);
     fetchDashboardData();
   }, [colorIndex, isDashChanged]);
 
+  useEffect(() => {
+    setSelectedColor(initialColor);
+  }, []);
+
+  console.log(selectedColor, initialColor);
 
   return (
     <Wrapper>
       <Container>
         <EditDashChip>
-          <BoardTitle>{dashBoardInfo.title}</BoardTitle>
-          <DashBoardColor selectedColor={selectedColor} setSelectedColor={setSelectedColor} />
+          <ColorWrapper>
+            {selectedColor && <Chip $color={selectedColor} />}
+            <BoardTitle>{dashBoardInfo.title}</BoardTitle>
+          </ColorWrapper>
         </EditDashChip>
         <EditDashName>
           <DashNameText>대시보드 이름</DashNameText>
