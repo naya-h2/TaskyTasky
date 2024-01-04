@@ -26,7 +26,7 @@ function EditMyDash() {
     userId: 0,
   });
 
-  const initialColor = dashBoardInfo.color;
+  const initialColor = dashBoardInfo?.color;
   const colors = [GREEN, PURPLE, ORANGE, BLUE, PINK[1]];
   const colorIndex = colors.indexOf(initialColor);
   const [selectedColor, setSelectedColor] = useState('');
@@ -81,7 +81,7 @@ function EditMyDash() {
         <EditDashChip>
           <ColorWrapper>
             {selectedColor && <Chip $color={selectedColor} />}
-            <BoardTitle>{dashBoardInfo.title}</BoardTitle>
+            <BoardTitle>{dashBoardInfo?.title}</BoardTitle>
           </ColorWrapper>
         </EditDashChip>
         <EditDashName>
