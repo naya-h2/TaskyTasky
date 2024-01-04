@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 import { BLUE, GRAY, GREEN, ORANGE, PINK, PURPLE, WHITE } from '@/styles/ColorStyles';
 import { FONT_14, FONT_16, FONT_18, FONT_20_B } from '@/styles/FontStyles';
 import React, { useEffect, useState } from 'react';
-import DashBoardColor from '../Chip/DashBoardColor';
 import Button from '../Button';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import { GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
@@ -63,15 +62,16 @@ function EditMyDash() {
     setIsOpen((prev) => !prev);
   };
 
-  useEffect(() => {
-    setEditName('');
-    setIsNotActive(true);
-    fetchDashboardData();
-  }, [colorIndex, isDashChanged]);
+  const setSelectColor = () => {
+    setSelectedColor;
+    setIsNotActive(false);
+  };
 
   useEffect(() => {
     setSelectedColor(initialColor);
-  }, []);
+    fetchDashboardData();
+    setEditName('');
+  }, [initialColor, isDashChanged]);
 
   console.log(selectedColor, initialColor);
 
@@ -87,12 +87,7 @@ function EditMyDash() {
         <EditDashName>
           <DashNameText>대시보드 이름</DashNameText>
           <EditNameInputWrap>
-            <EditNameInput
-              value={editName}
-              onChange={OnNameChangeHandler}
-              onFocus={OnFocusInputHandler}
-              placeholder="뉴프로젝트"
-            />
+            <EditNameInput value={editName} onChange={OnNameChangeHandler} onFocus={OnFocusInputHandler} />
           </EditNameInputWrap>
         </EditDashName>
         <EditColorWrapper onClick={handleEditColorClick}>

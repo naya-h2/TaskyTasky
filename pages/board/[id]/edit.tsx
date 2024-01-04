@@ -14,7 +14,14 @@ import Head from 'next/head';
 import Header from '@/components/common/Header/SecondHeader/SecondHeader';
 import { useStore } from '@/context/stores';
 import EditModal from '@/components/common/Modal/EditModal';
-
+import { DashboardType, GetDashboardListDetailResponseType } from '@/lib/types/dashboards';
+import { useState, useEffect } from 'react';
+import { getDashboardInfo } from '@/api/dashboards/getDashboardInfo';
+import { getMemberList } from '@/api/members/getMemberList';
+import { GetMemberListResponseType } from '@/lib/types/members';
+import { getColumnList } from '@/api/columns/getColumnList';
+import axios from 'axios';
+import { ColumnType } from '@/lib/types/columns';
 
 function Edit() {
   useCheckLogin();
@@ -25,15 +32,59 @@ function Edit() {
     modal: state.modals,
     showModal: state.showModal,
   }));
-  
+
+  const [memberList, setMemberList] = useState<GetMemberListResponseType>();
+  const [currentDashboard, setCurrentDashboard] = useState<DashboardType>();
+  const [columnList, setColumnList] = useState<ColumnType[]>([]);
+  const [dashBoardInfo, setDashBoardInfo] = useState<GetDashboardListDetailResponseType>();
+
+  const fetchDashboardData = async () => {
+    const dashBoardData = await getDashboardInfo(dashboardId);
+    setDashBoardInfo(dashBoardData);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) {
+        return;
+      }
+
+      const [resCurrentDashboard, resColumnList] = await axios.all([
+        getDashboardInfo(Number(id)),
+        getColumnList(Number(id)),
+      ]);
+
+      setCurrentDashboard(resCurrentDashboard);
+      setColumnList(resColumnList?.data);
+    };
+
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchMemberData = async () => {
+      if (!currentDashboard) return;
+
+      const resMemberList = await getMemberList(currentDashboard.id);
+      setMemberList(resMemberList);
+    };
+
+    fetchMemberData();
+  }, [currentDashboard]);
+
   return (
     <Root>
       <Head>
-        <title>내 대시보드 | TaskyTasky</title>
+        <title>{`${currentDashboard?.title} | TaskyTasky`}</title>
       </Head>
-      <Header page="myboard">내 대시보드</Header>
+      <Header
+        page="others"
+        children={currentDashboard?.title}
+        crown={currentDashboard?.createdByMe}
+        membersData={memberList}
+      />
+      {/*<Header page="myboard">내 대시보드</Header>*/}
       <SideMenu />
-
       <StyledBody>
         <StyledContainer>
           <ButtonLink href={`/board/${id}`}>
