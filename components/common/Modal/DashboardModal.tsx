@@ -9,6 +9,7 @@ import { createDashboard } from '@/api/dashboards/createDashboard';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/context/stores';
 import { ERROR_MSG } from '@/lib/constants/inputErrorMsg';
+import ColorChoice from '../Chip/ColorChoice';
 
 interface Props {
   type: modalType;
@@ -50,9 +51,7 @@ function DashboardModal({ type }: Props) {
             error={errors.newDashboard}
             isHookForm
           />
-          <StyledColorWrapper>
-            <DashBoardColor selectedColor={color} setSelectedColor={setColor} isInModal={true} />
-          </StyledColorWrapper>
+          <ColorChoice color={color} setColor={setColor} />
         </form>
       </ModalFrame>
     </>
@@ -60,9 +59,3 @@ function DashboardModal({ type }: Props) {
 }
 
 export default DashboardModal;
-
-const StyledColorWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  margin-top: 10px;
-`;

@@ -1,5 +1,13 @@
 import { ERROR_MSG } from '@/lib/constants/inputErrorMsg';
 
+export const colorCodeRules = {
+  required: '값을 입력해주세요.',
+  pattern: {
+    value: /^#[a-zA-Z0-9]{6}$/,
+    message: '형식이 맞지 않아요.',
+  },
+};
+
 export const emailRules = {
   required: ERROR_MSG.emptyEmail,
   pattern: {

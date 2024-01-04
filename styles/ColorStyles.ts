@@ -21,14 +21,16 @@ export const VIOLET = {
 };
 
 export const PINK = {
-  1: '#F9C7CD',
+  0: '#F9C7CD', //pastel
+  1: '#E876EA', //vivid
   2: '#F4D7DA',
   3: '#D25B68',
 };
 
+export const GREEN = { 0: '#CAE3DE', 1: '#7AC555' };
+export const PURPLE = { 0: '#D3C1EB', 1: '#760DDE' };
+export const ORANGE = { 0: '#FFDB99', 1: '#FFA500' };
+export const BLUE = { 0: '#BDDAEF', 1: '#76A5EA' };
+
 export const WHITE = '#FFFFFF';
 export const RED = '#D6173A';
-export const GREEN = '#CAE3DE';
-export const PURPLE = '#D3C1EB';
-export const ORANGE = '#FFDB99';
-export const BLUE = '#BDDAEF';

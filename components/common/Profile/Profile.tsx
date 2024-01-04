@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import ProfileImg from './ProfileImg';
-import { FONT_16 } from '@/styles/FontStyles';
+import { FONT_14, FONT_16 } from '@/styles/FontStyles';
 import { DEVICE_SIZE } from '@/styles/DeviceSize';
 import UpIcon from '@/public/icon/small-up.svg';
 import DownIcon from '@/public/icon/small-down.svg';
 import HeaderDropDown from '../DropDown/HeaderDropDown';
+import { BLACK, GRAY } from '@/styles/ColorStyles';
 
 interface Props {
-  type: 'header' | 'card';
+  type: 'header' | 'card' | 'member';
   id: number;
   name: string;
-  profileImg: string;
+  profileImg: string | null;
 }
 
 function Profile({ type, id, name, profileImg }: Props) {
@@ -25,7 +26,7 @@ function Profile({ type, id, name, profileImg }: Props) {
     <>
       {isOpen && <StyledMask onClick={() => setIsOpen(false)} />}
       <StyledContainer $type={type}>
-        <ProfileImg url={profileImg} size={38} name={name} id={id} />
+        <ProfileImg url={profileImg} size={38} name={name} id={id} type={type} />
         <StyledNameWrapper $type={type} onClick={handleDropdownClick}>
           <StyledName $type={type}>{name}</StyledName>
           {type === 'header' && (isOpen ? <StyledUpIcon /> : <StyledDownIcon />)}
@@ -48,7 +49,7 @@ const invisibleMobile = css`
   }
 `;
 
-const StyledContainer = styled.div<{ $type: 'header' | 'card' }>`
+const StyledContainer = styled.div<{ $type: string }>`
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.$type === 'header' ? 'space-between' : 'flex-start')};
@@ -61,7 +62,9 @@ const StyledContainer = styled.div<{ $type: 'header' | 'card' }>`
 
 const StyledName = styled.div<{ $type: string }>`
   ${FONT_16};
+  color: ${BLACK[2]};
 
+  ${(props) => (props.$type === 'member' ? `${FONT_14}` : null)};
   ${(props) => (props.$type === 'header' ? invisibleMobile : null)};
 `;
 
