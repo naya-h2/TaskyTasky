@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import AddDashBoard from './AddDashBoard';
 import DashBoard from './DashBoard';
 import LogoLink from './LogoLink';
@@ -13,6 +13,7 @@ import { DashboardType } from '@/lib/types/dashboards';
 import Link from 'next/link';
 import InfiniteScroll from 'react-infinite-scroller';
 import { customScroll } from '@/styles/CustomScroll';
+import AngleRight from '@/public/icon/angle_right.svg';
 
 function SideMenu() {
   const [dashboardList, setDashboardList] = useState<DashboardType[]>([]);
@@ -69,11 +70,11 @@ function SideMenu() {
   }
 
   return (
-    <StyledWrapper>
+    <StyledWrapper isTablet={isTablet}>
       <StyledLogoWrapper>
         <LogoLink />
         <StyledButton onClick={() => setIsTablet(true)}>
-          <Arrow>&gt;&gt;</Arrow>
+          <StyledIcon />
         </StyledButton>
       </StyledLogoWrapper>
       <StyledAddDashBoardWrapper>
@@ -104,7 +105,7 @@ function SideMenu() {
 
 export default SideMenu;
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.div<{ isTablet: boolean }>`
   width: 300px;
   height: 100%;
   padding: 20px 12px;
@@ -119,6 +120,8 @@ const StyledWrapper = styled.div`
   z-index: ${Z_INDEX.SideMenu_Wrapper};
 
   background-color: ${WHITE};
+
+  animation: ${(props) => (props.isTablet ? slideOut : slideIn)} 0.5s ease-in-out;
 
   @media (max-width: ${DEVICE_SIZE.tablet}) {
     width: 160px;
@@ -179,21 +182,56 @@ const StyledLink = styled.div<{ current: boolean }>`
 `;
 
 const StyledButton = styled.button`
-  background-color: #fff;
+  background-color: #5534da;
+  color: #fff;
   border: none;
+  border-radius: 50%;
   display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  top: 95px;
+  left: 55px;
+  width: 24px;
+  height: 24px;
+  z-index: 1;
+
+  &:hover {
+    background-color: #f3f2f9;
+    color: #5534da;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    /* display: block; */
+  }
 
   @media (max-width: ${DEVICE_SIZE.mobile}) {
     display: block;
-    position: absolute;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: -20px; /* 모바일 화면에서 위치 조정 */
   }
 `;
 
-const Arrow = styled.span`
-  font-size: 20px;
-  color: #5534da;
-  font-weight: bold;
+const StyledIcon = styled(AngleRight)`
+  margin-top: 2px;
+  margin-left: 1px;
+  color: #fff;
+`;
+
+const slideIn = keyframes`
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
+
+const slideOut = keyframes`
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 `;
