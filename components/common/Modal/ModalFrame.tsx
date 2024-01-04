@@ -45,7 +45,7 @@ function ModalFrame({ height, type, title, children, btnFnc, disabledBtn = false
         )}
         <StyledContainer>{children}</StyledContainer>
         {type === 'card' || (
-          <StyledButtonBox>
+          <StyledButtonBox $type={type}>
             {type === 'incorrectPWAlert' ||
               (type !== 'customAlert' && (
                 <StyledButtonWrapper>
@@ -129,6 +129,26 @@ const StyledBody = styled.div<{ $height: 'Low' | 'Mid' | 'High' | 'Top'; $type: 
 
   border-radius: 12px;
   background: white;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    ${({ $type }) =>
+      ($type === 'card' || $type === 'editTodo' || $type === 'createTodo') &&
+      `
+      width: 680px;
+      height: 580px;
+  `};
+    ${({ $type }) => ($type === 'editTodo' || $type === 'createTodo') && 'width: 506px'};
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 327px;
+    ${({ $type }) =>
+      ($type === 'card' || $type === 'editTodo' || $type === 'createTodo') &&
+      `
+    width: 327px;
+    height: 500px;
+  `};
+  }
 `;
 
 const StyledTitle = styled.h1`
@@ -160,16 +180,32 @@ const StyledContainer = styled.div`
   gap: 8px;
 `;
 
-const StyledButtonBox = styled.div`
+const StyledButtonBox = styled.div<{ $type: modalType }>`
   display: flex;
   justify-content: flex-end;
   gap: 12px;
   margin-top: 28px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    justify-content: ${({ $type }) =>
+      $type === 'incorrectPWAlert' ||
+      $type === 'duplicateEmailAlert' ||
+      $type === 'signUpSuccessAlert' ||
+      $type === 'signUpFailedAlert' ||
+      $type === 'customAlert'
+        ? 'center'
+        : 'space-between'};
+    margin-top: 40px;
+  }
 `;
 
 const StyledButtonWrapper = styled.div`
   width: 120px;
   height: 48px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 140px;
+  }
 `;
 
 const StyledButtonText = styled.span`

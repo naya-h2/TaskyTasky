@@ -10,13 +10,14 @@ import Profile from '../Profile/Profile';
 import ChipColor from '../Chip/ChipColor';
 import Textarea from '../Textarea/TextArea';
 import CommentCollection from './CommentCollection';
-import { FONT_12, FONT_14 } from '@/styles/FontStyles';
+import { FONT_12, FONT_14, FONT_18 } from '@/styles/FontStyles';
 import { BLACK, GRAY } from '@/styles/ColorStyles';
 import VectorIcon from '@/public/icon/Vector.svg';
 import { useStore } from '@/context/stores';
 import { createComment } from '@/api/comments/createComment';
 import { CommentType } from '@/lib/types/comments';
 import { getCommentList } from '@/api/comments/getCommentList';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 const LIMIT = 5;
 
@@ -119,15 +120,19 @@ function CardModal({ type, columnTitle, cardInfo, dashboardId }: Props) {
         </StyledLeftWrapper>
         <StyledRightWrapper>
           <StyledTaskBigInfoBox>
-            <StyledTaskInfoLabel>담당자</StyledTaskInfoLabel>
-            <Profile
-              type="card"
-              id={cardInfo.assignee.id}
-              name={cardInfo.assignee.nickname}
-              profileImg={cardInfo.assignee.profileImageUrl}
-            />
-            <StyledTaskInfoLabel>마감일</StyledTaskInfoLabel>
-            <StyledTaskDueDate>{cardInfo.dueDate}</StyledTaskDueDate>
+            <StyledTaskBigInfoSubBox>
+              <StyledTaskInfoLabel>담당자</StyledTaskInfoLabel>
+              <Profile
+                type="card"
+                id={cardInfo.assignee.id}
+                name={cardInfo.assignee.nickname}
+                profileImg={cardInfo.assignee.profileImageUrl}
+              />
+            </StyledTaskBigInfoSubBox>
+            <StyledTaskBigInfoSubBox>
+              <StyledTaskInfoLabel>마감일</StyledTaskInfoLabel>
+              <StyledTaskDueDate>{cardInfo.dueDate}</StyledTaskDueDate>
+            </StyledTaskBigInfoSubBox>
           </StyledTaskBigInfoBox>
         </StyledRightWrapper>
       </StyledContainer>
@@ -141,6 +146,12 @@ const StyledContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    gap: 10px;
+  }
 `;
 
 const StyledLeftWrapper = styled.div`
@@ -148,10 +159,22 @@ const StyledLeftWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    width: 410px;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 100%;
+  }
 `;
 
 const StyledRightWrapper = styled.div`
   width: 190px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 100%;
+  }
 `;
 
 const StyledTaskSmallInfoBox = styled.div`
@@ -166,14 +189,28 @@ const StyledTaskBigInfoBox = styled.div`
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 18px;
   border: 1px solid ${GRAY[30]};
   border-radius: 8px;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 100%;
+    height: 100px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+`;
+
+const StyledTaskBigInfoSubBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 `;
 
 const StyledTaskDescription = styled.p<{ $isImage: string | undefined }>`
   ${({ $isImage }) => $isImage || 'min-height: 100px'};
-  ${FONT_14};
+  ${FONT_18};
   font-weight: 400;
   line-height: 171.5%;
 `;
@@ -184,6 +221,10 @@ const StyledImgWrapper = styled.div`
   border-radius: 6px;
   overflow: hidden;
   position: relative;
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    height: 180px;
+  }
 `;
 
 const StyledTaskInfoLabel = styled.span`

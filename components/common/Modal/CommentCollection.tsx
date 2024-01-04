@@ -4,6 +4,7 @@ import LoadingModal from './LoadingModal';
 import CommentSingle from './CommentSingle';
 import { CommentType } from '@/lib/types/comments';
 import { GRAY } from '@/styles/ColorStyles';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 const LIMIT = 5;
 interface Props {
@@ -92,8 +93,18 @@ const StyledScrollTop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
   position: sticky;
   left: 410px;
   bottom: 10px;
   cursor: pointer;
+  opacity: 0.8;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    left: 380px;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    left: 240px;
+  }
 `;
