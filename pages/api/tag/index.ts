@@ -5,7 +5,7 @@ import TagColor from '@/lib/db/models/TagColor';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
-  // console.log(mongoose.connection.readyState);
+  console.log(mongoose.connection.readyState);
 
   const { tagName, colorID } = req.query;
 
