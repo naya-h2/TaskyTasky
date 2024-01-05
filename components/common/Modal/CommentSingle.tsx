@@ -11,6 +11,7 @@ import { BLACK, GRAY } from '@/styles/ColorStyles';
 import { CommentType } from '@/lib/types/comments';
 import { editComment } from '@/api/comments/editComment';
 import { timestamp } from '@/lib/utils/timestamp';
+import { DEVICE_SIZE } from '@/styles/DeviceSize';
 
 interface Props {
   data: CommentType;
@@ -132,6 +133,14 @@ const StyledContent = styled.p`
   font-weight: 400;
   color: ${BLACK[2]};
   margin-bottom: 5px;
+
+  @media (max-width: ${DEVICE_SIZE.tablet}) {
+    width: 330px;
+  }
+
+  @media (max-width: ${DEVICE_SIZE.mobile}) {
+    width: 200px;
+  }
 `;
 
 const StyledToolBox = styled.div<{ $isEditing: boolean }>`
