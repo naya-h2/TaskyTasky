@@ -1,4 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
+import { VIOLET } from './ColorStyles';
+import { customScroll } from './CustomScroll';
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -7,11 +9,19 @@ const GlobalStyles = createGlobalStyle`
     font-weight: 400;
     font-style: normal;
   }
-
-  * {
+  
+  *{
     box-sizing: border-box;
     font-family: "Pretendard";
+  }
+
+  html {
     font-size: 62.5%;
+  }
+
+  html, body{
+    background-color: ${VIOLET[9]};
+    ${customScroll};
   }
 
   html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
@@ -19,6 +29,10 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     border: 0;
+  }
+
+  a {
+    text-decoration: none !important;
   }
 
   ol, ul{

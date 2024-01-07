@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/vercel/*"
+  to = "https://sp-taskify-api.vercel.app/1-10/:splat"  
+  status = 200
+  force = true
