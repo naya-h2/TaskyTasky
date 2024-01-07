@@ -30,6 +30,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/api/tenten/:path*',
+        destination: `/api/tenten/:path*`,
+      },
+      {
         source: '/api/:path*',
         destination: `${process.env.NEXT_PUBLIC_BASE_URL}/:path*`,
       },
