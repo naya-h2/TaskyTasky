@@ -8,6 +8,6 @@ import instance from '@/lib/axios';
  */
 export const getCommentList = async (size: number = 10, cardId: number, cursorId?: number) => {
   const cursorID = cursorId ? `&cursorId=${cursorId}` : ``;
-  const response = await instance.get(`/api/comments?size=${size}${cursorID}&cardId=${cardId}`);
+  const response = await instance.get(`/api/vercel/comments?size=${size}${cursorID}&cardId=${cardId}`);
   return response.data;
 };

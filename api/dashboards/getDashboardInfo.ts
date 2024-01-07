@@ -5,7 +5,7 @@ import authInstance from '@/lib/axios';
  */
 export const getDashboardInfo = async (dashboardId: number) => {
   try {
-    const response = await authInstance.get(`/api/dashboards/${dashboardId}`);
+    const response = await authInstance.get(`/api/vercel/dashboards/${dashboardId}`);
     return response.data;
   } catch (error) {
     return null;

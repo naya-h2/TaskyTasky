@@ -6,7 +6,7 @@ import { PutDashboardRequestType } from '@/lib/types/users';
  */
 export const editUserInfo = async (data: PutDashboardRequestType) => {
   try {
-    const response = await authInstance.put(`/api/users/me`, data);
+    const response = await authInstance.put(`/api/vercel/users/me`, data);
     return response.data;
   } catch (error: any) {
     return error.response;

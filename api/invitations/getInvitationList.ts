@@ -7,7 +7,7 @@ import authInstance from '@/lib/axios';
  * @param title
  */
 export const getInvitationList = async (size: number, cursorId: number | null, title?: string) => {
-  let path = `/api/invitations?size=${size}`;
+  let path = `/api/vercel/invitations?size=${size}`;
   path += cursorId ? `&cursorId=${cursorId}` : '';
   path += title ? `&title=${title}` : '';
 

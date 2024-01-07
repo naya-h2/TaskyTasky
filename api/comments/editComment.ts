@@ -7,6 +7,6 @@ import instance from '@/lib/axios';
  * @param data
  */
 export const editComment = async (commentId: number, data: PutCommentRequestType) => {
-  const response = await instance.put(`/api/comments/${commentId}`, data);
+  const response = await instance.put(`/api/vercel/comments/${commentId}`, data);
   return response.data;
 };

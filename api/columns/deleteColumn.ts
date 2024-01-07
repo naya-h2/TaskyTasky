@@ -5,5 +5,5 @@ import axios from 'axios';
  * 컬럼 삭제
  */
 export const deleteColumn = async (columnId: number) => {
-  const response = await authInstance.delete(`/api/columns/${columnId}`);
+  const response = await authInstance.delete(`/api/vercel/columns/${columnId}`);
 };

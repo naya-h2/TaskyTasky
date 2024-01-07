@@ -6,7 +6,7 @@ import { PostSignUpRequestType } from '@/lib/types/users';
 //  */
 export const createUser = async (data: PostSignUpRequestType) => {
   try {
-    const response = await axios.post('/api/users', data);
+    const response = await axios.post('/api/vercel/users', data);
     if (response.status === 201) {
       return response.data;
     } else {
