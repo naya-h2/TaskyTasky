@@ -5,7 +5,7 @@ import instance from '@/lib/axios';
  */
 export const getColumnList = async (dashboardId: number) => {
   try {
-    const response = await instance.get(`/api/columns?dashboardId=${dashboardId}`);
+    const response = await instance.get(`/api/vercel/columns?dashboardId=${dashboardId}`);
     return response.data;
   } catch (error) {}
 };

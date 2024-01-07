@@ -8,7 +8,7 @@ import authInstance from '@/lib/axios';
 export const createUserImage = async (data: File) => {
   try {
     const response = await authInstance.post(
-      '/api/users/me/image',
+      '/api/vercel/users/me/image',
       { image: data },
       {
         headers: {

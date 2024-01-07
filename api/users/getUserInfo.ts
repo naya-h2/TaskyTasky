@@ -5,7 +5,7 @@ import authInstance from '@/lib/axios';
  */
 export const getUserInfo = async () => {
   try {
-    const response = await authInstance.get(`/api/users/me`);
+    const response = await authInstance.get(`/api/vercel/users/me`);
     return response.data;
   } catch (error) {}
 };

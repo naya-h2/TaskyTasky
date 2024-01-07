@@ -5,7 +5,7 @@ import axios from 'axios';
  */
 export const getCard = async (cardId: number) => {
   try {
-    const response = await axios.get(`/api/cards/${cardId}`);
+    const response = await axios.get(`/api/vercel/cards/${cardId}`);
     return response.data;
   } catch (error) {}
 };

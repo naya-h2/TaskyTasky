@@ -16,7 +16,7 @@ export const getCardList = async (columnId: number, size?: number, cursorId?: nu
       : '';
 
   try {
-    const response = await instance.get(`/api/cards?${query}columnId=${columnId}`);
+    const response = await instance.get(`/api/vercel/cards?${query}columnId=${columnId}`);
     return response.data;
   } catch (error) {}
 };
