@@ -18,7 +18,7 @@ export const getDashboardList = async (
   if (page) query += `page=${page}`;
   try {
     const response = await authInstance.get(
-      `/api/dashboards?navigationMethod=${navigationMethod}&size=${size}&${query}`,
+      `/api/vercel/dashboards?navigationMethod=${navigationMethod}&size=${size}&${query}`,
     );
     return response.data;
   } catch (error) {}

@@ -6,7 +6,7 @@ import authInstance from '@/lib/axios';
 export const uploadCardImg = async (columnId: number, data: File) => {
   try {
     const response = await authInstance.post(
-      `/api/columns/${columnId}/card-image`,
+      `/api/vercel/columns/${columnId}/card-image`,
       { image: data },
       {
         headers: {

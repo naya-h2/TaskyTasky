@@ -7,7 +7,7 @@ import { PutColumnRequestType } from '@/lib/types/columns';
  * @param data 수정하려는 column의 데이터
  */
 export const editColumn = async (columnId: number, data: PutColumnRequestType) => {
-  const response = await authInstance.put(`/api/columns/${columnId}`, data);
+  const response = await authInstance.put(`/api/vercel/columns/${columnId}`, data);
 
   return response.data;
 };
