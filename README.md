@@ -143,33 +143,34 @@ https://localhost:3000 접속
 
 ## 🧩 프로젝트 구조 다이어그램
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/50e96051-40f8-44c1-9b81-d36c9e0fc260/Untitled.png)
+![diagram](https://github.com/Ssong-Q/tenten/assets/122101706/61eaca2d-971a-4fa4-bef3-8454f65a262d)
+
 
 ## 📄 페이지별 기능 & 스크린샷
 
 1. **홈페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/8ef0e066-9de5-4358-b6ce-8132d45a6b6d/Untitled.png)
+<img width="1280" alt="homepage" src="https://github.com/Ssong-Q/tenten/assets/122101706/1c60f372-8b67-409d-a985-a50ff0b41ef3">
 
    - 헤더에 로그인, 회원가입 바로가기를 눌러 로그인 또는 회원가입 페이지로 이동할 수 있습니다.
    - 바로 시작하기 버튼을 눌러 로그인 페이지로 이동할 수 있습니다.
 
 2. **회원가입 페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/1ef5edd2-2d48-4ab6-b628-b4096c1217c8/Untitled.png)
+<img width="1280" alt="signup" src="https://github.com/Ssong-Q/tenten/assets/122101706/23b6152c-6ec8-4747-bfe5-bfd6b9738cd1">
 
    - 이메일, 닉네임, 비밀번호 양식에 맞춰서 회원가입을 할 수 있습니다.
    - 모든 정보가 입력되어야 회원가입 버튼이 활성화됩니다.
 
 3. **로그인 페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/8c4a28b6-dba1-44d9-ba90-c78e14656947/Untitled.png)
+<img width="1280" alt="login" src="https://github.com/Ssong-Q/tenten/assets/122101706/a2a5b3ae-3002-42fb-882f-f921882413b9">
 
    - 존재하는 이메일과 알맞는 비밀번호를 입력하면 로그인이 되고 로그인 성공 시 myboard 페이지로 이동합니다.
 
 4. **마이보드 페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/cc555d86-6356-4385-8b04-2f504c7d9f58/Untitled.png)
+<img width="1280" alt="myboard" src="https://github.com/Ssong-Q/tenten/assets/122101706/6cfb69f7-2299-4568-8152-26b103b5b2c6">
 
    - 사이드메뉴 또는 상단 영역을 통해 내가 만들었거나, 초대 받은 대시보드 목록을 조회할 수 있습니다.
    - ‘새로운 대시보드+’ 버튼을 눌러 새로운 대시보드를 생성할 수 있습니다.
@@ -178,7 +179,7 @@ https://localhost:3000 접속
 
 5. **대시보드 페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/c79c59b3-efb6-4275-a5fa-c90eb1eda997/Untitled.png)
+<img width="1727" alt="dashboard" src="https://github.com/Ssong-Q/tenten/assets/122101706/b14eae31-f2a3-478a-b51f-16aba32dd0da">
 
    - 우측 하단 ‘+’ 버튼을 눌러 새로운 컬럼(카테고리)을 생성할 수 있습니다.
    - 컬럼의 ‘톱니바퀴’ 아이콘을 눌러 컬럼의 이름을 수정하거나 컬럼을 삭제할 수 있습니다.
@@ -191,7 +192,7 @@ https://localhost:3000 접속
 
 6. **대시보드 수정 페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/5b0c9265-c781-4984-9fd2-2d99c73812b1/Untitled.png)
+<img width="1280" alt="dashboardEdit" src="https://github.com/Ssong-Q/tenten/assets/122101706/af8e32cf-5fe3-4339-8a61-2130820813dd">
 
    - 대시보드 이름 및 컬러 변경을 할 수 있습니다.
    - 구성원 삭제를 할 수 있습니다.
@@ -200,7 +201,7 @@ https://localhost:3000 접속
 
 7. **계정 관리 페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/3bbc82c7-f731-4974-8e84-46ecea584ed3/Untitled.png)
+<img width="1728" alt="account" src="https://github.com/Ssong-Q/tenten/assets/122101706/2b0ff147-f4d7-4eae-9f0c-dbd5175fed1a">
 
    - 헤더의 프로필 영역을 눌렀을 때 뜨는 드롭다운 → “내 정보” 버튼을 통해 들어올 수 있습니다.
    - 프로필 영역에서 프로필 사진이나 닉네임 중 변경된 정보가 하나라도 있어야 ‘저장’ 버튼이 활성화됩니다.
@@ -208,7 +209,7 @@ https://localhost:3000 접속
 
 8. **404 페이지**
 
-   ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/299a7905-68d2-4fac-b6a9-42a6256ea2e6/8df7655c-58cb-4736-9d1c-5dae947dba9b/Untitled.png)
+<img width="1280" alt="notFound" src="https://github.com/Ssong-Q/tenten/assets/122101706/4362ca96-35a6-4a4d-926a-c7e46b2f2bee">
 
    - 존재하지 않는 url로 접근했을 경우 보여집니다.
    - 로그인을 하지 않은 채, 회원 전용 페이지(내 대시보드, 대시보드 페이지, 대시보드 수정 페이지)에 url로 접근했을 경우 보여집니다.
